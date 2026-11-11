@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SearchQuery.java · ABC Online Shop</title>
+<link rel="stylesheet" href="../../../../../../../../../../app/src/main/resources/static/fonts/fonts.css">
+<link rel="stylesheet" href="../../../../../../../../../../showcase/assets/showcase.css">
+<link rel="stylesheet" href="../../../../../../../../../assets/code.css">
+<script src="../../../../../../../../../../showcase/pages/manifest.js" defer></script>
+<script src="../../../../../../../../../../showcase/assets/showcase.js" defer></script>
+</head>
+<body class="viewer" data-file="app/src/main/java/vn/ptit/ecom/ai/SearchQuery.java">
+<header class="vbar">
+  <a class="vback" href="../../../../../../../../../../showcase/index.html" data-i18n="back">← Showcase</a>
+  <span class="vpath">app/src/main/java/vn/ptit/ecom/ai/<b>SearchQuery.java</b></span>
+  <span class="vactions">
+    <button type="button" class="vbtn local-only" data-reveal="app/src/main/java/vn/ptit/ecom/ai/SearchQuery.java" data-i18n="reveal">Show in File Explorer</button>
+    <a class="vbtn" data-github="app/src/main/java/vn/ptit/ecom/ai/SearchQuery.java" hidden data-i18n="github">View on GitHub</a>
+  </span>
+</header>
+<div class="codewrap"><p class="codeinfo"><span data-num="23" data-i18n="lines">23 lines</span> · 1,016 bytes · Java</p><div class="code">
+<div class="ln" id="L1"><a href="#L1">1</a><span><span class="kn">package</span><span class="w"> </span><span class="nn">vn.ptit.ecom.ai</span><span class="p">;</span></span></div>
+<div class="ln" id="L2"><a href="#L2">2</a><span> </span></div>
+<div class="ln" id="L3"><a href="#L3">3</a><span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.List</span><span class="p">;</span></span></div>
+<div class="ln" id="L4"><a href="#L4">4</a><span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Map</span><span class="p">;</span></span></div>
+<div class="ln" id="L5"><a href="#L5">5</a><span> </span></div>
+<div class="ln" id="L6"><a href="#L6">6</a><span><span class="cm">/**</span></span></div>
+<div class="ln" id="L7"><a href="#L7">7</a><span><span class="cm"> * What the AI search understood from the customer&#39;s words (FR-S1, shown to the customer by AI02).</span></span></div>
+<div class="ln" id="L8"><a href="#L8">8</a><span><span class="cm"> *</span></span></div>
+<div class="ln" id="L9"><a href="#L9">9</a><span><span class="cm"> * @param text        the query as typed or spoken</span></span></div>
+<div class="ln" id="L10"><a href="#L10">10</a><span><span class="cm"> * @param terms       normalized search terms after spelling correction</span></span></div>
+<div class="ln" id="L11"><a href="#L11">11</a><span><span class="cm"> * @param related     for a term, the related words of the shop&#39;s lexicon that the catalogue uses</span></span></div>
+<div class="ln" id="L12"><a href="#L12">12</a><span><span class="cm"> * @param corrections misspelled word to the catalogue word it was corrected to</span></span></div>
+<div class="ln" id="L13"><a href="#L13">13</a><span><span class="cm"> * @param minPrice    lower price limit in VND, or null</span></span></div>
+<div class="ln" id="L14"><a href="#L14">14</a><span><span class="cm"> * @param maxPrice    upper price limit in VND, or null (AI03: a hard filter)</span></span></div>
+<div class="ln" id="L15"><a href="#L15">15</a><span><span class="cm"> * @param cheap       the customer asked for something cheap: lower prices rank higher</span></span></div>
+<div class="ln" id="L16"><a href="#L16">16</a><span><span class="cm"> */</span></span></div>
+<div class="ln" id="L17"><a href="#L17">17</a><span><span class="kd">public</span><span class="w"> </span><span class="kd">record</span> <span class="nc">SearchQuery</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">text</span><span class="p">,</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">terms</span><span class="p">,</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">related</span><span class="p">,</span></span></div>
+<div class="ln" id="L18"><a href="#L18">18</a><span><span class="w">                          </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">corrections</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="w"> </span><span class="n">minPrice</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="w"> </span><span class="n">maxPrice</span><span class="p">,</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">cheap</span><span class="p">)</span><span class="w"> </span><span class="p">{</span></span></div>
+<div class="ln" id="L19"><a href="#L19">19</a><span> </span></div>
+<div class="ln" id="L20"><a href="#L20">20</a><span><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">isEmpty</span><span class="p">()</span><span class="w"> </span><span class="p">{</span></span></div>
+<div class="ln" id="L21"><a href="#L21">21</a><span><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">terms</span><span class="p">.</span><span class="na">isEmpty</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">minPrice</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">maxPrice</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span></span></div>
+<div class="ln" id="L22"><a href="#L22">22</a><span><span class="w">    </span><span class="p">}</span></span></div>
+<div class="ln" id="L23"><a href="#L23">23</a><span><span class="p">}</span></span></div>
+</div></div>
+</body>
+</html>

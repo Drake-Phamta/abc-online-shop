@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SPEC.md · ABC Online Shop</title>
+<link rel="stylesheet" href="../../../app/src/main/resources/static/fonts/fonts.css">
+<link rel="stylesheet" href="../../../showcase/assets/showcase.css">
+<script src="../../../showcase/pages/manifest.js" defer></script>
+<script src="../../../showcase/assets/showcase.js" defer></script>
+</head>
+<body class="viewer" data-file="docs/SPEC.md">
+<header class="vbar">
+  <a class="vback" href="../../../showcase/index.html" data-i18n="back">← Showcase</a>
+  <span class="vpath">docs/<b>SPEC.md</b></span>
+  <span class="vactions"><span class="lang vlang" aria-label="Language"><a href="SPEC.md.html" lang="en" aria-current="page">EN</a><a href="SPEC.vi.md.html" lang="vi">VI</a></span>
+    <button type="button" class="vbtn local-only" data-reveal="docs/SPEC.md" data-i18n="reveal">Show in File Explorer</button>
+    <a class="vbtn" data-github="docs/SPEC.md" hidden data-i18n="github">View on GitHub</a>
+  </span>
+</header>
+<main class="doc">
+<h1 id="spec-requirements-of-the-implemented-slice">SPEC: requirements of the implemented slice</h1>
+<p>Derived from the essay (Chapter 1 FR/NFR, Chapter 2 use cases UC01 to UC21 and the UC07 specification). This file
+specifies only what the application implements; every rule has an id that code and tests cite.</p>
+<h2 id="1-scope">1. Scope</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Use case</th>
+<th>Actor</th>
+<th>FR / NFR</th>
+<th>Implemented</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UC02 Login</td>
+<td>Customer, Sales Staff, Warehouse Staff</td>
+<td>FR02, NFR03, NFR04</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>UC04 Browse / Search Products, with the AI search of section 6 (text, voice, photo)</td>
+<td>Customer (also guests)</td>
+<td>FR04, FR05, NFR01, FR-S1 to FR-S7</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>UC05 View Product</td>
+<td>Customer (also guests)</td>
+<td>FR06</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>UC06 Manage Shopping Cart</td>
+<td>Customer</td>
+<td>FR07, FR08</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>UC07 Place Order / Checkout, includes UC21 Validate Cart</td>
+<td>Customer</td>
+<td>FR09, FR10, FR11, FR15, FR16, NFR10</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>UC08 Make Payment</td>
+<td>Customer, Payment Provider (simulated)</td>
+<td>FR14</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>UC09 Track Order</td>
+<td>Customer</td>
+<td>FR12, FR18</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>UC14 Process Orders (incl. shipping data of UC16)</td>
+<td>Sales Staff</td>
+<td>FR13, FR17, FR18</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>UC15 Manage Inventory</td>
+<td>Warehouse Staff</td>
+<td>FR16</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>UC01, UC03, UC10 to UC13, UC16 to UC20</td>
+<td></td>
+<td></td>
+<td>specified in the essay only</td>
+</tr>
+</tbody>
+</table></div>
+<p>The Payment Provider is simulated inside the application (no real card network): card numbers ending in <code>0002</code>
+are declined, all other valid numbers are approved. The provider returns a token; the shop never stores the full
+number (BR07).</p>
+<h2 id="2-business-rules">2. Business rules</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Id</th>
+<th>Rule</th>
+<th>Enforced in</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BR01</td>
+<td>Only products with status ACTIVE can be added to a cart or ordered.</td>
+<td>model + controller</td>
+</tr>
+<tr>
+<td>BR02</td>
+<td>A cart holds at most one line per product; adding the product again increases the quantity. A line quantity is between 1 and the current stock.</td>
+<td>model + DB UNIQUE(cart_id, product_id), CHECK</td>
+</tr>
+<tr>
+<td>BR03</td>
+<td>A cart line keeps the price shown when it was added (cart price). At checkout every line is validated against the current price, status and stock (UC21). If a price changed, the line takes the current price and the customer must confirm again.</td>
+<td>Cart validation</td>
+</tr>
+<tr>
+<td>BR04</td>
+<td>Order total = subtotal − VIP discount + shipping fee. Subtotal = Σ quantity × unit price. VIP discount = round(subtotal × discount rate). Shipping fee = 30 000 VND, free when the subtotal after discount is at least 500 000 VND. Amounts are integer VND.</td>
+<td>Order</td>
+</tr>
+<tr>
+<td>BR05</td>
+<td>Stock is reserved when the order is created and never becomes negative; it is released when the order is cancelled.</td>
+<td>DAO conditional update + DB CHECK</td>
+</tr>
+<tr>
+<td>BR06</td>
+<td>An order needs a delivery address that belongs to the customer.</td>
+<td>controller + FK</td>
+</tr>
+<tr>
+<td>BR07</td>
+<td>An order is marked PAID only after an approved provider result. The shop stores the card holder, the last four digits, the expiry and the provider token, never the full card number.</td>
+<td>Payment</td>
+</tr>
+<tr>
+<td>BR08</td>
+<td>A customer sees and changes only their own cart and orders.</td>
+<td>controllers (session customer id)</td>
+</tr>
+<tr>
+<td>BR09</td>
+<td>Order status changes only along the transitions of section 3, by the actor named there.</td>
+<td>OrderStatus transition table</td>
+</tr>
+<tr>
+<td>BR10</td>
+<td>One shipment per order, created when the order is shipped (carrier, tracking number, fee).</td>
+<td>DB UNIQUE(order_id)</td>
+</tr>
+<tr>
+<td>BR11</td>
+<td>A cash-on-delivery order gets its cash payment record when it is delivered.</td>
+<td>Order lifecycle</td>
+</tr>
+<tr>
+<td>BR12</td>
+<td>Warehouse staff may set any stock quantity ≥ 0 for an existing product.</td>
+<td>controller + DB CHECK</td>
+</tr>
+<tr>
+<td>BR13</td>
+<td>Staff functions require a staff account with the matching role (SALES for orders, WAREHOUSE for stock).</td>
+<td>controllers</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="3-order-state-machine-br09">3. Order state machine (BR09)</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>From</th>
+<th>To</th>
+<th>Actor / trigger</th>
+<th>Side effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(new)</td>
+<td>PENDING_PAYMENT</td>
+<td>Customer confirms checkout with card</td>
+<td>order + items created, stock reserved, cart emptied</td>
+</tr>
+<tr>
+<td>(new)</td>
+<td>PLACED</td>
+<td>Customer confirms checkout with cash on delivery</td>
+<td>same</td>
+</tr>
+<tr>
+<td>PENDING_PAYMENT</td>
+<td>PAID</td>
+<td>Provider approves the card payment (UC08)</td>
+<td>payment APPROVED + pay_credit row</td>
+</tr>
+<tr>
+<td>PENDING_PAYMENT</td>
+<td>PENDING_PAYMENT</td>
+<td>Provider declines (UC08 A4)</td>
+<td>payment DECLINED row; customer may retry</td>
+</tr>
+<tr>
+<td>PENDING_PAYMENT</td>
+<td>CANCELLED</td>
+<td>Customer gives up</td>
+<td>stock released</td>
+</tr>
+<tr>
+<td>PLACED</td>
+<td>CANCELLED</td>
+<td>Customer or Sales Staff</td>
+<td>stock released</td>
+</tr>
+<tr>
+<td>PLACED, PAID</td>
+<td>PROCESSING</td>
+<td>Sales Staff</td>
+<td></td>
+</tr>
+<tr>
+<td>PAID, PROCESSING</td>
+<td>CANCELLED</td>
+<td>Sales Staff</td>
+<td>stock released; an approved payment becomes REFUNDED</td>
+</tr>
+<tr>
+<td>PROCESSING</td>
+<td>SHIPPED</td>
+<td>Sales Staff enters carrier and tracking number</td>
+<td>shipping row created</td>
+</tr>
+<tr>
+<td>SHIPPED</td>
+<td>DELIVERED</td>
+<td>Sales Staff (carrier confirmation)</td>
+<td>shipping DELIVERED; COD: payment COMPLETED + pay_cash row</td>
+</tr>
+</tbody>
+</table></div>
+<p>Change from the essay's UC07 text: the order is now created <strong>before</strong> the payment (state PENDING_PAYMENT) because
+FR14 records the provider result &quot;against the correct order&quot;, which needs an existing order reference, and stock
+must be held while the customer pays. The order still becomes PAID only after approval (BR07), as UC07 requires.</p>
+<h2 id="4-use-case-specifications">4. Use case specifications</h2>
+<h3 id="uc02-login">UC02 Login</h3>
+<p>Main flow: 1. User enters email and password. 2. System checks the account (customer or staff) and the password
+hash. 3. System starts a session with the user's id and role and opens the role's start page.
+Alternative: A1 wrong email or password: generic message, no hint which one was wrong.</p>
+<h3 id="uc04-browse--search-products-uc05-view-product">UC04 Browse / Search Products, UC05 View Product</h3>
+<p>Main flow: 1. Customer opens the catalogue, optionally a category (a parent category shows its sub-categories'
+products), or types a search in the header. 2. Browsing: System lists the ACTIVE products of the category with
+price and availability, sorted by relevance, price or newest. Searching: the AI search of section 6 interprets the
+query, ranks the ACTIVE products and shows how it understood the query and why each result matched. 3. Customer
+opens a product. 4. System shows the common data (name, brand, price, stock state, description) and the attributes
+of the product's detail kind (book, laptop, phone, apparel).
+Kinds of search (diagram AI1: the abstract use case Search Products is specialized by Search by Text, Search by
+Voice and Search by Photo; every kind includes Rank and Explain Results, text and voice also include Interpret
+Query): by text as in step 2; by voice, the browser turns speech into text, the customer can correct the text, then
+the search runs as by text; by photo, the customer uploads a photo and System ranks the products whose images look
+most alike. Alternative: A1 nothing found after a typed or spoken query (AI04, Fall Back to Keyword Search extends
+Search Products at &quot;nothing found&quot;): keyword search on name, brand and category; if that is empty too, an empty
+state with the query and a link back to all products.</p>
+<h3 id="uc06-manage-shopping-cart">UC06 Manage Shopping Cart</h3>
+<p>Main flow: 1. Customer adds a product with a quantity. 2. System checks BR01, BR02 and stock, adds or merges the line
+with the current price as cart price. 3. Customer changes a quantity or removes a line. 4. System recalculates the
+subtotal.
+Alternatives: A1 quantity above stock: refused with the available quantity. A2 not logged in: asked to log in, then
+returned to the product.</p>
+<h3 id="uc07-place-order--checkout-uc21-validate-cart">UC07 Place Order / Checkout, UC21 Validate Cart</h3>
+<p>Main flow: 1. Customer opens checkout. 2. System validates the cart (UC21, BR03). 3. Customer chooses a delivery
+address and a payment method (card or cash on delivery). 4. System shows subtotal, VIP discount, shipping fee and
+total (BR04). 5. Customer confirms. 6. System, in one transaction, re-validates the cart, creates the order and its
+lines with the unit prices, reserves stock (BR05) and empties the cart. 7. Cash on delivery: order PLACED,
+confirmation shown. Card: UC08 runs.
+Alternatives: A1 product unavailable or not enough stock: confirmation blocked, line marked, cart unchanged. A2 no
+or foreign address: refused (BR06). A3 price changed since the cart: lines updated, customer must confirm the new
+total.</p>
+<h3 id="uc08-make-payment">UC08 Make Payment</h3>
+<p>Main flow: 1. Customer enters card holder, number, expiry and CVV for a PENDING_PAYMENT order of their own. 2. System
+sends the amount and the order reference to the provider. 3. Provider approves and returns a token. 4. System
+records the payment (APPROVED, last four digits, token) and sets the order PAID.
+Alternatives: A1 declined: payment recorded as DECLINED, order stays PENDING_PAYMENT, customer may retry or cancel.
+A2 invalid card data (format, expired): refused before calling the provider.</p>
+<h3 id="uc09-track-order">UC09 Track Order</h3>
+<p>Main flow: 1. Customer opens &quot;My orders&quot;. 2. System lists the customer's orders, newest first. 3. Customer opens one.
+4. System shows lines, totals, payment records, shipment (carrier, tracking number) and the status history.
+Alternative: A1 the order belongs to someone else: &quot;not found&quot; (BR08), same as a missing order.</p>
+<h3 id="uc14-process-orders">UC14 Process Orders</h3>
+<p>Main flow: 1. Sales Staff opens the order board grouped by status. 2. Staff moves an order along BR09 (process,
+ship with carrier and tracking number, deliver, cancel). 3. System applies the side effects of section 3.
+Alternative: A1 transition not allowed from the current status: refused with the allowed actions.</p>
+<h3 id="uc15-manage-inventory">UC15 Manage Inventory</h3>
+<p>Main flow: 1. Warehouse Staff opens the stock list (low stock first). 2. Staff sets a new quantity. 3. System stores it
+(BR12).
+Alternative: A1 negative or non-numeric quantity: refused.</p>
+<h2 id="5-acceptance-tests-behaviour">5. Acceptance tests (behaviour)</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Id</th>
+<th>Given</th>
+<th>When</th>
+<th>Then</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AT01</td>
+<td>product with stock 2</td>
+<td>customer adds 3</td>
+<td>refused, cart unchanged</td>
+<td>BR02</td>
+</tr>
+<tr>
+<td>AT02</td>
+<td>cart line added at 1 000 000, price now 900 000</td>
+<td>checkout validation</td>
+<td>line price 900 000, &quot;price changed&quot; flag</td>
+<td>BR03</td>
+</tr>
+<tr>
+<td>AT03</td>
+<td>VIP 5 %, subtotal 1 000 000</td>
+<td>totals</td>
+<td>discount 50 000, shipping 0, total 950 000</td>
+<td>BR04</td>
+</tr>
+<tr>
+<td>AT04</td>
+<td>stock 1, two orders for 1</td>
+<td>second checkout</td>
+<td>refused, stock stays 0</td>
+<td>BR05</td>
+</tr>
+<tr>
+<td>AT05</td>
+<td>card ending 0002</td>
+<td>pay</td>
+<td>DECLINED, order still PENDING_PAYMENT; retry with valid card → PAID</td>
+<td>BR07</td>
+</tr>
+<tr>
+<td>AT06</td>
+<td>order of customer B</td>
+<td>customer A requests it</td>
+<td>404</td>
+<td>BR08</td>
+</tr>
+<tr>
+<td>AT07</td>
+<td>order PLACED</td>
+<td>staff ships it directly</td>
+<td>refused (must be PROCESSING)</td>
+<td>BR09</td>
+</tr>
+<tr>
+<td>AT08</td>
+<td>COD order SHIPPED</td>
+<td>staff delivers</td>
+<td>DELIVERED, cash payment recorded</td>
+<td>BR11</td>
+</tr>
+<tr>
+<td>AT09</td>
+<td>order PAID with stock reserved</td>
+<td>staff cancels</td>
+<td>CANCELLED, stock released, payment REFUNDED</td>
+<td>BR05, BR09</td>
+</tr>
+<tr>
+<td>AT10</td>
+<td>customer session</td>
+<td>calls staff endpoint</td>
+<td>403</td>
+<td>BR13</td>
+</tr>
+<tr>
+<td>AT11</td>
+<td>catalogue of the demo data</td>
+<td>search &quot;red sneakers&quot;</td>
+<td>Converse Chuck Taylor (red canvas shoes) first; &quot;sneakers&quot; understood as shoes</td>
+<td>AI02</td>
+</tr>
+<tr>
+<td>AT12</td>
+<td>same</td>
+<td>search &quot;macbok air&quot;</td>
+<td>Apple MacBook Air first; the page shows the correction macbok → macbook</td>
+<td>AI02</td>
+</tr>
+<tr>
+<td>AT13</td>
+<td>same</td>
+<td>search &quot;laptop under 10 million&quot;</td>
+<td>only laptops priced at most 10 000 000 ₫ (ThinkPad T470, Latitude 5480)</td>
+<td>AI03</td>
+</tr>
+<tr>
+<td>AT14</td>
+<td>same</td>
+<td>search &quot;book for a programmer&quot;</td>
+<td>Clean Code and The Pragmatic Programmer in the first three</td>
+<td>AI02</td>
+</tr>
+<tr>
+<td>AT15</td>
+<td>photo of a catalogue product, cropped, darker and on another background</td>
+<td>search by photo</td>
+<td>that product first</td>
+<td>FR-S5</td>
+</tr>
+<tr>
+<td>AT16</td>
+<td>same</td>
+<td>search &quot;xyzzy&quot;</td>
+<td>AI search and keyword search find nothing; empty state says so</td>
+<td>AI04</td>
+</tr>
+<tr>
+<td>AT17</td>
+<td>a text file sent as photo</td>
+<td>search by photo</td>
+<td>400 &quot;not a JPEG or PNG image&quot;, nothing stored</td>
+<td>AI05, AI06</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="6-ai-search-chapter-3-specification-of-the-ai-component">6. AI search (Chapter 3): specification of the AI component</h2>
+<p>Built from the lecturer's notes &quot;Integrating AI into E-Commerce Systems&quot;: business problem, requirements, AI and
+data requirements, then the component, its interactions, failures, risks and evaluation.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>ABC Online Shop</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Business problem</td>
+<td>Customers who do not type the exact product name find nothing: the keyword search matches substrings of name, brand and category only. &quot;red sneakers&quot;, &quot;macbok&quot;, &quot;laptop under 10 million&quot; or a photo of a shoe return no product, so a customer who wants to buy leaves. Chapter 1 asks for more: stakeholder need SN02 &quot;browse and search the catalogue efficiently&quot; and FR05 (Must) &quot;let customers search the product catalogue&quot;.</td>
+</tr>
+<tr>
+<td>Business objective</td>
+<td>More searches that end at a product page or in the cart (search success rate), fewer searches without result.</td>
+</tr>
+<tr>
+<td>Business requirement</td>
+<td>The shop helps customers find the right product in one search, whether they type, speak or show a photo.</td>
+</tr>
+<tr>
+<td>Functional requirements</td>
+<td>FR-S1 interpret a free-text query: synonyms and related words, spelling mistakes, price limits; FR-S2 rank the ACTIVE products by relevance; FR-S3 show how the query was understood and why each result matched; FR-S4 accept a spoken query (speech to text in the browser, editable before it is sent); FR-S5 accept a photo and return the products whose pictures look most alike; FR-S6 fall back to keyword search when the AI search finds nothing; FR-S7 keep the index in step with the catalogue (built from the database at start).</td>
+</tr>
+<tr>
+<td>AI function</td>
+<td>Ranking: for a query q and every product p, a relevance score s(q, p); the result is the top k products. Text: a vector space model whose term weights (TF-IDF) are learned from the catalogue text, with query expansion. Photo: a feature vector of colour and shape per image, cosine similarity.</td>
+</tr>
+<tr>
+<td>Input</td>
+<td>text up to 200 characters, or one JPEG or PNG image up to 5 MB</td>
+</tr>
+<tr>
+<td>Output</td>
+<td>up to 12 products, each with a score and its reasons; the understood query (terms, expansions, corrections, price limits); a flag when the fallback was used</td>
+</tr>
+<tr>
+<td>Data source</td>
+<td>product (name, brand, description, price, status), category (name and parent), book_detail, laptop_detail, phone_detail, apparel_detail (all values), product images in the shop's image folder; nothing new is stored</td>
+</tr>
+<tr>
+<td>Location</td>
+<td>AI component in the business logic layer (package <code>ai</code>), called by the SearchService; no external service</td>
+</tr>
+<tr>
+<td>Interaction</td>
+<td>SearchForm (view) → SearchController → SearchService → QueryInterpreter, ProductIndex, ImageIndex; SearchService reads the catalogue through ProductDAO</td>
+</tr>
+<tr>
+<td>Performance</td>
+<td>text search under 300 ms, photo search under 1 s on the demo machine; hit@1 and MRR better than the keyword search on the labelled queries (section 6.2)</td>
+</tr>
+<tr>
+<td>Update</td>
+<td>the index is built from the database when the first search runs and rebuilt after a catalogue change</td>
+</tr>
+<tr>
+<td>Human role</td>
+<td>sales staff keep the list of related words (the lexicon in QueryInterpreter) and check the labelled queries before a change goes live</td>
+</tr>
+<tr>
+<td>Risks</td>
+<td>wrong or missing results; unfair ranking (a brand always first); photos of people; very long or crafted input; see 6.3</td>
+</tr>
+<tr>
+<td>Evaluation</td>
+<td>technical: hit@1, recall@5, MRR, zero-result rate, photo top-1 and top-3 accuracy, latency; business: search success rate and conversion after search (needs live traffic, planned)</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="61-rules-of-the-ai-search">6.1 Rules of the AI search</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Id</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AI01</td>
+<td>Only ACTIVE products are indexed and returned (BR01).</td>
+</tr>
+<tr>
+<td>AI02</td>
+<td>The result page shows how the query was understood (expanded words, corrections, price limit) and every result shows why it matched (explainability).</td>
+</tr>
+<tr>
+<td>AI03</td>
+<td>A price limit in the query (&quot;under 10 million&quot;, &quot;below 500k&quot;) is a hard filter: no result above it.</td>
+</tr>
+<tr>
+<td>AI04</td>
+<td>When the AI search finds nothing, the keyword search runs; the page says which search produced the results.</td>
+</tr>
+<tr>
+<td>AI05</td>
+<td>Photos and voice are processed in memory and never stored; search texts are not logged with the customer.</td>
+</tr>
+<tr>
+<td>AI06</td>
+<td>Input limits: text up to 200 characters, photo up to 5 MB, JPEG or PNG only.</td>
+</tr>
+<tr>
+<td>AI07</td>
+<td>In a text search, a product out of stock is still shown, with its stock badge, but its relevance counts 20 % less: it stays in front only when it is clearly more relevant than the products that can be bought now. A photo shows one product, so the photo search keeps it in its place (the customer learns that it is out of stock).</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="62-evaluation-protocol">6.2 Evaluation protocol</h3>
+<p><code>tests/search_eval.py</code> runs against a fresh server: 30 labelled queries (<code>tests/search/queries.json</code>, each with the
+SKUs that a shop assistant would show) through the keyword search and the AI search, and 84 photos made from the
+catalogue images (crop, rotation, lighting, other background; <code>tests/search/make_photos.py</code>) through the photo
+search. Output in <code>docs/evidence/search_eval.txt</code>.</p>
+<h3 id="63-failure-and-risk-analysis">6.3 Failure and risk analysis</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Failure or risk</th>
+<th>Effect</th>
+<th>Response in the design</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Query uses words that are not in the catalogue</td>
+<td>no result</td>
+<td>lexicon expansion, spelling correction, then keyword fallback (AI04)</td>
+</tr>
+<tr>
+<td>Low-quality or unrelated photo</td>
+<td>unrelated products shown</td>
+<td>the page shows the similarity score; results under the threshold are not shown</td>
+</tr>
+<tr>
+<td>Browser has no speech recognition (or no network for it)</td>
+<td>voice button cannot listen</td>
+<td>the dialog says so and keeps the text box; typing works</td>
+</tr>
+<tr>
+<td>Catalogue changed</td>
+<td>stale results</td>
+<td>index rebuilt after a change; prices and stock of results are read fresh from the database</td>
+</tr>
+<tr>
+<td>Unfair ranking</td>
+<td>some products never seen</td>
+<td>ranking uses query terms only, no brand boost; the labelled queries check other brands</td>
+</tr>
+<tr>
+<td>Privacy of photos</td>
+<td>personal data in photos</td>
+<td>processed in memory, not stored, not logged (AI05)</td>
+</tr>
+<tr>
+<td>Oversized or crafted input</td>
+<td>slow search, errors</td>
+<td>limits of AI06, the file type is checked before decoding</td>
+</tr>
+</tbody>
+</table></div>
+</main>
+</body>
+</html>

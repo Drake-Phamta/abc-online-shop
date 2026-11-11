@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CHAY_DEMO.bat · ABC Online Shop</title>
+<link rel="stylesheet" href="../../app/src/main/resources/static/fonts/fonts.css">
+<link rel="stylesheet" href="../../showcase/assets/showcase.css">
+<link rel="stylesheet" href="../assets/code.css">
+<script src="../../showcase/pages/manifest.js" defer></script>
+<script src="../../showcase/assets/showcase.js" defer></script>
+</head>
+<body class="viewer" data-file="CHAY_DEMO.bat">
+<header class="vbar">
+  <a class="vback" href="../../showcase/index.html" data-i18n="back">← Showcase</a>
+  <span class="vpath"><b>CHAY_DEMO.bat</b></span>
+  <span class="vactions">
+    <button type="button" class="vbtn local-only" data-reveal="CHAY_DEMO.bat" data-i18n="reveal">Show in File Explorer</button>
+    <a class="vbtn" data-github="CHAY_DEMO.bat" hidden data-i18n="github">View on GitHub</a>
+  </span>
+</header>
+<div class="codewrap"><p class="codeinfo"><span data-num="77" data-i18n="lines">77 lines</span> · 3,689 bytes · Batchfile</p><div class="code">
+<div class="ln" id="L1"><a href="#L1">1</a><span><span class="p">@</span><span class="k">echo</span> off</span></div>
+<div class="ln" id="L2"><a href="#L2">2</a><span><span class="c1">rem ABC Online Shop demo. Double-click: starts the server on a fresh demo database and opens the shop in the browser.</span></span></div>
+<div class="ln" id="L3"><a href="#L3">3</a><span><span class="c1">rem Close this window (or press Ctrl+C) to stop the server.</span></span></div>
+<div class="ln" id="L4"><a href="#L4">4</a><span><span class="c1">rem &quot;CHAY_DEMO.bat keep&quot; keeps the data of the previous run instead of recreating the database.</span></span></div>
+<div class="ln" id="L5"><a href="#L5">5</a><span><span class="k">setlocal</span></span></div>
+<div class="ln" id="L6"><a href="#L6">6</a><span><span class="k">title</span> ABC Online Shop - demo server (close this window to stop)</span></div>
+<div class="ln" id="L7"><a href="#L7">7</a><span><span class="k">set</span> <span class="s2">&quot;URL=http://localhost:8080/&quot;</span></span></div>
+<div class="ln" id="L8"><a href="#L8">8</a><span><span class="k">set</span> <span class="s2">&quot;JAR=target\abc-online-shop-1.0.0.jar&quot;</span></span></div>
+<div class="ln" id="L9"><a href="#L9">9</a><span><span class="k">set</span> <span class="s2">&quot;RESET=--abc.db.reset=true&quot;</span></span></div>
+<div class="ln" id="L10"><a href="#L10">10</a><span><span class="k">if</span> <span class="k">/i</span> <span class="s2">&quot;</span><span class="nv">%~1</span><span class="s2">&quot;</span><span class="o">==</span><span class="s2">&quot;keep&quot;</span> <span class="k">set</span> <span class="s2">&quot;RESET=&quot;</span></span></div>
+<div class="ln" id="L11"><a href="#L11">11</a><span><span class="k">cd</span> /d <span class="s2">&quot;</span><span class="nv">%~dp0</span><span class="s2">app&quot;</span></span></div>
+<div class="ln" id="L12"><a href="#L12">12</a><span> </span></div>
+<div class="ln" id="L13"><a href="#L13">13</a><span><span class="c1">rem 0. Register the link type abcshop: for this Windows user (no admin rights, nothing else changes). The showcase</span></span></div>
+<div class="ln" id="L14"><a href="#L14">14</a><span><span class="c1">rem    pages use it to run this file when the server is not running yet (&quot;Open the shop&quot;) and to show a file in</span></span></div>
+<div class="ln" id="L15"><a href="#L15">15</a><span><span class="c1">rem    File Explorer. It is written again on every run, so it always points to this copy of the project.</span></span></div>
+<div class="ln" id="L16"><a href="#L16">16</a><span><span class="c1">rem    Details in showcase\abcshop.ps1. To remove it: reg delete &quot;HKCU\Software\Classes\abcshop&quot; /f</span></span></div>
+<div class="ln" id="L17"><a href="#L17">17</a><span>powershell -NoProfile -ExecutionPolicy RemoteSigned -File <span class="s2">&quot;</span><span class="nv">%~dp0</span><span class="s2">showcase\abcshop.ps1&quot;</span> -Register <span class="p">&gt;</span>nul <span class="mi">2</span><span class="p">&gt;&amp;</span><span class="mi">1</span></span></div>
+<div class="ln" id="L18"><a href="#L18">18</a><span> </span></div>
+<div class="ln" id="L19"><a href="#L19">19</a><span><span class="c1">rem 1. Already running: only open the browser.</span></span></div>
+<div class="ln" id="L20"><a href="#L20">20</a><span>powershell -NoProfile -Command <span class="s2">&quot;try { Invoke-WebRequest -UseBasicParsing -TimeoutSec 2 &#39;</span><span class="nv">%URL%</span><span class="s2">&#39; | Out-Null; exit 0 } catch { exit 1 }&quot;</span></span></div>
+<div class="ln" id="L21"><a href="#L21">21</a><span><span class="k">if</span> <span class="k">errorlevel</span> <span class="mi">1</span> <span class="k">goto</span> <span class="nl">findjava</span></span></div>
+<div class="ln" id="L22"><a href="#L22">22</a><span><span class="k">echo</span> The shop is already running at <span class="nv">%URL%</span></span></div>
+<div class="ln" id="L23"><a href="#L23">23</a><span><span class="k">start</span> <span class="s2">&quot;&quot;</span> <span class="s2">&quot;</span><span class="nv">%URL%</span><span class="s2">&quot;</span></span></div>
+<div class="ln" id="L24"><a href="#L24">24</a><span>timeout /t 3 <span class="p">&gt;</span>nul</span></div>
+<div class="ln" id="L25"><a href="#L25">25</a><span><span class="k">exit</span> /b 0</span></div>
+<div class="ln" id="L26"><a href="#L26">26</a><span> </span></div>
+<div class="ln" id="L27"><a href="#L27">27</a><span><span class="c1">rem 2. Java 17 or newer: JAVA_HOME first, then the usual JDK folders. The &quot;java&quot; on PATH may be an older Java 8.</span></span></div>
+<div class="ln" id="L28"><a href="#L28">28</a><span><span class="p">:</span><span class="nl">findjava</span></span></div>
+<div class="ln" id="L29"><a href="#L29">29</a><span><span class="k">set</span> <span class="s2">&quot;JAVA=&quot;</span></span></div>
+<div class="ln" id="L30"><a href="#L30">30</a><span><span class="k">if</span> <span class="k">defined</span> <span class="nv">JAVA_HOME</span> <span class="k">call</span> <span class="p">:</span><span class="nl">tryjava</span> <span class="s2">&quot;</span><span class="nv">%JAVA_HOME%</span><span class="s2">\bin\java.exe&quot;</span></span></div>
+<div class="ln" id="L31"><a href="#L31">31</a><span><span class="k">if</span> <span class="k">not</span> <span class="k">defined</span> <span class="nv">JAVA</span> <span class="k">for</span> /d <span class="se">%%</span>d <span class="k">in</span> <span class="p">(</span><span class="s2">&quot;</span><span class="nv">%ProgramFiles%</span><span class="s2">\Eclipse Adoptium\jdk-*&quot;</span> <span class="s2">&quot;</span><span class="nv">%ProgramFiles%</span><span class="s2">\Java\jdk-*&quot;</span> <span class="s2">&quot;</span><span class="nv">%ProgramFiles%</span><span class="s2">\Microsoft\jdk-*&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="k">if</span> <span class="k">not</span> <span class="k">defined</span> <span class="nv">JAVA</span> <span class="k">call</span> <span class="p">:</span><span class="nl">tryjava</span> <span class="s2">&quot;</span><span class="se">%%</span><span class="s2">~d\bin\java.exe&quot;</span></span></div>
+<div class="ln" id="L32"><a href="#L32">32</a><span><span class="k">if</span> <span class="k">not</span> <span class="k">defined</span> <span class="nv">JAVA</span> <span class="k">for</span> <span class="k">/f</span> <span class="s2">&quot;delims=&quot;</span> <span class="se">%%</span>j <span class="k">in</span> <span class="p">(</span><span class="s1">&#39;where java 2^&gt;nul&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="k">if</span> <span class="k">not</span> <span class="k">defined</span> <span class="nv">JAVA</span> <span class="k">call</span> <span class="p">:</span><span class="nl">tryjava</span> <span class="s2">&quot;</span><span class="se">%%</span><span class="s2">~j&quot;</span></span></div>
+<div class="ln" id="L33"><a href="#L33">33</a><span><span class="k">if</span> <span class="k">defined</span> <span class="nv">JAVA</span> <span class="k">goto</span> <span class="nl">build</span></span></div>
+<div class="ln" id="L34"><a href="#L34">34</a><span><span class="k">echo</span>.</span></div>
+<div class="ln" id="L35"><a href="#L35">35</a><span><span class="k">echo</span> Java 17 or newer was not found. Install a JDK 17 (for example Eclipse Temurin 17) and run this file again.</span></div>
+<div class="ln" id="L36"><a href="#L36">36</a><span><span class="k">pause</span></span></div>
+<div class="ln" id="L37"><a href="#L37">37</a><span><span class="k">exit</span> /b 1</span></div>
+<div class="ln" id="L38"><a href="#L38">38</a><span> </span></div>
+<div class="ln" id="L39"><a href="#L39">39</a><span><span class="c1">rem 3. Build the application once if the jar is missing.</span></span></div>
+<div class="ln" id="L40"><a href="#L40">40</a><span><span class="p">:</span><span class="nl">build</span></span></div>
+<div class="ln" id="L41"><a href="#L41">41</a><span><span class="k">for</span> <span class="se">%%</span>j <span class="k">in</span> <span class="p">(</span><span class="s2">&quot;</span><span class="nv">%JAVA%</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="k">set</span> <span class="s2">&quot;JAVA_HOME=</span><span class="se">%%</span><span class="s2">~dpj..&quot;</span></span></div>
+<div class="ln" id="L42"><a href="#L42">42</a><span><span class="k">if</span> <span class="k">exist</span> <span class="s2">&quot;</span><span class="nv">%JAR%</span><span class="s2">&quot;</span> <span class="k">goto</span> <span class="nl">run</span></span></div>
+<div class="ln" id="L43"><a href="#L43">43</a><span><span class="k">echo</span> Building the application (first run only, about one minute)...</span></div>
+<div class="ln" id="L44"><a href="#L44">44</a><span><span class="k">call</span> mvn -q package -DskipTests</span></div>
+<div class="ln" id="L45"><a href="#L45">45</a><span><span class="k">if</span> <span class="k">exist</span> <span class="s2">&quot;</span><span class="nv">%JAR%</span><span class="s2">&quot;</span> <span class="k">goto</span> <span class="nl">run</span></span></div>
+<div class="ln" id="L46"><a href="#L46">46</a><span><span class="k">echo</span>.</span></div>
+<div class="ln" id="L47"><a href="#L47">47</a><span><span class="k">echo</span> The build failed. Run <span class="s2">&quot;mvn package&quot;</span> in the app folder to see the error.</span></div>
+<div class="ln" id="L48"><a href="#L48">48</a><span><span class="k">pause</span></span></div>
+<div class="ln" id="L49"><a href="#L49">49</a><span><span class="k">exit</span> /b 1</span></div>
+<div class="ln" id="L50"><a href="#L50">50</a><span> </span></div>
+<div class="ln" id="L51"><a href="#L51">51</a><span><span class="c1">rem 4. Open the browser as soon as the server answers, and run the server in this window.</span></span></div>
+<div class="ln" id="L52"><a href="#L52">52</a><span><span class="p">:</span><span class="nl">run</span></span></div>
+<div class="ln" id="L53"><a href="#L53">53</a><span><span class="k">start</span> <span class="s2">&quot;&quot;</span> /b powershell -NoProfile -WindowStyle Hidden -Command <span class="s2">&quot;for ($i = 0; $i -lt 120; $i++) { try { Invoke-WebRequest -UseBasicParsing -TimeoutSec 2 &#39;</span><span class="nv">%URL%</span><span class="s2">&#39; | Out-Null; Start-Process &#39;</span><span class="nv">%URL%</span><span class="s2">&#39;; break } catch { Start-Sleep -Seconds 1 } }&quot;</span></span></div>
+<div class="ln" id="L54"><a href="#L54">54</a><span><span class="k">echo</span>.</span></div>
+<div class="ln" id="L55"><a href="#L55">55</a><span><span class="k">echo</span>  ABC Online Shop  -  <span class="nv">%URL%</span></span></div>
+<div class="ln" id="L56"><a href="#L56">56</a><span><span class="k">if</span> <span class="k">defined</span> <span class="nv">RESET</span> <span class="p">(</span><span class="k">echo</span>  Database: fresh demo data<span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="k">echo</span>  Database: kept from the previous run<span class="p">)</span></span></div>
+<div class="ln" id="L57"><a href="#L57">57</a><span><span class="k">echo</span>.</span></div>
+<div class="ln" id="L58"><a href="#L58">58</a><span><span class="k">echo</span>  Accounts, password demo1234:</span></div>
+<div class="ln" id="L59"><a href="#L59">59</a><span><span class="k">echo</span>    an.nguyen@example.com    VIP customer</span></div>
+<div class="ln" id="L60"><a href="#L60">60</a><span><span class="k">echo</span>    lan.tran@example.com     new customer</span></div>
+<div class="ln" id="L61"><a href="#L61">61</a><span><span class="k">echo</span>    sales@example.com        sales staff, order board</span></div>
+<div class="ln" id="L62"><a href="#L62">62</a><span><span class="k">echo</span>    warehouse@example.com    warehouse staff, stock</span></div>
+<div class="ln" id="L63"><a href="#L63">63</a><span><span class="k">echo</span>  Cards: 4242 4242 4242 4242 approved, 4000 0000 0000 0002 declined.  Alt+L: design lens.</span></div>
+<div class="ln" id="L64"><a href="#L64">64</a><span><span class="k">echo</span>.</span></div>
+<div class="ln" id="L65"><a href="#L65">65</a><span><span class="k">echo</span>  The browser opens when the server is ready. Close this window to stop the server.</span></div>
+<div class="ln" id="L66"><a href="#L66">66</a><span><span class="k">echo</span>.</span></div>
+<div class="ln" id="L67"><a href="#L67">67</a><span><span class="s2">&quot;</span><span class="nv">%JAVA%</span><span class="s2">&quot;</span> -jar <span class="s2">&quot;</span><span class="nv">%JAR%</span><span class="s2">&quot;</span> <span class="nv">%RESET%</span></span></div>
+<div class="ln" id="L68"><a href="#L68">68</a><span><span class="k">echo</span>.</span></div>
+<div class="ln" id="L69"><a href="#L69">69</a><span><span class="k">echo</span> The server has stopped.</span></div>
+<div class="ln" id="L70"><a href="#L70">70</a><span><span class="k">pause</span></span></div>
+<div class="ln" id="L71"><a href="#L71">71</a><span><span class="k">exit</span> /b 0</span></div>
+<div class="ln" id="L72"><a href="#L72">72</a><span> </span></div>
+<div class="ln" id="L73"><a href="#L73">73</a><span><span class="p">:</span><span class="nl">tryjava</span></span></div>
+<div class="ln" id="L74"><a href="#L74">74</a><span><span class="k">if</span> <span class="k">not</span> <span class="k">exist</span> <span class="s2">&quot;</span><span class="nv">%~1</span><span class="s2">&quot;</span> <span class="k">exit</span> /b 0</span></div>
+<div class="ln" id="L75"><a href="#L75">75</a><span><span class="s2">&quot;</span><span class="nv">%~1</span><span class="s2">&quot;</span> -XshowSettings:properties -version <span class="mi">2</span><span class="p">&gt;&amp;</span><span class="mi">1</span> <span class="p">|</span> findstr /r /c:<span class="s2">&quot;java.specification.version = 1[7-9]&quot;</span> /c:<span class="s2">&quot;java.specification.version = [2-9][0-9]&quot;</span> <span class="p">&gt;</span>nul</span></div>
+<div class="ln" id="L76"><a href="#L76">76</a><span><span class="k">if</span> <span class="k">not</span> <span class="k">errorlevel</span> <span class="mi">1</span> <span class="k">set</span> <span class="s2">&quot;JAVA=</span><span class="nv">%~1</span><span class="s2">&quot;</span></span></div>
+<div class="ln" id="L77"><a href="#L77">77</a><span><span class="k">exit</span> /b 0</span></div>
+</div></div>
+</body>
+</html>

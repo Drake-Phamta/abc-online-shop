@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DataAccessError.java · ABC Online Shop</title>
+<link rel="stylesheet" href="../../../../../../../../../../app/src/main/resources/static/fonts/fonts.css">
+<link rel="stylesheet" href="../../../../../../../../../../showcase/assets/showcase.css">
+<link rel="stylesheet" href="../../../../../../../../../assets/code.css">
+<script src="../../../../../../../../../../showcase/pages/manifest.js" defer></script>
+<script src="../../../../../../../../../../showcase/assets/showcase.js" defer></script>
+</head>
+<body class="viewer" data-file="app/src/main/java/vn/ptit/ecom/dao/DataAccessError.java">
+<header class="vbar">
+  <a class="vback" href="../../../../../../../../../../showcase/index.html" data-i18n="back">← Showcase</a>
+  <span class="vpath">app/src/main/java/vn/ptit/ecom/dao/<b>DataAccessError.java</b></span>
+  <span class="vactions">
+    <button type="button" class="vbtn local-only" data-reveal="app/src/main/java/vn/ptit/ecom/dao/DataAccessError.java" data-i18n="reveal">Show in File Explorer</button>
+    <a class="vbtn" data-github="app/src/main/java/vn/ptit/ecom/dao/DataAccessError.java" hidden data-i18n="github">View on GitHub</a>
+  </span>
+</header>
+<div class="codewrap"><p class="codeinfo"><span data-num="8" data-i18n="lines">8 lines</span> · 268 bytes · Java</p><div class="code">
+<div class="ln" id="L1"><a href="#L1">1</a><span><span class="kn">package</span><span class="w"> </span><span class="nn">vn.ptit.ecom.dao</span><span class="p">;</span></span></div>
+<div class="ln" id="L2"><a href="#L2">2</a><span> </span></div>
+<div class="ln" id="L3"><a href="#L3">3</a><span><span class="cm">/** An unexpected database failure (not a business rule); reported as a server error. */</span></span></div>
+<div class="ln" id="L4"><a href="#L4">4</a><span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">DataAccessError</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">RuntimeException</span><span class="w"> </span><span class="p">{</span></span></div>
+<div class="ln" id="L5"><a href="#L5">5</a><span><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">DataAccessError</span><span class="p">(</span><span class="n">Throwable</span><span class="w"> </span><span class="n">cause</span><span class="p">)</span><span class="w"> </span><span class="p">{</span></span></div>
+<div class="ln" id="L6"><a href="#L6">6</a><span><span class="w">        </span><span class="kd">super</span><span class="p">(</span><span class="n">cause</span><span class="p">.</span><span class="na">getMessage</span><span class="p">(),</span><span class="w"> </span><span class="n">cause</span><span class="p">);</span></span></div>
+<div class="ln" id="L7"><a href="#L7">7</a><span><span class="w">    </span><span class="p">}</span></span></div>
+<div class="ln" id="L8"><a href="#L8">8</a><span><span class="p">}</span></span></div>
+</div></div>
+</body>
+</html>

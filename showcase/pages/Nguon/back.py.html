@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>back.py · ABC Online Shop</title>
+<link rel="stylesheet" href="../../../app/src/main/resources/static/fonts/fonts.css">
+<link rel="stylesheet" href="../../../showcase/assets/showcase.css">
+<link rel="stylesheet" href="../../assets/code.css">
+<script src="../../../showcase/pages/manifest.js" defer></script>
+<script src="../../../showcase/assets/showcase.js" defer></script>
+</head>
+<body class="viewer" data-file="Nguon/back.py">
+<header class="vbar">
+  <a class="vback" href="../../../showcase/index.html" data-i18n="back">← Showcase</a>
+  <span class="vpath">Nguon/<b>back.py</b></span>
+  <span class="vactions">
+    <button type="button" class="vbtn local-only" data-reveal="Nguon/back.py" data-i18n="reveal">Show in File Explorer</button>
+    <a class="vbtn" data-github="Nguon/back.py" hidden data-i18n="github">View on GitHub</a>
+  </span>
+</header>
+<div class="codewrap"><p class="codeinfo"><span data-num="65" data-i18n="lines">65 lines</span> · 5,710 bytes · Python</p><div class="code">
+<div class="ln" id="L1"><a href="#L1">1</a><span><span class="c1"># -*- coding: utf-8 -*-</span></span></div>
+<div class="ln" id="L2"><a href="#L2">2</a><span><span class="c1"># Conclusion and references.</span></span></div>
+<div class="ln" id="L3"><a href="#L3">3</a><span> </span></div>
+<div class="ln" id="L4"><a href="#L4">4</a><span><span class="n">unnumbered</span><span class="p">(</span><span class="s2">&quot;CONCLUSION&quot;</span><span class="p">)</span></span></div>
+<div class="ln" id="L5"><a href="#L5">5</a><span><span class="n">p</span><span class="p">(</span><span class="s2">&quot;This essay followed ABC Online Shop from a list of business complaints to running code. Requirement &quot;</span></span></div>
+<div class="ln" id="L6"><a href="#L6">6</a><span>  <span class="s2">&quot;determination modelled the business in BPMN and ArchiMate, reduced seven problems to three root causes and &quot;</span></span></div>
+<div class="ln" id="L7"><a href="#L7">7</a><span>  <span class="s2">&quot;produced 14 stakeholder needs, 28 functional and 10 non-functional requirements with priorities, acceptance &quot;</span></span></div>
+<div class="ln" id="L8"><a href="#L8">8</a><span>  <span class="s2">&quot;criteria and traceability. Analysis turned them into 21 use cases with a detailed diagram for each functional &quot;</span></span></div>
+<div class="ln" id="L9"><a href="#L9">9</a><span>  <span class="s2">&quot;area, activity diagrams with swimlanes, a level 1 data flow diagram, sequence diagrams with boundary, control and &quot;</span></span></div>
+<div class="ln" id="L10"><a href="#L10">10</a><span>  <span class="s2">&quot;entity objects and a data model in three levels. The AI chapter treated the AI search as a component of the &quot;</span></span></div>
+<div class="ln" id="L11"><a href="#L11">11</a><span>  <span class="s2">&quot;information system like any other: it has stakeholders, use cases, a context and a data flow diagram, rules, &quot;</span></span></div>
+<div class="ln" id="L12"><a href="#L12">12</a><span>  <span class="s2">&quot;risks and a measured quality (hit@1 of 0.97 against 0.23 for the keyword search on 30 labelled queries, and 93% &quot;</span></span></div>
+<div class="ln" id="L13"><a href="#L13">13</a><span>  <span class="s2">&quot;of 84 test photos found first). Design carried the revised analysis model into a database of 20 tables that &quot;</span></span></div>
+<div class="ln" id="L14"><a href="#L14">14</a><span>  <span class="s2">&quot;Visual Paradigm generated from the physical model, and into 81 classes in three layers (73 in Java, 8 in the &quot;</span></span></div>
+<div class="ln" id="L15"><a href="#L15">15</a><span>  <span class="s2">&quot;browser) whose skeleton Visual Paradigm also generated; the code implements nine use cases of the purchase chain &quot;</span></span></div>
+<div class="ln" id="L16"><a href="#L16">16</a><span>  <span class="s2">&quot;and the AI search on that database and passes 24 unit and integration tests, 36 API checks and 30 end-to-end &quot;</span></span></div>
+<div class="ln" id="L17"><a href="#L17">17</a><span>  <span class="s2">&quot;checks in a browser. All 42 diagrams live in one Visual Paradigm project.&quot;</span><span class="p">)</span></span></div>
+<div class="ln" id="L18"><a href="#L18">18</a><span><span class="n">p</span><span class="p">(</span><span class="s2">&quot;Three lessons stand out for me. The first is that most problems are cheapest to fix where they are created: a &quot;</span></span></div>
+<div class="ln" id="L19"><a href="#L19">19</a><span>  <span class="s2">&quot;requirement with a trigger and a fit criterion (FR09, FR16) travelled through every later phase without trouble, &quot;</span></span></div>
+<div class="ln" id="L20"><a href="#L20">20</a><span>  <span class="s2">&quot;while the vague first drafts of Section 1.14 would have produced vague classes and untestable code. The second &quot;</span></span></div>
+<div class="ln" id="L21"><a href="#L21">21</a><span>  <span class="s2">&quot;is that the models check each other, and that the check can be automated. The class model found the product &quot;</span></span></div>
+<div class="ln" id="L22"><a href="#L22">22</a><span>  <span class="s2">&quot;problem that the use cases hid; a script that compares the design classes with the compiled code found an &quot;</span></span></div>
+<div class="ln" id="L23"><a href="#L23">23</a><span>  <span class="s2">&quot;operation the code never called and a business rule repeated in a screen; the code that Visual Paradigm generated &quot;</span></span></div>
+<div class="ln" id="L24"><a href="#L24">24</a><span>  <span class="s2">&quot;from the model found navigable compositions and a type name that pointed to the wrong class; and the end-to-end &quot;</span></span></div>
+<div class="ln" id="L25"><a href="#L25">25</a><span>  <span class="s2">&quot;run found a page that a slow request could replace. None of these would have been found by looking at one model &quot;</span></span></div>
+<div class="ln" id="L26"><a href="#L26">26</a><span>  <span class="s2">&quot;alone. The third is the lesson of the lecturer&#39;s notes on AI in e-commerce: an AI-enabled shop is a complete &quot;</span></span></div>
+<div class="ln" id="L27"><a href="#L27">27</a><span>  <span class="s2">&quot;information system, not only a model. In the AI search the ranking itself is a small part, and the parts that &quot;</span></span></div>
+<div class="ln" id="L28"><a href="#L28">28</a><span>  <span class="s2">&quot;decide whether the feature is trustworthy are ordinary analysis and design: who may see which data, what happens &quot;</span></span></div>
+<div class="ln" id="L29"><a href="#L29">29</a><span>  <span class="s2">&quot;when the model is wrong or unavailable, how the customer sees why a product was found, and how the result is &quot;</span></span></div>
+<div class="ln" id="L30"><a href="#L30">30</a><span>  <span class="s2">&quot;measured.&quot;</span><span class="p">)</span></span></div>
+<div class="ln" id="L31"><a href="#L31">31</a><span><span class="n">p</span><span class="p">(</span><span class="s2">&quot;If I had another month, I would implement the remaining use cases (registration, reviews, promotions and &quot;</span></span></div>
+<div class="ln" id="L32"><a href="#L32">32</a><span>  <span class="s2">&quot;reports) in the same three layers, move the database to PostgreSQL with full-text search, connect a real &quot;</span></span></div>
+<div class="ln" id="L33"><a href="#L33">33</a><span>  <span class="s2">&quot;payment provider through the CardProvider interface with a record of every request, and give the photo search a &quot;</span></span></div>
+<div class="ln" id="L34"><a href="#L34">34</a><span>  <span class="s2">&quot;learned image model behind the same ImageIndex interface, measured on the same 84 photos and then on search &quot;</span></span></div>
+<div class="ln" id="L35"><a href="#L35">35</a><span>  <span class="s2">&quot;success and conversion with real customers. The structure built during this semester should make each of those &quot;</span></span></div>
+<div class="ln" id="L36"><a href="#L36">36</a><span>  <span class="s2">&quot;changes a local one, and that, more than any single diagram, is what I take away from the course.&quot;</span><span class="p">)</span></span></div>
+<div class="ln" id="L37"><a href="#L37">37</a><span><span class="n">unnumbered</span><span class="p">(</span><span class="s2">&quot;REFERENCES&quot;</span><span class="p">)</span></span></div>
+<div class="ln" id="L38"><a href="#L38">38</a><span><span class="n">refs</span> <span class="o">=</span> <span class="p">[</span></span></div>
+<div class="ln" id="L39"><a href="#L39">39</a><span>    <span class="s2">&quot;Tran Dinh Que, Information System Analysis and Design: assignment briefs 01, 02, 03 and 06, Test 01, the &quot;</span></span></div>
+<div class="ln" id="L40"><a href="#L40">40</a><span>    <span class="s2">&quot;appendix </span><span class="se">\&quot;</span><span class="s2">From Analysis to Design</span><span class="se">\&quot;</span><span class="s2"> and the notes </span><span class="se">\&quot;</span><span class="s2">Integrating AI into E-Commerce Systems: Analysis Phase</span><span class="se">\&quot;</span><span class="s2">, &quot;</span></span></div>
+<div class="ln" id="L41"><a href="#L41">41</a><span>    <span class="s2">&quot;Posts and Telecommunications Institute of Technology, 2026.&quot;</span><span class="p">,</span></span></div>
+<div class="ln" id="L42"><a href="#L42">42</a><span>    <span class="s2">&quot;A. Dennis, B. H. Wixom and R. M. Roth, Systems Analysis and Design, 7th ed. Hoboken, NJ: Wiley, 2018.&quot;</span><span class="p">,</span></span></div>
+<div class="ln" id="L43"><a href="#L43">43</a><span>    <span class="s2">&quot;I. Sommerville, Software Engineering, 10th ed. Boston: Pearson, 2015.&quot;</span><span class="p">,</span></span></div>
+<div class="ln" id="L44"><a href="#L44">44</a><span>    <span class="s2">&quot;C. Larman, Applying UML and Patterns: An Introduction to Object-Oriented Analysis and Design and Iterative &quot;</span></span></div>
+<div class="ln" id="L45"><a href="#L45">45</a><span>    <span class="s2">&quot;Development, 3rd ed. Upper Saddle River, NJ: Prentice Hall, 2004.&quot;</span><span class="p">,</span></span></div>
+<div class="ln" id="L46"><a href="#L46">46</a><span>    <span class="s2">&quot;Object Management Group, OMG Unified Modeling Language (OMG UML), Version 2.5.1, 2017.&quot;</span><span class="p">,</span></span></div>
+<div class="ln" id="L47"><a href="#L47">47</a><span>    <span class="s2">&quot;M. Fowler, Patterns of Enterprise Application Architecture. Boston: Addison-Wesley, 2002.&quot;</span><span class="p">,</span></span></div>
+<div class="ln" id="L48"><a href="#L48">48</a><span>    <span class="s2">&quot;D. Alur, J. Crupi and D. Malks, Core J2EE Patterns: Best Practices and Design Strategies, 2nd ed. Upper Saddle &quot;</span></span></div>
+<div class="ln" id="L49"><a href="#L49">49</a><span>    <span class="s2">&quot;River, NJ: Prentice Hall, 2003.&quot;</span><span class="p">,</span></span></div>
+<div class="ln" id="L50"><a href="#L50">50</a><span>    <span class="s2">&quot;G. Salton and C. Buckley, </span><span class="se">\&quot;</span><span class="s2">Term-weighting approaches in automatic text retrieval,</span><span class="se">\&quot;</span><span class="s2"> Information Processing &amp; &quot;</span></span></div>
+<div class="ln" id="L51"><a href="#L51">51</a><span>    <span class="s2">&quot;Management, vol. 24, no. 5, pp. 513-523, 1988.&quot;</span><span class="p">,</span></span></div>
+<div class="ln" id="L52"><a href="#L52">52</a><span>    <span class="s2">&quot;C. D. Manning, P. Raghavan and H. Schütze, Introduction to Information Retrieval. Cambridge: Cambridge &quot;</span></span></div>
+<div class="ln" id="L53"><a href="#L53">53</a><span>    <span class="s2">&quot;University Press, 2008.&quot;</span><span class="p">,</span></span></div>
+<div class="ln" id="L54"><a href="#L54">54</a><span>    <span class="s2">&quot;F. J. Damerau, </span><span class="se">\&quot;</span><span class="s2">A technique for computer detection and correction of spelling errors,</span><span class="se">\&quot;</span><span class="s2"> Communications of the &quot;</span></span></div>
+<div class="ln" id="L55"><a href="#L55">55</a><span>    <span class="s2">&quot;ACM, vol. 7, no. 3, pp. 171-176, 1964.&quot;</span><span class="p">,</span></span></div>
+<div class="ln" id="L56"><a href="#L56">56</a><span>    <span class="s2">&quot;M. J. Swain and D. H. Ballard, </span><span class="se">\&quot;</span><span class="s2">Color indexing,</span><span class="se">\&quot;</span><span class="s2"> International Journal of Computer Vision, vol. 7, no. 1, &quot;</span></span></div>
+<div class="ln" id="L57"><a href="#L57">57</a><span>    <span class="s2">&quot;pp. 11-32, 1991.&quot;</span><span class="p">,</span></span></div>
+<div class="ln" id="L58"><a href="#L58">58</a><span>    <span class="s2">&quot;Object Management Group, Business Process Model and Notation (BPMN), Version 2.0.2, 2014.&quot;</span><span class="p">,</span></span></div>
+<div class="ln" id="L59"><a href="#L59">59</a><span>    <span class="s2">&quot;The Open Group, ArchiMate 3.1 Specification. Reading: The Open Group, 2019.&quot;</span><span class="p">,</span></span></div>
+<div class="ln" id="L60"><a href="#L60">60</a><span>    <span class="s2">&quot;VMware, Spring Boot Reference Documentation, version 3.2, 2024.&quot;</span><span class="p">,</span></span></div>
+<div class="ln" id="L61"><a href="#L61">61</a><span><span class="p">]</span></span></div>
+<div class="ln" id="L62"><a href="#L62">62</a><span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ref</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">refs</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span></span></div>
+<div class="ln" id="L63"><a href="#L63">63</a><span>    <span class="n">para</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">ref</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="n">J</span><span class="p">,</span> <span class="n">after</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span></span></div>
+<div class="ln" id="L64"><a href="#L64">64</a><span>    <span class="n">para</span><span class="o">.</span><span class="n">paragraph_format</span><span class="o">.</span><span class="n">left_indent</span> <span class="o">=</span> <span class="n">Cm</span><span class="p">(</span><span class="mf">0.8</span><span class="p">)</span></span></div>
+<div class="ln" id="L65"><a href="#L65">65</a><span>    <span class="n">para</span><span class="o">.</span><span class="n">paragraph_format</span><span class="o">.</span><span class="n">first_line_indent</span> <span class="o">=</span> <span class="n">Cm</span><span class="p">(</span><span class="o">-</span><span class="mf">0.8</span><span class="p">)</span></span></div>
+</div></div>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ABC Online Shop</title>
+<meta http-equiv="refresh" content="0; url=showcase/index.html">
+<script>
+  // Entry page of the project folder (and of the GitHub Pages site): open the showcase in the language used last time.
+  let page = "showcase/index.html";
+  try { if (localStorage.getItem("abc-lang") === "vi") page = "showcase/index.vi.html"; } catch (e) { /* no storage */ }
+  location.replace(page);
+</script>
+</head>
+<body style="font: 16px/1.6 system-ui, sans-serif; margin: 40px">
+<p>ABC Online Shop: <a href="showcase/index.html">defence showcase (English)</a> · <a href="showcase/index.vi.html">trang trình bày (tiếng Việt)</a> · <a href="README.md">README</a></p>
+</body>
+</html>

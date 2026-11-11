@@ -1,0 +1,573 @@
+[
+  {
+    "sku": "BK-FIC-001",
+    "category_slug": "fiction",
+    "name": "The Alchemist",
+    "brand": null,
+    "price": 129000,
+    "stock": 34,
+    "description": "A fable about Santiago, an Andalusian shepherd boy who travels to Egypt in search of a treasure. First published in Portuguese in 1988; this is the English edition.",
+    "image_file": "bk-fic-001.jpg",
+    "detail": {
+      "author": "Paulo Coelho",
+      "publisher": "HarperOne",
+      "pages": 208,
+      "language": "English"
+    },
+    "image_credit": {
+      "generated": true
+    }
+  },
+  {
+    "sku": "BK-FIC-002",
+    "category_slug": "fiction",
+    "name": "Nineteen Eighty-Four",
+    "brand": null,
+    "price": 149000,
+    "stock": 22,
+    "description": "Orwell's 1949 dystopian novel about Winston Smith, a low-ranking Party member living under constant surveillance in Oceania.",
+    "image_file": "bk-fic-002.jpg",
+    "detail": {
+      "author": "George Orwell",
+      "publisher": "Signet Classics",
+      "pages": 328,
+      "language": "English"
+    },
+    "image_credit": {
+      "generated": true
+    }
+  },
+  {
+    "sku": "BK-FIC-003",
+    "category_slug": "fiction",
+    "name": "The Sorrow of War",
+    "brand": null,
+    "price": 189000,
+    "stock": 3,
+    "description": "A novel by Vietnamese author Bao Ninh, following Kien, a former North Vietnamese soldier who recalls the war and the loss of his youth. English translation by Phan Thanh Hao.",
+    "image_file": "bk-fic-003.jpg",
+    "detail": {
+      "author": "Bao Ninh",
+      "publisher": "Riverhead Books",
+      "pages": 233,
+      "language": "English"
+    },
+    "image_credit": {
+      "generated": true
+    }
+  },
+  {
+    "sku": "BK-FIC-004",
+    "category_slug": "fiction",
+    "name": "Novel Without a Name",
+    "brand": null,
+    "price": 175000,
+    "stock": 12,
+    "description": "A 1991 novel by Vietnamese writer Duong Thu Huong in which a soldier named Quan travels home across a country marked by the war. English translation by Nina McPherson and Phan Huy Duong.",
+    "image_file": "bk-fic-004.jpg",
+    "detail": {
+      "author": "Duong Thu Huong",
+      "publisher": "Penguin Books",
+      "pages": 288,
+      "language": "English"
+    },
+    "image_credit": {
+      "generated": true
+    }
+  },
+  {
+    "sku": "BK-BUS-001",
+    "category_slug": "business",
+    "name": "Rich Dad Poor Dad",
+    "brand": null,
+    "price": 199000,
+    "stock": 38,
+    "description": "A personal finance book that contrasts the money habits of the author's two father figures, and argues for building assets rather than relying on a salary.",
+    "image_file": "bk-bus-001.jpg",
+    "detail": {
+      "author": "Robert T. Kiyosaki",
+      "publisher": "Plata Publishing",
+      "pages": 336,
+      "language": "English"
+    },
+    "image_credit": {
+      "generated": true
+    }
+  },
+  {
+    "sku": "BK-BUS-002",
+    "category_slug": "business",
+    "name": "The Lean Startup",
+    "brand": null,
+    "price": 235000,
+    "stock": 16,
+    "description": "Eric Ries describes a build-measure-learn method for launching products with limited resources, using small experiments to test business ideas early.",
+    "image_file": "bk-bus-002.jpg",
+    "detail": {
+      "author": "Eric Ries",
+      "publisher": "Crown Business",
+      "pages": 336,
+      "language": "English"
+    },
+    "image_credit": {
+      "generated": true
+    }
+  },
+  {
+    "sku": "BK-BUS-003",
+    "category_slug": "business",
+    "name": "Zero to One",
+    "brand": null,
+    "price": 189000,
+    "stock": 27,
+    "description": "Notes on startups drawn from Peter Thiel's Stanford course, arguing that the best companies create something new instead of copying existing models.",
+    "image_file": "bk-bus-003.jpg",
+    "detail": {
+      "author": "Peter Thiel with Blake Masters",
+      "publisher": "Crown Business",
+      "pages": 224,
+      "language": "English"
+    },
+    "image_credit": {
+      "generated": true
+    }
+  },
+  {
+    "sku": "BK-BUS-004",
+    "category_slug": "business",
+    "name": "Good to Great",
+    "brand": null,
+    "price": 259000,
+    "stock": 9,
+    "description": "A research-based study of eleven companies that made a lasting leap from average results to sustained outperformance, and what they had in common.",
+    "image_file": "bk-bus-004.jpg",
+    "detail": {
+      "author": "Jim Collins",
+      "publisher": "HarperBusiness",
+      "pages": 320,
+      "language": "English"
+    },
+    "image_credit": {
+      "generated": true
+    }
+  },
+  {
+    "sku": "BK-COM-001",
+    "category_slug": "computing",
+    "name": "Clean Code",
+    "brand": null,
+    "price": 589000,
+    "stock": 14,
+    "description": "A handbook of agile software craftsmanship covering naming, functions, comments, formatting, error handling and refactoring, with Java examples.",
+    "image_file": "bk-com-001.jpg",
+    "detail": {
+      "author": "Robert C. Martin",
+      "publisher": "Prentice Hall",
+      "pages": 464,
+      "language": "English"
+    },
+    "image_credit": {
+      "generated": true
+    }
+  },
+  {
+    "sku": "BK-COM-002",
+    "category_slug": "computing",
+    "name": "Introduction to Algorithms, 4th Edition",
+    "brand": null,
+    "price": 1890000,
+    "stock": 6,
+    "description": "A comprehensive university textbook on algorithms and data structures, covering sorting, graph algorithms, dynamic programming and NP-completeness.",
+    "image_file": "bk-com-002.jpg",
+    "detail": {
+      "author": "Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein",
+      "publisher": "MIT Press",
+      "pages": 1312,
+      "language": "English"
+    },
+    "image_credit": {
+      "generated": true
+    }
+  },
+  {
+    "sku": "BK-COM-003",
+    "category_slug": "computing",
+    "name": "Designing Data-Intensive Applications",
+    "brand": null,
+    "price": 1190000,
+    "stock": 18,
+    "description": "Explains the principles behind reliable, scalable and maintainable data systems, including storage engines, replication, partitioning and stream processing.",
+    "image_file": "bk-com-003.jpg",
+    "detail": {
+      "author": "Martin Kleppmann",
+      "publisher": "O'Reilly Media",
+      "pages": 616,
+      "language": "English"
+    },
+    "image_credit": {
+      "generated": true
+    }
+  },
+  {
+    "sku": "BK-COM-004",
+    "category_slug": "computing",
+    "name": "The Pragmatic Programmer, 20th Anniversary Edition",
+    "brand": null,
+    "price": 790000,
+    "stock": 25,
+    "description": "Practical advice on everyday software development, from debugging and testing to automation and career habits. Fully revised for the 20th anniversary.",
+    "image_file": "bk-com-004.jpg",
+    "detail": {
+      "author": "David Thomas and Andrew Hunt",
+      "publisher": "Addison-Wesley Professional",
+      "pages": 352,
+      "language": "English"
+    },
+    "image_credit": {
+      "generated": true
+    }
+  },
+  {
+    "sku": "EL-LAP-001",
+    "category_slug": "laptops",
+    "name": "Apple MacBook Air 13-inch (M1)",
+    "brand": "Apple",
+    "price": 18990000,
+    "stock": 8,
+    "description": "13.3-inch Retina laptop with the Apple M1 chip (8-core CPU), 8 GB unified memory and a 256 GB SSD. Fanless design, runs macOS.",
+    "image_file": "el-lap-001.jpg",
+    "detail": {
+      "cpu": "Apple M1 (8-core CPU)",
+      "ram_gb": 8,
+      "storage_gb": 256,
+      "screen_inch": 13.3,
+      "warranty_months": 12
+    },
+    "image_credit": {
+      "source_url": "https://commons.wikimedia.org/wiki/File:Macbook_Air_M1_Silver_PNG.png",
+      "author": "L",
+      "license": "CC BY-SA 4.0"
+    }
+  },
+  {
+    "sku": "EL-LAP-002",
+    "category_slug": "laptops",
+    "name": "Lenovo ThinkPad T470",
+    "brand": "Lenovo",
+    "price": 9490000,
+    "stock": 15,
+    "description": "14-inch business laptop with an Intel Core i5-7300U, 8 GB RAM and a 256 GB SSD. Includes the ThinkPad TrackPoint pointing stick.",
+    "image_file": "el-lap-002.jpg",
+    "detail": {
+      "cpu": "Intel Core i5-7300U",
+      "ram_gb": 8,
+      "storage_gb": 256,
+      "screen_inch": 14.0,
+      "warranty_months": 12
+    },
+    "image_credit": {
+      "source_url": "https://commons.wikimedia.org/wiki/File:Lenovo_ThinkPad_T470.jpg",
+      "author": "NickW1129",
+      "license": "CC0"
+    }
+  },
+  {
+    "sku": "EL-LAP-003",
+    "category_slug": "laptops",
+    "name": "Dell Latitude 5480",
+    "brand": "Dell",
+    "price": 8990000,
+    "stock": 0,
+    "description": "14-inch business laptop with an Intel Core i5-7300U, 8 GB RAM and a 256 GB SSD.",
+    "image_file": "el-lap-003.jpg",
+    "detail": {
+      "cpu": "Intel Core i5-7300U",
+      "ram_gb": 8,
+      "storage_gb": 256,
+      "screen_inch": 14.0,
+      "warranty_months": 12
+    },
+    "image_credit": {
+      "source_url": "https://commons.wikimedia.org/wiki/File:Black_Dell_Latitude_5480.jpg",
+      "author": "ChrisRebb",
+      "license": "CC BY-SA 4.0"
+    }
+  },
+  {
+    "sku": "EL-LAP-004",
+    "category_slug": "laptops",
+    "name": "HP EliteBook 840 G8",
+    "brand": "HP",
+    "price": 17490000,
+    "stock": 10,
+    "description": "14-inch business laptop with an 11th-generation Intel Core i5-1135G7, 16 GB RAM and a 512 GB SSD.",
+    "image_file": "el-lap-004.jpg",
+    "detail": {
+      "cpu": "Intel Core i5-1135G7",
+      "ram_gb": 16,
+      "storage_gb": 512,
+      "screen_inch": 14.0,
+      "warranty_months": 24
+    },
+    "image_credit": {
+      "source_url": "https://commons.wikimedia.org/wiki/File:HP_EliteBook_840_G8.png",
+      "author": "Infinatious",
+      "license": "CC BY-SA 4.0"
+    }
+  },
+  {
+    "sku": "EL-PHN-001",
+    "category_slug": "smartphones",
+    "name": "Samsung Galaxy A34 5G",
+    "brand": "Samsung",
+    "price": 6990000,
+    "stock": 25,
+    "description": "6.6-inch Super AMOLED display with a 120 Hz refresh rate, MediaTek Dimensity 1080 chipset, 48 MP main camera with OIS and a 5,000 mAh battery. IP67 rated.",
+    "image_file": "el-phn-001.jpg",
+    "detail": {
+      "os": "Android 13",
+      "storage_gb": 128,
+      "camera_mp": 48,
+      "screen_inch": 6.6,
+      "battery_mah": 5000,
+      "warranty_months": 12
+    },
+    "image_credit": {
+      "source_url": "https://commons.wikimedia.org/wiki/File:Samsung_Galaxy_A34_5G_20231122_HOF01928_RAW-Export_cens.png",
+      "author": "PantheraLeo1359531",
+      "license": "CC BY 4.0"
+    }
+  },
+  {
+    "sku": "EL-PHN-002",
+    "category_slug": "smartphones",
+    "name": "Apple iPhone 15 128GB",
+    "brand": "Apple",
+    "price": 17990000,
+    "stock": 12,
+    "description": "6.1-inch Super Retina XDR display with Dynamic Island, A16 Bionic chip, 48 MP main camera and a USB-C port.",
+    "image_file": "el-phn-002.jpg",
+    "detail": {
+      "os": "iOS 17",
+      "storage_gb": 128,
+      "camera_mp": 48,
+      "screen_inch": 6.1,
+      "battery_mah": 3349,
+      "warranty_months": 12
+    },
+    "image_credit": {
+      "source_url": "https://commons.wikimedia.org/wiki/File:IPhone_15_6.1%22.jpg",
+      "author": "IPHONE 15",
+      "license": "CC BY-SA 4.0"
+    }
+  },
+  {
+    "sku": "EL-PHN-003",
+    "category_slug": "smartphones",
+    "name": "Google Pixel 8 128GB",
+    "brand": "Google",
+    "price": 12990000,
+    "stock": 2,
+    "description": "6.2-inch OLED display with a 120 Hz refresh rate, Google Tensor G3 chip, 50 MP main camera and a 4,575 mAh battery. Google promises 7 years of updates.",
+    "image_file": "el-phn-003.jpg",
+    "detail": {
+      "os": "Android 14",
+      "storage_gb": 128,
+      "camera_mp": 50,
+      "screen_inch": 6.2,
+      "battery_mah": 4575,
+      "warranty_months": 12
+    },
+    "image_credit": {
+      "source_url": "https://commons.wikimedia.org/wiki/File:Google_Pixel_8_Rose_rear.jpg",
+      "author": "IXTA9839",
+      "license": "CC BY-SA 4.0"
+    }
+  },
+  {
+    "sku": "EL-PHN-004",
+    "category_slug": "smartphones",
+    "name": "Samsung Galaxy A15",
+    "brand": "Samsung",
+    "price": 4290000,
+    "stock": 40,
+    "description": "6.5-inch Super AMOLED display with a 90 Hz refresh rate, MediaTek Helio G99 chipset, 50 MP main camera and a 5,000 mAh battery.",
+    "image_file": "el-phn-004.jpg",
+    "detail": {
+      "os": "Android 14",
+      "storage_gb": 128,
+      "camera_mp": 50,
+      "screen_inch": 6.5,
+      "battery_mah": 5000,
+      "warranty_months": 12
+    },
+    "image_credit": {
+      "source_url": "https://commons.wikimedia.org/wiki/File:Samsung_Galaxy_A40_und_Samsung_Galaxy_A15_20240529_HOF7494_RAW-Export_cens_(cropped).png",
+      "author": "PantheraLeo1359531",
+      "license": "CC BY 4.0"
+    }
+  },
+  {
+    "sku": "FA-CLO-001",
+    "category_slug": "clothing",
+    "name": "Lacoste Classic Fit Polo Shirt",
+    "brand": "Lacoste",
+    "price": 2790000,
+    "stock": 30,
+    "description": "Short-sleeve polo in cotton petit pique with a ribbed collar, two-button placket and the embroidered crocodile logo on the chest.",
+    "image_file": "fa-clo-001.jpg",
+    "detail": {
+      "size_label": "M",
+      "color": "Mint",
+      "material": "Cotton Pique"
+    },
+    "image_credit": {
+      "source_url": "https://commons.wikimedia.org/wiki/File:Vintage_90%27s_Lacoste_Polo_Shirt.jpg",
+      "author": "Quercus acuta",
+      "license": "CC BY-SA 4.0",
+      "note": "similar model: photo shows a vintage Lacoste polo, not the current Classic Fit"
+    }
+  },
+  {
+    "sku": "FA-CLO-002",
+    "category_slug": "clothing",
+    "name": "Levi's 501 Original Fit Jeans",
+    "brand": "Levi's",
+    "price": 2199000,
+    "stock": 24,
+    "description": "Straight-leg five-pocket jeans with a button fly, in dark indigo rigid denim.",
+    "image_file": "fa-clo-002.jpg",
+    "detail": {
+      "size_label": "32",
+      "color": "Dark Indigo",
+      "material": "Cotton Denim"
+    },
+    "image_credit": {
+      "source_url": "https://commons.wikimedia.org/wiki/File:Levi%27s_501_Raw%27s_Story_-2.jpg",
+      "author": "carianoff",
+      "license": "CC BY-SA 2.0"
+    }
+  },
+  {
+    "sku": "FA-CLO-003",
+    "category_slug": "clothing",
+    "name": "Levi's Trucker Jacket",
+    "brand": "Levi's",
+    "price": 2799000,
+    "stock": 7,
+    "description": "Classic denim jacket with a point collar, button front and two chest flap pockets, in light-wash cotton denim.",
+    "image_file": "fa-clo-003.jpg",
+    "detail": {
+      "size_label": "M",
+      "color": "Light Blue",
+      "material": "Cotton Denim"
+    },
+    "image_credit": {
+      "source_url": "https://commons.wikimedia.org/wiki/File:Denim_Jacket_(51079649933).jpg",
+      "author": "ajay_suresh",
+      "license": "CC BY 2.0",
+      "note": "similar model: photo shows a Levi's trucker-style denim jacket"
+    }
+  },
+  {
+    "sku": "FA-CLO-004",
+    "category_slug": "clothing",
+    "name": "Dale of Norway Wool Sweater",
+    "brand": "Dale of Norway",
+    "price": 4590000,
+    "stock": 5,
+    "description": "Quarter-zip knitted sweater in wool with a traditional Nordic jacquard pattern across the yoke, in navy, white and red.",
+    "image_file": "fa-clo-004.jpg",
+    "detail": {
+      "size_label": "L",
+      "color": "Navy/White/Red",
+      "material": "Wool"
+    },
+    "image_credit": {
+      "source_url": "https://commons.wikimedia.org/wiki/File:Dale_of_Norway_sweater.jpg",
+      "author": "Menswear Market",
+      "license": "CC BY 2.0",
+      "note": "similar model: exact Dale of Norway model not identified in the source photo"
+    }
+  },
+  {
+    "sku": "FA-SHO-001",
+    "category_slug": "shoes",
+    "name": "Adidas Superstar",
+    "brand": "Adidas",
+    "price": 2500000,
+    "stock": 18,
+    "description": "Low-top leather sneakers with the rubber shell toe and the three-stripe side detail.",
+    "image_file": "fa-sho-001.jpg",
+    "detail": {
+      "size_label": "42",
+      "color": "White/Black",
+      "material": "Leather/Rubber"
+    },
+    "image_credit": {
+      "source_url": "https://commons.wikimedia.org/wiki/File:Adidas_Superstar_shoes_pair.jpg",
+      "author": "Yahoo! Blog from Sunnyvale, California, USA",
+      "license": "CC BY 2.0"
+    }
+  },
+  {
+    "sku": "FA-SHO-002",
+    "category_slug": "shoes",
+    "name": "Nike Air Max 90",
+    "brand": "Nike",
+    "price": 4250000,
+    "stock": 11,
+    "description": "Sneakers with a visible Max Air unit in the heel, a leather and mesh upper and a rubber waffle outsole.",
+    "image_file": "fa-sho-002.jpg",
+    "detail": {
+      "size_label": "42",
+      "color": "Black",
+      "material": "Leather/Mesh/Rubber"
+    },
+    "image_credit": {
+      "source_url": "https://commons.wikimedia.org/wiki/File:Nike_Air_Max_90.jpg",
+      "author": "Mfagoaguna1",
+      "license": "CC BY-SA 4.0"
+    }
+  },
+  {
+    "sku": "FA-SHO-003",
+    "category_slug": "shoes",
+    "name": "Converse Chuck Taylor All Star Low Top",
+    "brand": "Converse",
+    "price": 1350000,
+    "stock": 35,
+    "description": "Canvas low-top sneakers with a rubber toe cap and a vulcanised rubber sole.",
+    "image_file": "fa-sho-003.jpg",
+    "detail": {
+      "size_label": "41",
+      "color": "Red",
+      "material": "Canvas/Rubber"
+    },
+    "image_credit": {
+      "source_url": "https://commons.wikimedia.org/wiki/File:Converse_All_Star_low_top_red.jpg",
+      "author": "Rachmaninoff",
+      "license": "CC BY-SA 4.0"
+    }
+  },
+  {
+    "sku": "FA-SHO-004",
+    "category_slug": "shoes",
+    "name": "Dr. Martens 1460 Boots",
+    "brand": "Dr. Martens",
+    "price": 5290000,
+    "stock": 1,
+    "description": "Eight-eye lace-up leather boots with the air-cushioned AirWair sole and yellow welt stitching.",
+    "image_file": "fa-sho-004.jpg",
+    "detail": {
+      "size_label": "42",
+      "color": "Burgundy",
+      "material": "Leather/Rubber"
+    },
+    "image_credit": {
+      "source_url": "https://commons.wikimedia.org/wiki/File:Pair_of_brown_Dr_Martens_1460_boots.jpg",
+      "author": "Nick-D",
+      "license": "CC BY-SA 4.0"
+    }
+  }
+]

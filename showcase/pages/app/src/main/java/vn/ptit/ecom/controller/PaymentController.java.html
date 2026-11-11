@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PaymentController.java · ABC Online Shop</title>
+<link rel="stylesheet" href="../../../../../../../../../../app/src/main/resources/static/fonts/fonts.css">
+<link rel="stylesheet" href="../../../../../../../../../../showcase/assets/showcase.css">
+<link rel="stylesheet" href="../../../../../../../../../assets/code.css">
+<script src="../../../../../../../../../../showcase/pages/manifest.js" defer></script>
+<script src="../../../../../../../../../../showcase/assets/showcase.js" defer></script>
+</head>
+<body class="viewer" data-file="app/src/main/java/vn/ptit/ecom/controller/PaymentController.java">
+<header class="vbar">
+  <a class="vback" href="../../../../../../../../../../showcase/index.html" data-i18n="back">← Showcase</a>
+  <span class="vpath">app/src/main/java/vn/ptit/ecom/controller/<b>PaymentController.java</b></span>
+  <span class="vactions">
+    <button type="button" class="vbtn local-only" data-reveal="app/src/main/java/vn/ptit/ecom/controller/PaymentController.java" data-i18n="reveal">Show in File Explorer</button>
+    <a class="vbtn" data-github="app/src/main/java/vn/ptit/ecom/controller/PaymentController.java" hidden data-i18n="github">View on GitHub</a>
+  </span>
+</header>
+<div class="codewrap"><p class="codeinfo"><span data-num="32" data-i18n="lines">32 lines</span> · 1,488 bytes · Java</p><div class="code">
+<div class="ln" id="L1"><a href="#L1">1</a><span><span class="kn">package</span><span class="w"> </span><span class="nn">vn.ptit.ecom.controller</span><span class="p">;</span></span></div>
+<div class="ln" id="L2"><a href="#L2">2</a><span> </span></div>
+<div class="ln" id="L3"><a href="#L3">3</a><span><span class="kn">import</span><span class="w"> </span><span class="nn">jakarta.servlet.http.HttpSession</span><span class="p">;</span></span></div>
+<div class="ln" id="L4"><a href="#L4">4</a><span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Map</span><span class="p">;</span></span></div>
+<div class="ln" id="L5"><a href="#L5">5</a><span><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.web.bind.annotation.PathVariable</span><span class="p">;</span></span></div>
+<div class="ln" id="L6"><a href="#L6">6</a><span><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.web.bind.annotation.PostMapping</span><span class="p">;</span></span></div>
+<div class="ln" id="L7"><a href="#L7">7</a><span><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.web.bind.annotation.RequestBody</span><span class="p">;</span></span></div>
+<div class="ln" id="L8"><a href="#L8">8</a><span><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.web.bind.annotation.RestController</span><span class="p">;</span></span></div>
+<div class="ln" id="L9"><a href="#L9">9</a><span><span class="kn">import</span><span class="w"> </span><span class="nn">vn.ptit.ecom.integration.CardData</span><span class="p">;</span></span></div>
+<div class="ln" id="L10"><a href="#L10">10</a><span><span class="kn">import</span><span class="w"> </span><span class="nn">vn.ptit.ecom.model.customer.Role</span><span class="p">;</span></span></div>
+<div class="ln" id="L11"><a href="#L11">11</a><span><span class="kn">import</span><span class="w"> </span><span class="nn">vn.ptit.ecom.service.PaymentService</span><span class="p">;</span></span></div>
+<div class="ln" id="L12"><a href="#L12">12</a><span> </span></div>
+<div class="ln" id="L13"><a href="#L13">13</a><span><span class="cm">/** UC08 Make Payment. The card data is checked here (format, Luhn, expiry: UC08 A2); the payment itself is PaymentService&#39;s. */</span></span></div>
+<div class="ln" id="L14"><a href="#L14">14</a><span><span class="nd">@RestController</span></span></div>
+<div class="ln" id="L15"><a href="#L15">15</a><span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">PaymentController</span><span class="w"> </span><span class="p">{</span></span></div>
+<div class="ln" id="L16"><a href="#L16">16</a><span><span class="w">    </span><span class="kd">record</span> <span class="nc">CardPayment</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">cardHolder</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">cardNumber</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">expiry</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">cvv</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">}</span></span></div>
+<div class="ln" id="L17"><a href="#L17">17</a><span> </span></div>
+<div class="ln" id="L18"><a href="#L18">18</a><span><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">PaymentService</span><span class="w"> </span><span class="n">payments</span><span class="p">;</span></span></div>
+<div class="ln" id="L19"><a href="#L19">19</a><span> </span></div>
+<div class="ln" id="L20"><a href="#L20">20</a><span><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">PaymentController</span><span class="p">(</span><span class="n">PaymentService</span><span class="w"> </span><span class="n">payments</span><span class="p">)</span><span class="w"> </span><span class="p">{</span></span></div>
+<div class="ln" id="L21"><a href="#L21">21</a><span><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">payments</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">payments</span><span class="p">;</span></span></div>
+<div class="ln" id="L22"><a href="#L22">22</a><span><span class="w">    </span><span class="p">}</span></span></div>
+<div class="ln" id="L23"><a href="#L23">23</a><span> </span></div>
+<div class="ln" id="L24"><a href="#L24">24</a><span><span class="w">    </span><span class="nd">@PostMapping</span><span class="p">(</span><span class="s">&quot;/api/orders/{id}/payments&quot;</span><span class="p">)</span></span></div>
+<div class="ln" id="L25"><a href="#L25">25</a><span><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">pay</span><span class="p">(</span><span class="nd">@PathVariable</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="nd">@RequestBody</span><span class="w"> </span><span class="n">CardPayment</span><span class="w"> </span><span class="n">req</span><span class="p">,</span><span class="w"> </span><span class="n">HttpSession</span><span class="w"> </span><span class="n">session</span><span class="p">)</span><span class="w"> </span><span class="p">{</span></span></div>
+<div class="ln" id="L26"><a href="#L26">26</a><span><span class="w">        </span><span class="n">CurrentUser</span><span class="w"> </span><span class="n">u</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CurrentUser</span><span class="p">.</span><span class="na">require</span><span class="p">(</span><span class="n">session</span><span class="p">,</span><span class="w"> </span><span class="n">Role</span><span class="p">.</span><span class="na">CUSTOMER</span><span class="p">);</span></span></div>
+<div class="ln" id="L27"><a href="#L27">27</a><span><span class="w">        </span><span class="n">CardData</span><span class="w"> </span><span class="n">card</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">CardData</span><span class="p">(</span><span class="n">req</span><span class="p">.</span><span class="na">cardHolder</span><span class="p">(),</span><span class="w"> </span><span class="n">req</span><span class="p">.</span><span class="na">cardNumber</span><span class="p">(),</span><span class="w"> </span><span class="n">req</span><span class="p">.</span><span class="na">expiry</span><span class="p">(),</span><span class="w"> </span><span class="n">req</span><span class="p">.</span><span class="na">cvv</span><span class="p">());</span></span></div>
+<div class="ln" id="L28"><a href="#L28">28</a><span><span class="w">        </span><span class="n">PaymentService</span><span class="p">.</span><span class="na">PaymentResult</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">payments</span><span class="p">.</span><span class="na">pay</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">u</span><span class="p">.</span><span class="na">id</span><span class="p">(),</span><span class="w"> </span><span class="n">card</span><span class="p">);</span></span></div>
+<div class="ln" id="L29"><a href="#L29">29</a><span><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Map</span><span class="p">.</span><span class="na">of</span><span class="p">(</span><span class="s">&quot;approved&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">.</span><span class="na">approved</span><span class="p">(),</span><span class="w"> </span><span class="s">&quot;status&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">.</span><span class="na">order</span><span class="p">().</span><span class="na">getStatus</span><span class="p">(),</span></span></div>
+<div class="ln" id="L30"><a href="#L30">30</a><span><span class="w">                </span><span class="s">&quot;message&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">.</span><span class="na">approved</span><span class="p">()</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s">&quot;Payment approved.&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">r</span><span class="p">.</span><span class="na">reason</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;. Your order is kept; try another card.&quot;</span><span class="p">);</span></span></div>
+<div class="ln" id="L31"><a href="#L31">31</a><span><span class="w">    </span><span class="p">}</span></span></div>
+<div class="ln" id="L32"><a href="#L32">32</a><span><span class="p">}</span></span></div>
+</div></div>
+</body>
+</html>

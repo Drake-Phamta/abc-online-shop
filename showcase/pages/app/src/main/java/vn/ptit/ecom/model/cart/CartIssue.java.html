@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CartIssue.java · ABC Online Shop</title>
+<link rel="stylesheet" href="../../../../../../../../../../../app/src/main/resources/static/fonts/fonts.css">
+<link rel="stylesheet" href="../../../../../../../../../../../showcase/assets/showcase.css">
+<link rel="stylesheet" href="../../../../../../../../../../assets/code.css">
+<script src="../../../../../../../../../../../showcase/pages/manifest.js" defer></script>
+<script src="../../../../../../../../../../../showcase/assets/showcase.js" defer></script>
+</head>
+<body class="viewer" data-file="app/src/main/java/vn/ptit/ecom/model/cart/CartIssue.java">
+<header class="vbar">
+  <a class="vback" href="../../../../../../../../../../../showcase/index.html" data-i18n="back">← Showcase</a>
+  <span class="vpath">app/src/main/java/vn/ptit/ecom/model/cart/<b>CartIssue.java</b></span>
+  <span class="vactions">
+    <button type="button" class="vbtn local-only" data-reveal="app/src/main/java/vn/ptit/ecom/model/cart/CartIssue.java" data-i18n="reveal">Show in File Explorer</button>
+    <a class="vbtn" data-github="app/src/main/java/vn/ptit/ecom/model/cart/CartIssue.java" hidden data-i18n="github">View on GitHub</a>
+  </span>
+</header>
+<div class="codewrap"><p class="codeinfo"><span data-num="21" data-i18n="lines">21 lines</span> · 864 bytes · Java</p><div class="code">
+<div class="ln" id="L1"><a href="#L1">1</a><span><span class="kn">package</span><span class="w"> </span><span class="nn">vn.ptit.ecom.model.cart</span><span class="p">;</span></span></div>
+<div class="ln" id="L2"><a href="#L2">2</a><span> </span></div>
+<div class="ln" id="L3"><a href="#L3">3</a><span><span class="cm">/** A finding of the cart validation (UC21); blocking issues stop the checkout (UC07 A1). */</span></span></div>
+<div class="ln" id="L4"><a href="#L4">4</a><span><span class="kd">public</span><span class="w"> </span><span class="kd">record</span> <span class="nc">CartIssue</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">productId</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">productName</span><span class="p">,</span><span class="w"> </span><span class="n">Kind</span><span class="w"> </span><span class="n">kind</span><span class="p">,</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">oldPrice</span><span class="p">,</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">newPrice</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">available</span><span class="p">)</span><span class="w"> </span><span class="p">{</span></span></div>
+<div class="ln" id="L5"><a href="#L5">5</a><span> </span></div>
+<div class="ln" id="L6"><a href="#L6">6</a><span><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">enum</span><span class="w"> </span><span class="n">Kind</span><span class="w"> </span><span class="p">{</span></span></div>
+<div class="ln" id="L7"><a href="#L7">7</a><span><span class="w">        </span><span class="n">PRICE_CHANGED</span><span class="p">(</span><span class="kc">false</span><span class="p">),</span><span class="w"> </span><span class="n">UNAVAILABLE</span><span class="p">(</span><span class="kc">true</span><span class="p">),</span><span class="w"> </span><span class="n">NOT_ENOUGH_STOCK</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span></span></div>
+<div class="ln" id="L8"><a href="#L8">8</a><span> </span></div>
+<div class="ln" id="L9"><a href="#L9">9</a><span><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">blocking</span><span class="p">;</span></span></div>
+<div class="ln" id="L10"><a href="#L10">10</a><span><span class="w">        </span><span class="n">Kind</span><span class="p">(</span><span class="kt">boolean</span><span class="w"> </span><span class="n">blocking</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">blocking</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">blocking</span><span class="p">;</span><span class="w"> </span><span class="p">}</span></span></div>
+<div class="ln" id="L11"><a href="#L11">11</a><span><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">isBlocking</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">blocking</span><span class="p">;</span><span class="w"> </span><span class="p">}</span></span></div>
+<div class="ln" id="L12"><a href="#L12">12</a><span><span class="w">    </span><span class="p">}</span></span></div>
+<div class="ln" id="L13"><a href="#L13">13</a><span> </span></div>
+<div class="ln" id="L14"><a href="#L14">14</a><span><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">message</span><span class="p">()</span><span class="w"> </span><span class="p">{</span></span></div>
+<div class="ln" id="L15"><a href="#L15">15</a><span><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">kind</span><span class="p">)</span><span class="w"> </span><span class="p">{</span></span></div>
+<div class="ln" id="L16"><a href="#L16">16</a><span><span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="n">PRICE_CHANGED</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">productName</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;: price changed from &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">oldPrice</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; to &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">newPrice</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; VND.&quot;</span><span class="p">;</span></span></div>
+<div class="ln" id="L17"><a href="#L17">17</a><span><span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="n">UNAVAILABLE</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">productName</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; is no longer sold.&quot;</span><span class="p">;</span></span></div>
+<div class="ln" id="L18"><a href="#L18">18</a><span><span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="n">NOT_ENOUGH_STOCK</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">productName</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;: only &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">available</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; left in stock.&quot;</span><span class="p">;</span></span></div>
+<div class="ln" id="L19"><a href="#L19">19</a><span><span class="w">        </span><span class="p">};</span></span></div>
+<div class="ln" id="L20"><a href="#L20">20</a><span><span class="w">    </span><span class="p">}</span></span></div>
+<div class="ln" id="L21"><a href="#L21">21</a><span><span class="p">}</span></span></div>
+</div></div>
+</body>
+</html>

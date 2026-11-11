@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>README.vi.md · ABC Online Shop</title>
+<link rel="stylesheet" href="../../app/src/main/resources/static/fonts/fonts.css">
+<link rel="stylesheet" href="../../showcase/assets/showcase.css">
+<script src="../../showcase/pages/manifest.js" defer></script>
+<script src="../../showcase/assets/showcase.js" defer></script>
+</head>
+<body class="viewer" data-file="README.vi.md">
+<header class="vbar">
+  <a class="vback" href="../../showcase/index.html" data-i18n="back">← Showcase</a>
+  <span class="vpath"><b>README.vi.md</b></span>
+  <span class="vactions"><span class="lang vlang" aria-label="Language"><a href="README.md.html" lang="en">EN</a><a href="README.vi.md.html" lang="vi" aria-current="page">VI</a></span>
+    <button type="button" class="vbtn local-only" data-reveal="README.vi.md" data-i18n="reveal">Show in File Explorer</button>
+    <a class="vbtn" data-github="README.vi.md" hidden data-i18n="github">View on GitHub</a>
+  </span>
+</header>
+<main class="doc">
+<h1 id="abc-online-shop-from-requirements-to-running-code">ABC Online Shop: từ yêu cầu đến mã chạy được</h1>
+<p>Tiểu luận môn Phân tích và thiết kế hệ thống thông tin (PTIT, 2026): các mô hình phân tích và thiết kế của
+ABC Online Shop trong Visual Paradigm, cơ sở dữ liệu và bộ khung mã được sinh ra từ các mô hình, cùng một bản cài đặt
+bằng Java với tính năng tìm kiếm AI (văn bản, giọng nói, ảnh) bám sát thiết kế từng lớp một. Toàn bộ tiểu luận nằm trong thư mục này (cũng là kho git).
+Bấm đúp <strong>CHAY_DEMO.bat</strong> để chạy cửa hàng; mở <a href="../index.html">showcase/index.html</a> để xem phần hướng dẫn
+dùng khi bảo vệ.</p>
+<h2 id="where-everything-is">Mọi thứ nằm ở đâu</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Sản phẩm</th>
+<th>Vị trí</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tiểu luận (báo cáo chính thức)</td>
+<td><a href="../../Bai_nop/tieuluan_V4_04_10_phamtuananh_018.pdf">Bai_nop/tieuluan_V4_04_10_phamtuananh_018.pdf</a> và <code>.docx</code>; mã nguồn ở <a href="Nguon/index.html">Nguon</a> (<code>Nguon/make.ps1</code> dựng lại cả hai vào <code>Bai_nop</code>); tiểu luận lấy hình từ <code>vp/png</code> và <code>docs/evidence</code></td>
+</tr>
+<tr>
+<td>Đề bài của giảng viên và tài liệu môn học</td>
+<td><a href="../../De_bai">De_bai</a> (ảnh bảng, slide, tiểu luận mẫu, 50 câu hỏi vấn đáp); chỉ có trong bản trên máy, không có trong kho công khai</td>
+</tr>
+<tr>
+<td>Đặc tả yêu cầu</td>
+<td>chương 1 và 2 của tiểu luận; các quy tắc, máy trạng thái và kiểm thử chấp nhận trong <a href="docs/SPEC.vi.md.html">docs/SPEC.md</a></td>
+</tr>
+<tr>
+<td>Biểu đồ theo từng giai đoạn</td>
+<td>Dự án Visual Paradigm <a href="../../vp/ABC_Online_Shop_V4.vpp">vp/ABC_Online_Shop_V4.vpp</a> với 42 biểu đồ, hình ảnh trong <a href="vp/png/index.html">vp/png</a> (B = nghiệp vụ, R = yêu cầu, A = phân tích, AI = tìm kiếm AI, D = dữ liệu, G = thiết kế); mọi hình đều có trong tiểu luận</td>
+</tr>
+<tr>
+<td>Mô hình dữ liệu và lược đồ</td>
+<td>D1 đến D4 trong VP; <a href="db/schema.sql.html">db/schema.sql</a> = DDL xuất từ mô hình vật lý của VP (<a href="db/vp/vp_ddl.sql.html">db/vp/vp_ddl.sql</a>); cơ sở dữ liệu do Generate Database của VP ghi ra là <a href="../../db/vp/abc_shop_vp.db">db/vp/abc_shop_vp.db</a> cùng DDL của nó <a href="db/vp/vp_generated.ddl.html">db/vp/vp_generated.ddl</a>; <a href="db/compare_schema.py.html">db/compare_schema.py</a> đối chiếu cả ba</td>
+</tr>
+<tr>
+<td>Do Visual Paradigm sinh ra</td>
+<td>ảnh chụp màn hình Generate Database và Instant Generator trong <a href="docs/evidence/vp_generation/index.html">docs/evidence/vp_generation</a>, bộ khung Java do VP sinh ra trong <a href="docs/evidence/vp_codegen/index.html">docs/evidence/vp_codegen</a>, được đối chiếu với mã bằng <a href="tests/vpgen_vs_code.py.html">tests/vpgen_vs_code.py</a></td>
+</tr>
+<tr>
+<td>Tìm kiếm AI (chương 3 của tiểu luận)</td>
+<td>đặc tả trong <a href="docs/SPEC.vi.md.html">docs/SPEC.md</a> mục 6, mã trong <code>app/src/main/java/vn/ptit/ecom/ai</code>, đánh giá bằng <a href="tests/search_eval.py.html">tests/search_eval.py</a> với kết quả <a href="docs/evidence/search_eval.txt.html">docs/evidence/search_eval.txt</a></td>
+</tr>
+<tr>
+<td>Ghi chú thiết kế</td>
+<td><a href="docs/DESIGN.vi.md.html">docs/DESIGN.md</a></td>
+</tr>
+<tr>
+<td>Mã nguồn</td>
+<td><a href="app/index.html">app/</a> (Java 17, Spring Boot 3.2, JDBC, SQLite; các view trên trình duyệt ở <code>app/src/main/resources/static/js/view</code>)</td>
+</tr>
+<tr>
+<td>Dữ liệu demo</td>
+<td><a href="db/seed.sql.html">db/seed.sql</a>, tạo bởi <a href="db/make_seed.py.html">db/make_seed.py</a> từ <code>db/seed/products.json</code>: 10 danh mục, 28 sản phẩm, 3 khách hàng, 2 tài khoản nhân viên, 4 đơn hàng</td>
+</tr>
+<tr>
+<td>Truy vết</td>
+<td><a href="docs/TRACEABILITY.vi.md.html">docs/TRACEABILITY.md</a></td>
+</tr>
+<tr>
+<td>Hướng dẫn bảo vệ (kịch bản, các quyết định, 50 câu hỏi)</td>
+<td><a href="docs/DEFENSE.vi.md.html">docs/DEFENSE.md</a>; trên trang công khai chỉ có bản được bảo vệ bằng mật khẩu</td>
+</tr>
+<tr>
+<td>Bằng chứng kiểm thử</td>
+<td>JUnit trong <code>app/src/test</code>, <a href="tests/smoke_api.py.html">tests/smoke_api.py</a>, <a href="tests/e2e/run_e2e.mjs.html">tests/e2e/run_e2e.mjs</a> kèm ảnh chụp màn hình trong <a href="docs/evidence/e2e/index.html">docs/evidence/e2e</a>, <a href="tests/design_vs_code.py.html">tests/design_vs_code.py</a>, <a href="tests/vpgen_vs_code.py.html">tests/vpgen_vs_code.py</a>, <a href="tests/search_eval.py.html">tests/search_eval.py</a></td>
+</tr>
+<tr>
+<td>Phần trình bày bảo vệ kỹ thuật</td>
+<td><a href="../index.html">showcase/index.html</a> (tiếng Anh) và <a href="../index.vi.html">showcase/index.vi.html</a> (tiếng Việt); tài liệu, mã và thư mục mở ra thành các trang đọc được từ <a href=".">showcase/pages</a>, do <a href="showcase/build_pages.py.html">showcase/build_pages.py</a> tạo</td>
+</tr>
+<tr>
+<td>Các phiên bản trước, file lưu trữ</td>
+<td><a href="../../Luu_tru">Luu_tru</a> (không cần cho bài nộp; chỉ có trong bản trên máy)</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="run">Chạy</h2>
+<p>Bấm đúp <a href="CHAY_DEMO.bat.html">CHAY_DEMO.bat</a>: script tìm Java 17 (trên máy này <code>java</code> trong PATH là Java 8 cũ hơn,
+nên script dùng <code>JAVA_HOME</code>), dựng file jar nếu chưa có, khởi động máy chủ với một cơ sở dữ liệu demo mới và
+mở http://localhost:8080 khi máy chủ phản hồi. Đóng cửa sổ của nó để dừng máy chủ; <code>CHAY_DEMO.bat keep</code> giữ lại
+dữ liệu của lần chạy trước.</p>
+<p>Phần showcase có thể tự khởi động cửa hàng. Mỗi lần chạy, CHAY_DEMO.bat đăng ký kiểu liên kết <code>abcshop:</code> cho
+người dùng Windows hiện tại (<a href="showcase/abcshop.ps1.html">showcase/abcshop.ps1</a>, không cần quyền admin). Khi showcase được mở
+từ máy này, nút &quot;Mở cửa hàng&quot; (chấm xanh: đang chạy, chấm xám: đã dừng) chạy CHAY_DEMO.bat nếu máy chủ không
+phản hồi, còn &quot;Mở trong File Explorer&quot; / &quot;Mở bằng Visual Paradigm&quot; mở một file của dự án; trình xử lý từ chối mọi
+đường dẫn nằm ngoài thư mục dự án. Trình duyệt hỏi một lần cho mỗi lần bấm, hãy chọn Open. Để gỡ kiểu liên kết này:
+<code>reg delete &quot;HKCU\Software\Classes\abcshop&quot; /f</code>. Sau khi một tài liệu thay đổi, dựng lại trang đọc được của nó bằng
+<code>python showcase/build_pages.py</code>.</p>
+<p>Bản công khai: https://drake-phamta.github.io/abc-online-shop/ (GitHub Pages; ở đó nút mở cửa hàng mở shop đang chạy khi
+tunnel bên dưới đang bật, nếu không thì giải thích cách chạy cửa hàng; các nút File Explorer bị ẩn). Sau khi commit, <code>powershell -NoProfile -File showcase/publish_pages.ps1</code> xuất bản trạng thái hiện tại thành một commit snapshot cùng với PDF tiểu luận; lịch sử cục bộ,
+De_bai, Luu_tru và file docx chỉ nằm lại trên máy này.</p>
+<p>Chính cửa hàng đang chạy cũng có thể truy cập từ Internet: bấm đúp <a href="CHAY_TUNNEL.bat.html">CHAY_TUNNEL.bat</a>. File này khởi động
+cửa hàng nếu cần, mở một Cloudflare quick tunnel (<a href="tools/quick_tunnel.ps1.html">tools/quick_tunnel.ps1</a>, không cần tài khoản
+Cloudflare; <code>cloudflared.exe</code> chính thức được tải một lần vào <code>%LOCALAPPDATA%\cloudflared</code> và được kiểm tra chữ ký), in
+ra địa chỉ công khai <code>https://....trycloudflare.com</code>, chép vào clipboard và mở nó. Địa chỉ đổi sau mỗi lần chạy và chỉ
+hoạt động khi cửa sổ đó còn mở (nếu cloudflared dừng, script tự mở lại); mỗi địa chỉ mới được ghi vào ô Website của repo
+GitHub (và vào <code>live.txt</code> của nhánh <code>live</code>, phòng khi GitHub API hết lượt gọi trong giờ), nên nút mở shop trên showcase
+bản công khai mở được shop đang chạy. Nếu cửa hàng không phản hồi trong 3 phút, script tự khởi động lại nó và giữ nguyên
+dữ liệu. Ai có địa chỉ cũng dùng được các tài khoản
+demo, nên hãy đóng cửa sổ sau buổi bảo vệ.</p>
+<p>Chạy thủ công (JDK 17, Maven 3.9; Python 3.10+ và Node 18+ cùng Microsoft Edge cho các kiểm thử):</p>
+<pre><code>cd app
+mvn -q package -DskipTests
+&quot;%JAVA_HOME%\bin\java&quot; -jar target/abc-online-shop-1.0.0.jar --abc.db.reset=true
+</code></pre>
+<p>Tên thư mục có chữ tiếng Việt; <code>app/.mvn/jvm.config</code> khởi động Maven với UTF-8, nếu thiếu thì Maven dừng với lỗi
+&quot;Input length = 1&quot;. <code>--abc.db.reset=true</code> tạo lại file SQLite <code>app/data/abc_shop.db</code> từ DDL và
+dữ liệu seed; nếu không có tùy chọn này thì file hiện có được giữ nguyên. Tài khoản (mật khẩu <code>demo1234</code>): <code>an.nguyen@example.com</code> (khách hàng
+VIP), <code>lan.tran@example.com</code> (khách hàng mới), <code>sales@example.com</code> (bảng đơn hàng), <code>warehouse@example.com</code>
+(tồn kho). Thẻ thử: <code>4242 4242 4242 4242</code> được chấp nhận, số kết thúc bằng <code>0002</code> bị từ chối. Alt+L hiện
+design lens (view, endpoint, controller, service, DAO và các bảng của từng phần trên màn hình).</p>
+<h2 id="test">Kiểm thử</h2>
+<pre><code>cd app &amp;&amp; mvn test                       # 24 JUnit tests (model rules, checkout flow, AI search on a real SQLite file)
+python tests/smoke_api.py                # 36 checks over HTTP (server running)
+cd tests/e2e &amp;&amp; npm install &amp;&amp; node run_e2e.mjs   # 30 checks in Edge on a fresh database, screenshots
+python tests/design_vs_code.py           # VP design model against the compiled code (run mvn compile first)
+python tests/vpgen_vs_code.py            # code generated by VP Instant Generator against the compiled code
+python tests/search_eval.py              # AI search against keyword search: 30 queries, 84 photos (server running)
+python db/compare_schema.py              # VP DDL and the VP-generated database against db/schema.sql
+python tests/check_links.py              # every link of the documents and the showcase opens a file
+</code></pre>
+</main>
+</body>
+</html>

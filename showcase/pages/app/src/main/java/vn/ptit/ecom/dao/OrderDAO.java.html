@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OrderDAO.java · ABC Online Shop</title>
+<link rel="stylesheet" href="../../../../../../../../../../app/src/main/resources/static/fonts/fonts.css">
+<link rel="stylesheet" href="../../../../../../../../../../showcase/assets/showcase.css">
+<link rel="stylesheet" href="../../../../../../../../../assets/code.css">
+<script src="../../../../../../../../../../showcase/pages/manifest.js" defer></script>
+<script src="../../../../../../../../../../showcase/assets/showcase.js" defer></script>
+</head>
+<body class="viewer" data-file="app/src/main/java/vn/ptit/ecom/dao/OrderDAO.java">
+<header class="vbar">
+  <a class="vback" href="../../../../../../../../../../showcase/index.html" data-i18n="back">← Showcase</a>
+  <span class="vpath">app/src/main/java/vn/ptit/ecom/dao/<b>OrderDAO.java</b></span>
+  <span class="vactions">
+    <button type="button" class="vbtn local-only" data-reveal="app/src/main/java/vn/ptit/ecom/dao/OrderDAO.java" data-i18n="reveal">Show in File Explorer</button>
+    <a class="vbtn" data-github="app/src/main/java/vn/ptit/ecom/dao/OrderDAO.java" hidden data-i18n="github">View on GitHub</a>
+  </span>
+</header>
+<div class="codewrap"><p class="codeinfo"><span data-num="28" data-i18n="lines">28 lines</span> · 1,102 bytes · Java</p><div class="code">
+<div class="ln" id="L1"><a href="#L1">1</a><span><span class="kn">package</span><span class="w"> </span><span class="nn">vn.ptit.ecom.dao</span><span class="p">;</span></span></div>
+<div class="ln" id="L2"><a href="#L2">2</a><span> </span></div>
+<div class="ln" id="L3"><a href="#L3">3</a><span><span class="kn">import</span><span class="w"> </span><span class="nn">java.sql.SQLException</span><span class="p">;</span></span></div>
+<div class="ln" id="L4"><a href="#L4">4</a><span><span class="kn">import</span><span class="w"> </span><span class="nn">java.time.LocalDateTime</span><span class="p">;</span></span></div>
+<div class="ln" id="L5"><a href="#L5">5</a><span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.List</span><span class="p">;</span></span></div>
+<div class="ln" id="L6"><a href="#L6">6</a><span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Optional</span><span class="p">;</span></span></div>
+<div class="ln" id="L7"><a href="#L7">7</a><span><span class="kn">import</span><span class="w"> </span><span class="nn">vn.ptit.ecom.model.order.Order</span><span class="p">;</span></span></div>
+<div class="ln" id="L8"><a href="#L8">8</a><span><span class="kn">import</span><span class="w"> </span><span class="nn">vn.ptit.ecom.model.order.OrderStatus</span><span class="p">;</span></span></div>
+<div class="ln" id="L9"><a href="#L9">9</a><span> </span></div>
+<div class="ln" id="L10"><a href="#L10">10</a><span><span class="kd">public</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">OrderDAO</span><span class="w"> </span><span class="p">{</span></span></div>
+<div class="ln" id="L11"><a href="#L11">11</a><span> </span></div>
+<div class="ln" id="L12"><a href="#L12">12</a><span><span class="w">    </span><span class="cm">/** One row of an order list (UC09 history, UC14 board). */</span></span></div>
+<div class="ln" id="L13"><a href="#L13">13</a><span><span class="w">    </span><span class="kd">record</span> <span class="nc">OrderSummary</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">code</span><span class="p">,</span><span class="w"> </span><span class="n">LocalDateTime</span><span class="w"> </span><span class="n">orderDate</span><span class="p">,</span><span class="w"> </span><span class="n">OrderStatus</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">paymentMethod</span><span class="p">,</span></span></div>
+<div class="ln" id="L14"><a href="#L14">14</a><span><span class="w">                        </span><span class="kt">long</span><span class="w"> </span><span class="n">totalAmount</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">itemCount</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">firstItem</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">customerId</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">customerName</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">}</span></span></div>
+<div class="ln" id="L15"><a href="#L15">15</a><span> </span></div>
+<div class="ln" id="L16"><a href="#L16">16</a><span><span class="w">    </span><span class="cm">/** Stores a new order with its lines and first event; assigns the id. */</span></span></div>
+<div class="ln" id="L17"><a href="#L17">17</a><span><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">insert</span><span class="p">(</span><span class="n">Order</span><span class="w"> </span><span class="n">order</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">SQLException</span><span class="p">;</span></span></div>
+<div class="ln" id="L18"><a href="#L18">18</a><span> </span></div>
+<div class="ln" id="L19"><a href="#L19">19</a><span><span class="w">    </span><span class="cm">/** The order with lines, history, payments and shipment. */</span></span></div>
+<div class="ln" id="L20"><a href="#L20">20</a><span><span class="w">    </span><span class="n">Optional</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">findById</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">orderId</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">SQLException</span><span class="p">;</span></span></div>
+<div class="ln" id="L21"><a href="#L21">21</a><span> </span></div>
+<div class="ln" id="L22"><a href="#L22">22</a><span><span class="w">    </span><span class="n">List</span><span class="o">&lt;</span><span class="n">OrderSummary</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">findByCustomer</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">customerId</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">SQLException</span><span class="p">;</span></span></div>
+<div class="ln" id="L23"><a href="#L23">23</a><span> </span></div>
+<div class="ln" id="L24"><a href="#L24">24</a><span><span class="w">    </span><span class="n">List</span><span class="o">&lt;</span><span class="n">OrderSummary</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">findAll</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">SQLException</span><span class="p">;</span></span></div>
+<div class="ln" id="L25"><a href="#L25">25</a><span> </span></div>
+<div class="ln" id="L26"><a href="#L26">26</a><span><span class="w">    </span><span class="cm">/** Stores the status and the events added since loading (payments and shipping have their own DAOs). */</span></span></div>
+<div class="ln" id="L27"><a href="#L27">27</a><span><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">saveProgress</span><span class="p">(</span><span class="n">Order</span><span class="w"> </span><span class="n">order</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">SQLException</span><span class="p">;</span></span></div>
+<div class="ln" id="L28"><a href="#L28">28</a><span><span class="p">}</span></span></div>
+</div></div>
+</body>
+</html>

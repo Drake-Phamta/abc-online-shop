@@ -1,0 +1,52 @@
+AI search evaluation, 2026-11-11 10:43, server http://localhost:8080
+Text: 30 labelled queries (tests/search/queries.json)
+
+method       hit@1  recall@5    MRR  zero result  median ms  max ms
+keyword       0.23      0.23   0.23         0.77          4     166
+AI search     0.97      0.97   0.97         0.03          2      11
+
+Per query (RR = 1 / rank of the first relevant result; AI top 3 by SKU):
+  macbook                            name        keyword RR 1.00 | AI RR 1.00            EL-LAP-001
+  macbok air                         spelling    keyword RR 0.00 | AI RR 1.00            EL-LAP-001, FA-SHO-002, FA-SHO-004
+  laptop under 10 million            price       keyword RR 0.00 | AI RR 1.00            EL-LAP-002, EL-LAP-003
+  laptop with 16gb ram               attribute   keyword RR 0.00 | AI RR 1.00            EL-LAP-004, EL-LAP-002, EL-LAP-003
+  cheap phone                        price       keyword RR 0.00 | AI RR 1.00            EL-PHN-004, EL-PHN-001, EL-PHN-003
+  samsung phone                      brand       keyword RR 0.00 | AI RR 1.00            EL-PHN-004, EL-PHN-001, EL-PHN-002
+  iphone                             name        keyword RR 1.00 | AI RR 1.00            EL-PHN-002
+  android phone                      attribute   keyword RR 0.00 | AI RR 1.00            EL-PHN-004, EL-PHN-001, EL-PHN-003
+  google pixel                       name        keyword RR 1.00 | AI RR 1.00            EL-PHN-003
+  red sneakers                       synonym     keyword RR 0.00 | AI RR 1.00            FA-SHO-003, FA-CLO-004, FA-SHO-004
+  sneakers                           synonym     keyword RR 0.00 | AI RR 1.00            FA-SHO-001, FA-SHO-002, FA-SHO-003
+  leather boots                      attribute   keyword RR 0.00 | AI RR 1.00            FA-SHO-004, FA-SHO-001, FA-SHO-002
+  white shoes                        attribute   keyword RR 0.00 | AI RR 1.00            FA-SHO-001, FA-CLO-004, FA-SHO-004
+  shoes under 3 million              price       keyword RR 0.00 | AI RR 1.00            FA-SHO-001, FA-SHO-003
+  denim jacket                       attribute   keyword RR 0.00 | AI RR 1.00            FA-CLO-003, FA-CLO-002
+  blue jeans                         synonym     keyword RR 0.00 | AI RR 1.00            FA-CLO-002, FA-CLO-003, FA-CLO-004
+  wool sweater                       name        keyword RR 1.00 | AI RR 1.00            FA-CLO-004
+  polo shirt                         name        keyword RR 1.00 | AI RR 1.00            FA-CLO-001
+  warm clothes for winter            description keyword RR 0.00 | AI RR 0.00 (fallback) 
+  book for a programmer              synonym     keyword RR 0.00 | AI RR 1.00            BK-COM-004, BK-COM-001, BK-COM-002
+  algorithms                         name        keyword RR 1.00 | AI RR 1.00            BK-COM-002, BK-COM-001, BK-COM-004
+  startup book                       description keyword RR 0.00 | AI RR 1.00            BK-BUS-002, BK-BUS-003, BK-BUS-004
+  personal finance                   description keyword RR 0.00 | AI RR 1.00            BK-BUS-001
+  orwell                             attribute   keyword RR 0.00 | AI RR 1.00            BK-FIC-002
+  novel about the vietnam war        description keyword RR 0.00 | AI RR 1.00            BK-FIC-003, BK-FIC-004, BK-FIC-002
+  dystopian novel                    description keyword RR 0.00 | AI RR 1.00            BK-FIC-002, BK-FIC-004, BK-FIC-003
+  dien thoai duoi 5 trieu            vietnamese  keyword RR 0.00 | AI RR 1.00            EL-PHN-004
+  giay the thao                      vietnamese  keyword RR 0.00 | AI RR 1.00            FA-SHO-001, FA-SHO-004, FA-SHO-002
+  sach kinh doanh                    vietnamese  keyword RR 0.00 | AI RR 1.00            BK-BUS-002, BK-BUS-003, BK-BUS-004
+  nike                               brand       keyword RR 1.00 | AI RR 1.00            FA-SHO-002
+
+Photo: 84 photos made from the catalogue images (tests/search/make_photos.py)
+kind         photos  top-1  top-3
+background       28   0.96   1.00
+crop             28   0.96   1.00
+dark             28   0.86   1.00
+all              84   0.93   1.00   median 7 ms, max 18 ms
+Photos whose product was not first:
+  BK-COM-002_background.jpg: first EL-PHN-004, true product at 2
+  EL-PHN-001_dark.jpg: first EL-PHN-002, true product at 2
+  EL-PHN-003_dark.jpg: first EL-PHN-002, true product at 2
+  EL-PHN-004_crop.jpg: first BK-COM-002, true product at 3
+  FA-CLO-001_dark.jpg: first EL-PHN-002, true product at 2
+  FA-CLO-002_dark.jpg: first BK-COM-001, true product at 2

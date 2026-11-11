@@ -1,0 +1,32 @@
+E2E run 2026-11-11T03:43:31.573Z on http://localhost:8080, Microsoft Edge (Playwright)
+PASS UC04 home page lists departments and products
+PASS UC04 catalogue shows products  (28 cards)
+PASS UC04 search 'laptop' returns matches  (4 results)
+PASS UC05 product page opens with Add to cart  (product 14)
+PASS BR08 guest is asked to log in before using the cart
+PASS UC02 customer logged in  (Nguyễn Văn An)
+PASS UC06 product added to the cart in the database  (Added to your cart · 2 items)
+PASS UC06 cart page shows the line
+PASS UC06 quantity changed and saved  (2 -> 3)
+PASS UC07/UC21 checkout page with totals, no blocking issue
+PASS UC07 order placed and waiting for the card payment  (ORD-000005)
+PASS UC07 cart emptied after the order
+PASS UC08 A1 declined card keeps the order waiting  (Declined by the issuing bank. Your order is kept; try another card.)
+PASS UC08 approved card marks the order PAID (BR07)
+PASS UC09 my orders lists the new order
+PASS UC14 order moves to PROCESSING
+PASS UC14 order SHIPPED with tracking (BR10)
+PASS UC14 order DELIVERED
+PASS UC09 tracking shows the carrier's tracking number
+PASS Trace lens switches on
+PASS UC15 stock saved in the database  (product 15)
+PASS BR12 the refusal is shown to the user  (Stock quantity cannot be negative.)
+PASS BR12 negative stock refused, value unchanged  (Stock quantity cannot be negative.)
+PASS BR13 customer cannot open the order board
+PASS AT11 AI search: red sneakers under 3 million finds the red Converse first  (Converse Chuck Taylor All Star Low Top)
+PASS AI02/AI03 the page shows how the query was understood  (Understood asredsneakerred → burgundysneaker → shoeat most 3.000.000 ₫)
+PASS AT12 spelling corrected: macbok → macbook
+PASS AT15 photo search: a photo of the Nike Air Max 90 finds it first  (Nike Air Max 90)
+PASS FR-S4 voice dialog: the (corrected) text is searched  (Levi's 501 Original Fit Jeans)
+PASS no JavaScript errors in the console
+30/30 checks passed

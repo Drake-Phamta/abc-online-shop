@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CustomerDAO.java · ABC Online Shop</title>
+<link rel="stylesheet" href="../../../../../../../../../../app/src/main/resources/static/fonts/fonts.css">
+<link rel="stylesheet" href="../../../../../../../../../../showcase/assets/showcase.css">
+<link rel="stylesheet" href="../../../../../../../../../assets/code.css">
+<script src="../../../../../../../../../../showcase/pages/manifest.js" defer></script>
+<script src="../../../../../../../../../../showcase/assets/showcase.js" defer></script>
+</head>
+<body class="viewer" data-file="app/src/main/java/vn/ptit/ecom/dao/CustomerDAO.java">
+<header class="vbar">
+  <a class="vback" href="../../../../../../../../../../showcase/index.html" data-i18n="back">← Showcase</a>
+  <span class="vpath">app/src/main/java/vn/ptit/ecom/dao/<b>CustomerDAO.java</b></span>
+  <span class="vactions">
+    <button type="button" class="vbtn local-only" data-reveal="app/src/main/java/vn/ptit/ecom/dao/CustomerDAO.java" data-i18n="reveal">Show in File Explorer</button>
+    <a class="vbtn" data-github="app/src/main/java/vn/ptit/ecom/dao/CustomerDAO.java" hidden data-i18n="github">View on GitHub</a>
+  </span>
+</header>
+<div class="codewrap"><p class="codeinfo"><span data-num="21" data-i18n="lines">21 lines</span> · 663 bytes · Java</p><div class="code">
+<div class="ln" id="L1"><a href="#L1">1</a><span><span class="kn">package</span><span class="w"> </span><span class="nn">vn.ptit.ecom.dao</span><span class="p">;</span></span></div>
+<div class="ln" id="L2"><a href="#L2">2</a><span> </span></div>
+<div class="ln" id="L3"><a href="#L3">3</a><span><span class="kn">import</span><span class="w"> </span><span class="nn">java.sql.SQLException</span><span class="p">;</span></span></div>
+<div class="ln" id="L4"><a href="#L4">4</a><span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.List</span><span class="p">;</span></span></div>
+<div class="ln" id="L5"><a href="#L5">5</a><span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Optional</span><span class="p">;</span></span></div>
+<div class="ln" id="L6"><a href="#L6">6</a><span><span class="kn">import</span><span class="w"> </span><span class="nn">vn.ptit.ecom.model.customer.Account</span><span class="p">;</span></span></div>
+<div class="ln" id="L7"><a href="#L7">7</a><span><span class="kn">import</span><span class="w"> </span><span class="nn">vn.ptit.ecom.model.customer.Address</span><span class="p">;</span></span></div>
+<div class="ln" id="L8"><a href="#L8">8</a><span><span class="kn">import</span><span class="w"> </span><span class="nn">vn.ptit.ecom.model.customer.Customer</span><span class="p">;</span></span></div>
+<div class="ln" id="L9"><a href="#L9">9</a><span> </span></div>
+<div class="ln" id="L10"><a href="#L10">10</a><span><span class="kd">public</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">CustomerDAO</span><span class="w"> </span><span class="p">{</span></span></div>
+<div class="ln" id="L11"><a href="#L11">11</a><span> </span></div>
+<div class="ln" id="L12"><a href="#L12">12</a><span><span class="w">    </span><span class="cm">/** UC02: login data of a customer account. */</span></span></div>
+<div class="ln" id="L13"><a href="#L13">13</a><span><span class="w">    </span><span class="n">Optional</span><span class="o">&lt;</span><span class="n">Account</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">findAccount</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">email</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">SQLException</span><span class="p">;</span></span></div>
+<div class="ln" id="L14"><a href="#L14">14</a><span> </span></div>
+<div class="ln" id="L15"><a href="#L15">15</a><span><span class="w">    </span><span class="cm">/** The customer as Customer, CustomerVIP or CustomerNew. */</span></span></div>
+<div class="ln" id="L16"><a href="#L16">16</a><span><span class="w">    </span><span class="n">Optional</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">findById</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">customerId</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">SQLException</span><span class="p">;</span></span></div>
+<div class="ln" id="L17"><a href="#L17">17</a><span> </span></div>
+<div class="ln" id="L18"><a href="#L18">18</a><span><span class="w">    </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Address</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">addresses</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">customerId</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">SQLException</span><span class="p">;</span></span></div>
+<div class="ln" id="L19"><a href="#L19">19</a><span> </span></div>
+<div class="ln" id="L20"><a href="#L20">20</a><span><span class="w">    </span><span class="n">Optional</span><span class="o">&lt;</span><span class="n">Address</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">address</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">addressId</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">SQLException</span><span class="p">;</span></span></div>
+<div class="ln" id="L21"><a href="#L21">21</a><span><span class="p">}</span></span></div>
+</div></div>
+</body>
+</html>

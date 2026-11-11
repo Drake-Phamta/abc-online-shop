@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>search_eval.txt · ABC Online Shop</title>
+<link rel="stylesheet" href="../../../../app/src/main/resources/static/fonts/fonts.css">
+<link rel="stylesheet" href="../../../../showcase/assets/showcase.css">
+<link rel="stylesheet" href="../../../assets/code.css">
+<script src="../../../../showcase/pages/manifest.js" defer></script>
+<script src="../../../../showcase/assets/showcase.js" defer></script>
+</head>
+<body class="viewer" data-file="docs/evidence/search_eval.txt">
+<header class="vbar">
+  <a class="vback" href="../../../../showcase/index.html" data-i18n="back">← Showcase</a>
+  <span class="vpath">docs/evidence/<b>search_eval.txt</b></span>
+  <span class="vactions">
+    <button type="button" class="vbtn local-only" data-reveal="docs/evidence/search_eval.txt" data-i18n="reveal">Show in File Explorer</button>
+    <a class="vbtn" data-github="docs/evidence/search_eval.txt" hidden data-i18n="github">View on GitHub</a>
+  </span>
+</header>
+<div class="codewrap"><p class="codeinfo"><span data-num="52" data-i18n="lines">52 lines</span> · 4,558 bytes · Text only</p><div class="code">
+<div class="ln" id="L1"><a href="#L1">1</a><span>AI search evaluation, 2026-11-11 10:43, server http://localhost:8080</span></div>
+<div class="ln" id="L2"><a href="#L2">2</a><span>Text: 30 labelled queries (tests/search/queries.json)</span></div>
+<div class="ln" id="L3"><a href="#L3">3</a><span> </span></div>
+<div class="ln" id="L4"><a href="#L4">4</a><span>method       hit@1  recall@5    MRR  zero result  median ms  max ms</span></div>
+<div class="ln" id="L5"><a href="#L5">5</a><span>keyword       0.23      0.23   0.23         0.77          4     166</span></div>
+<div class="ln" id="L6"><a href="#L6">6</a><span>AI search     0.97      0.97   0.97         0.03          2      11</span></div>
+<div class="ln" id="L7"><a href="#L7">7</a><span> </span></div>
+<div class="ln" id="L8"><a href="#L8">8</a><span>Per query (RR = 1 / rank of the first relevant result; AI top 3 by SKU):</span></div>
+<div class="ln" id="L9"><a href="#L9">9</a><span>  macbook                            name        keyword RR 1.00 | AI RR 1.00            EL-LAP-001</span></div>
+<div class="ln" id="L10"><a href="#L10">10</a><span>  macbok air                         spelling    keyword RR 0.00 | AI RR 1.00            EL-LAP-001, FA-SHO-002, FA-SHO-004</span></div>
+<div class="ln" id="L11"><a href="#L11">11</a><span>  laptop under 10 million            price       keyword RR 0.00 | AI RR 1.00            EL-LAP-002, EL-LAP-003</span></div>
+<div class="ln" id="L12"><a href="#L12">12</a><span>  laptop with 16gb ram               attribute   keyword RR 0.00 | AI RR 1.00            EL-LAP-004, EL-LAP-002, EL-LAP-003</span></div>
+<div class="ln" id="L13"><a href="#L13">13</a><span>  cheap phone                        price       keyword RR 0.00 | AI RR 1.00            EL-PHN-004, EL-PHN-001, EL-PHN-003</span></div>
+<div class="ln" id="L14"><a href="#L14">14</a><span>  samsung phone                      brand       keyword RR 0.00 | AI RR 1.00            EL-PHN-004, EL-PHN-001, EL-PHN-002</span></div>
+<div class="ln" id="L15"><a href="#L15">15</a><span>  iphone                             name        keyword RR 1.00 | AI RR 1.00            EL-PHN-002</span></div>
+<div class="ln" id="L16"><a href="#L16">16</a><span>  android phone                      attribute   keyword RR 0.00 | AI RR 1.00            EL-PHN-004, EL-PHN-001, EL-PHN-003</span></div>
+<div class="ln" id="L17"><a href="#L17">17</a><span>  google pixel                       name        keyword RR 1.00 | AI RR 1.00            EL-PHN-003</span></div>
+<div class="ln" id="L18"><a href="#L18">18</a><span>  red sneakers                       synonym     keyword RR 0.00 | AI RR 1.00            FA-SHO-003, FA-CLO-004, FA-SHO-004</span></div>
+<div class="ln" id="L19"><a href="#L19">19</a><span>  sneakers                           synonym     keyword RR 0.00 | AI RR 1.00            FA-SHO-001, FA-SHO-002, FA-SHO-003</span></div>
+<div class="ln" id="L20"><a href="#L20">20</a><span>  leather boots                      attribute   keyword RR 0.00 | AI RR 1.00            FA-SHO-004, FA-SHO-001, FA-SHO-002</span></div>
+<div class="ln" id="L21"><a href="#L21">21</a><span>  white shoes                        attribute   keyword RR 0.00 | AI RR 1.00            FA-SHO-001, FA-CLO-004, FA-SHO-004</span></div>
+<div class="ln" id="L22"><a href="#L22">22</a><span>  shoes under 3 million              price       keyword RR 0.00 | AI RR 1.00            FA-SHO-001, FA-SHO-003</span></div>
+<div class="ln" id="L23"><a href="#L23">23</a><span>  denim jacket                       attribute   keyword RR 0.00 | AI RR 1.00            FA-CLO-003, FA-CLO-002</span></div>
+<div class="ln" id="L24"><a href="#L24">24</a><span>  blue jeans                         synonym     keyword RR 0.00 | AI RR 1.00            FA-CLO-002, FA-CLO-003, FA-CLO-004</span></div>
+<div class="ln" id="L25"><a href="#L25">25</a><span>  wool sweater                       name        keyword RR 1.00 | AI RR 1.00            FA-CLO-004</span></div>
+<div class="ln" id="L26"><a href="#L26">26</a><span>  polo shirt                         name        keyword RR 1.00 | AI RR 1.00            FA-CLO-001</span></div>
+<div class="ln" id="L27"><a href="#L27">27</a><span>  warm clothes for winter            description keyword RR 0.00 | AI RR 0.00 (fallback) </span></div>
+<div class="ln" id="L28"><a href="#L28">28</a><span>  book for a programmer              synonym     keyword RR 0.00 | AI RR 1.00            BK-COM-004, BK-COM-001, BK-COM-002</span></div>
+<div class="ln" id="L29"><a href="#L29">29</a><span>  algorithms                         name        keyword RR 1.00 | AI RR 1.00            BK-COM-002, BK-COM-001, BK-COM-004</span></div>
+<div class="ln" id="L30"><a href="#L30">30</a><span>  startup book                       description keyword RR 0.00 | AI RR 1.00            BK-BUS-002, BK-BUS-003, BK-BUS-004</span></div>
+<div class="ln" id="L31"><a href="#L31">31</a><span>  personal finance                   description keyword RR 0.00 | AI RR 1.00            BK-BUS-001</span></div>
+<div class="ln" id="L32"><a href="#L32">32</a><span>  orwell                             attribute   keyword RR 0.00 | AI RR 1.00            BK-FIC-002</span></div>
+<div class="ln" id="L33"><a href="#L33">33</a><span>  novel about the vietnam war        description keyword RR 0.00 | AI RR 1.00            BK-FIC-003, BK-FIC-004, BK-FIC-002</span></div>
+<div class="ln" id="L34"><a href="#L34">34</a><span>  dystopian novel                    description keyword RR 0.00 | AI RR 1.00            BK-FIC-002, BK-FIC-004, BK-FIC-003</span></div>
+<div class="ln" id="L35"><a href="#L35">35</a><span>  dien thoai duoi 5 trieu            vietnamese  keyword RR 0.00 | AI RR 1.00            EL-PHN-004</span></div>
+<div class="ln" id="L36"><a href="#L36">36</a><span>  giay the thao                      vietnamese  keyword RR 0.00 | AI RR 1.00            FA-SHO-001, FA-SHO-004, FA-SHO-002</span></div>
+<div class="ln" id="L37"><a href="#L37">37</a><span>  sach kinh doanh                    vietnamese  keyword RR 0.00 | AI RR 1.00            BK-BUS-002, BK-BUS-003, BK-BUS-004</span></div>
+<div class="ln" id="L38"><a href="#L38">38</a><span>  nike                               brand       keyword RR 1.00 | AI RR 1.00            FA-SHO-002</span></div>
+<div class="ln" id="L39"><a href="#L39">39</a><span> </span></div>
+<div class="ln" id="L40"><a href="#L40">40</a><span>Photo: 84 photos made from the catalogue images (tests/search/make_photos.py)</span></div>
+<div class="ln" id="L41"><a href="#L41">41</a><span>kind         photos  top-1  top-3</span></div>
+<div class="ln" id="L42"><a href="#L42">42</a><span>background       28   0.96   1.00</span></div>
+<div class="ln" id="L43"><a href="#L43">43</a><span>crop             28   0.96   1.00</span></div>
+<div class="ln" id="L44"><a href="#L44">44</a><span>dark             28   0.86   1.00</span></div>
+<div class="ln" id="L45"><a href="#L45">45</a><span>all              84   0.93   1.00   median 7 ms, max 18 ms</span></div>
+<div class="ln" id="L46"><a href="#L46">46</a><span>Photos whose product was not first:</span></div>
+<div class="ln" id="L47"><a href="#L47">47</a><span>  BK-COM-002_background.jpg: first EL-PHN-004, true product at 2</span></div>
+<div class="ln" id="L48"><a href="#L48">48</a><span>  EL-PHN-001_dark.jpg: first EL-PHN-002, true product at 2</span></div>
+<div class="ln" id="L49"><a href="#L49">49</a><span>  EL-PHN-003_dark.jpg: first EL-PHN-002, true product at 2</span></div>
+<div class="ln" id="L50"><a href="#L50">50</a><span>  EL-PHN-004_crop.jpg: first BK-COM-002, true product at 3</span></div>
+<div class="ln" id="L51"><a href="#L51">51</a><span>  FA-CLO-001_dark.jpg: first EL-PHN-002, true product at 2</span></div>
+<div class="ln" id="L52"><a href="#L52">52</a><span>  FA-CLO-002_dark.jpg: first BK-COM-001, true product at 2</span></div>
+</div></div>
+</body>
+</html>

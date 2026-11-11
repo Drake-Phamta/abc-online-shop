@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DESIGN.md · ABC Online Shop</title>
+<link rel="stylesheet" href="../../../app/src/main/resources/static/fonts/fonts.css">
+<link rel="stylesheet" href="../../../showcase/assets/showcase.css">
+<script src="../../../showcase/pages/manifest.js" defer></script>
+<script src="../../../showcase/assets/showcase.js" defer></script>
+</head>
+<body class="viewer" data-file="docs/DESIGN.md">
+<header class="vbar">
+  <a class="vback" href="../../../showcase/index.html" data-i18n="back">← Showcase</a>
+  <span class="vpath">docs/<b>DESIGN.md</b></span>
+  <span class="vactions"><span class="lang vlang" aria-label="Language"><a href="DESIGN.md.html" lang="en" aria-current="page">EN</a><a href="DESIGN.vi.md.html" lang="vi">VI</a></span>
+    <button type="button" class="vbtn local-only" data-reveal="docs/DESIGN.md" data-i18n="reveal">Show in File Explorer</button>
+    <a class="vbtn" data-github="docs/DESIGN.md" hidden data-i18n="github">View on GitHub</a>
+  </span>
+</header>
+<main class="doc">
+<h1 id="design-data-model-and-class-design-of-the-implemented-slice">DESIGN: data model and class design of the implemented slice</h1>
+<p>Input: SPEC.md, the analysis class diagram (essay Figure 4.1, nineteen classes of Test 01) and the lecturer's
+feedback on Product. Output: <code>db/schema.sql</code> and the packages under <code>app/src/main/java/vn/ptit/ecom</code>.</p>
+<h2 id="1-conceptual-model-entities-and-relationships">1. Conceptual model (entities and relationships)</h2>
+<p>Category (tree) 1 — 0..* Product; Product 1 — 0..1 ProductDetail (one of Book, Laptop, Phone, Apparel, chosen by the
+category's detail kind); Customer 1 — 0..* Address; Customer 1 — 0..1 Cart; Cart 1 — 0..* CartItem; CartItem 0..* — 1
+Product; Customer 1 — 0..* Order; Order 1 — 1..* OrderItem; OrderItem 0..* — 1 Product; Order 1 — 0..* Payment
+(Cash or Credit); Order 1 — 0..1 Shipping; Shipping 0..* — 1 Address; Order 1 — 1..* OrderEvent; Customer is VIP 0..1,
+New 0..1; Staff (Sales or Warehouse).</p>
+<h2 id="2-from-the-analysis-model-to-the-revised-physical-model">2. From the analysis model to the revised physical model</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Analysis element (Fig. 4.1)</th>
+<th>Revised design</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Book, Electronics, Laptop, Mobile, Clothes, Shoes, each with productId, price, stockQuantity</td>
+<td><code>product</code> holds identity and common attributes (sku, name, brand, price, stock, status); <code>category</code> classifies; one detail table per attribute set: <code>book_detail</code>, <code>laptop_detail</code>, <code>phone_detail</code>, <code>apparel_detail</code></td>
+<td>lecturer's feedback; common data once; a new category with an existing attribute set needs no new table</td>
+</tr>
+<tr>
+<td>Electronics generalisation (warrantyMonths)</td>
+<td>parent category &quot;Electronics&quot;; warranty kept in laptop and phone details</td>
+<td>grouping is data, not structure</td>
+</tr>
+<tr>
+<td>Clothes and Shoes</td>
+<td>one <code>apparel_detail</code> (size label, colour, material)</td>
+<td>identical attribute sets</td>
+</tr>
+<tr>
+<td>{xor} from CartItem/OrderItem to four classes</td>
+<td>ordinary FK to <code>product</code></td>
+<td>every line refers to exactly one product</td>
+</tr>
+<tr>
+<td>Customer ◆ FullName</td>
+<td>name columns of <code>customer</code></td>
+<td>1 to 1 part without identity</td>
+</tr>
+<tr>
+<td>Customer ◇ Address</td>
+<td><code>address</code> table, plus recipient and phone</td>
+<td>delivery needs a receiver</td>
+</tr>
+<tr>
+<td>CustomerVIP, CustomerNew</td>
+<td><code>customer_vip</code>, <code>customer_new</code>, PK = FK</td>
+<td>table per subclass</td>
+</tr>
+<tr>
+<td>Order (analysis)</td>
+<td><code>customer_order</code> with status, payment method, subtotal, discount, shipping fee, total (CHECK total = subtotal − discount + fee)</td>
+<td>BR04 stored as a checked fact</td>
+</tr>
+<tr>
+<td>OrderItem.unitPrice</td>
+<td><code>order_item.unit_price</code> + <code>product_name</code> snapshot</td>
+<td>historical facts (3NF exception explained)</td>
+</tr>
+<tr>
+<td>Payment, PayCash, PayCredit (cardNumber)</td>
+<td><code>payment</code> + <code>pay_cash</code> / <code>pay_credit</code> (last 4, expiry, provider token)</td>
+<td>BR07</td>
+</tr>
+<tr>
+<td>Shipping</td>
+<td><code>shipping</code> with UNIQUE(order_id), UNIQUE(tracking_number)</td>
+<td>BR10</td>
+</tr>
+<tr>
+<td>(not in analysis) Staff</td>
+<td><code>staff</code> with role SALES or WAREHOUSE</td>
+<td>actors of UC14, UC15 need accounts (UC02)</td>
+</tr>
+<tr>
+<td>(not in analysis) status history</td>
+<td><code>order_event</code></td>
+<td>UC09 shows the history</td>
+</tr>
+<tr>
+<td>varchar codes (C001, O001)</td>
+<td>integer keys; codes are formatted for display (ORD-000123)</td>
+<td>simpler keys, generated by the DB</td>
+</tr>
+</tbody>
+</table></div>
+<p>Normalisation: 1NF (atomic columns, repeating groups in own tables), 2NF (single-column keys; the composite UNIQUE
+keys are not primary keys), 3NF except two intended historical values (<code>order_item.unit_price</code>,
+<code>order_item.product_name</code>) and the stored totals of an order, which equal the computed values at checkout and are
+guarded by a CHECK.</p>
+<h2 id="3-packages-and-classes-three-layers">3. Packages and classes (three layers)</h2>
+<p>The design classes in VP (diagrams G1 to G4b and G8, folder &quot;4 Design&quot;) and the code have the same packages, classes,
+attributes and operations; <code>tests/design_vs_code.py</code> checks this against the compiled classes and the JS views
+(81 classes: 73 Java classes with 169 attributes and 134 operations, 8 view classes with 25 operations, and 48 calls of
+the design sequences G5, G6, G7 and G9), and that no file of the <code>ai</code> package imports another part of the application.
+<code>tests/vpgen_vs_code.py</code> starts from the other side: the 81 files that VP's Instant Generator wrote from the same model
+(<code>docs/evidence/vp_codegen</code>) must all exist in the code with the same fields and methods (190 fields, 157 methods).</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Layer (G0)</th>
+<th>Package</th>
+<th>Classes</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Presentation</td>
+<td><code>view</code> (browser, ES modules)</td>
+<td>CustomerForm, ProductForm, CartForm, OrderForm, PaymentForm, StaffOrderForm, StockForm, SearchForm</td>
+<td>one class per screen group; <code>show…</code> renders, <code>submit…</code> sends the user's input to its controller</td>
+</tr>
+<tr>
+<td>Presentation</td>
+<td><code>controller</code></td>
+<td>AuthController, ProductController, CartController, OrderController, PaymentController, ShippingController, SearchController, CurrentUser</td>
+<td>HTTP only: reads the user from the session (BR08, BR13), parses and checks input, calls one service operation, returns a view record</td>
+</tr>
+<tr>
+<td>Business logic</td>
+<td><code>service</code></td>
+<td>AuthService, CatalogService, CartService, OrderService, PaymentService, ShippingService, SearchService, NotFound</td>
+<td>one operation per use case step; owns the transaction (<code>Database.inTransaction</code>) and calls the model's rules and the DAOs</td>
+</tr>
+<tr>
+<td>Business logic</td>
+<td><code>model.product</code>, <code>model.customer</code>, <code>model.cart</code>, <code>model.order</code>, <code>model</code></td>
+<td>Category, Product, ProductDetail (BookDetail, LaptopDetail, PhoneDetail, ApparelDetail), DetailKind; Customer, CustomerVIP, CustomerNew, FullName, Address, Account, Role; Cart, CartItem, CartIssue; Order, Totals, OrderItem, OrderEvent, OrderStatus, PaymentMethod, Payment, PayCredit, PayCash, Shipping; RuleViolation</td>
+<td>domain rules: Cart (BR01 to BR03), Order.place and Totals (BR04), OrderStatus transition table (BR09)</td>
+</tr>
+<tr>
+<td>Data access</td>
+<td><code>dao</code></td>
+<td>Database, Daos, Work, DataAccessError, ProductDAO, CustomerDAO, StaffDAO, CartDAO, OrderDAO, PaymentDAO, ShippingDAO and one <code>…DAOImpl</code> each</td>
+<td>JDBC on the SQLite file; every <code>…DAOImpl</code> holds the unit of work's <code>connection</code>; no business rules</td>
+</tr>
+<tr>
+<td>Business logic</td>
+<td><code>ai</code> (G8)</td>
+<td>QueryInterpreter, SearchQuery, ProductIndex, ImageIndex, Document, Hit</td>
+<td>the AI search: documents in, ranked hits with reasons out; imports nothing else of the application, so SearchService is the only place that knows products (essay chapter 3, SPEC section 6)</td>
+</tr>
+<tr>
+<td>Data access</td>
+<td><code>integration</code></td>
+<td>CardProvider, SimulatedCardProvider, CardData, Result</td>
+<td>gateway to the payment provider (simulated: cards ending 0002 are declined)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Dependencies point down only: view → controller (HTTP, JSON) → service → dao → SQLite; service → integration →
+payment provider; controller, service and dao use the model. A controller never calls a DAO and no SQL exists above
+the DAOs. Before the service layer was introduced (commit feab5f3) the controllers opened the transactions
+themselves; the move is the answer to &quot;where does the business logic live?&quot; in the defence.</p>
+<h2 id="4-key-interaction-place-order-with-card-design-sequences-g6-and-g7">4. Key interaction: Place Order with card (design sequences G6 and G7)</h2>
+<ol>
+<li><code>OrderForm.submitOrder(addressId, paymentMethod, expectedTotal)</code> → <code>POST /api/orders</code> → <code>OrderController.placeOrder(req, session)</code>.</li>
+<li>The controller takes the customer id from the session (BR08) and calls <code>OrderService.placeOrder(customerId, addressId, method, expectedTotal)</code>.</li>
+<li>The service runs one transaction, <code>Database.inTransaction(work)</code>; in it: <code>CustomerDAO.findById</code>, <code>CustomerDAO.address</code> (BR06), <code>CartDAO.findOrCreate</code>, <code>Order.place(customer, cart, address, method, now)</code>, which validates the cart (UC21, BR03) and computes the totals (BR04).</li>
+<li>A changed total against <code>expectedTotal</code> → <code>RuleViolation BR03</code>, the transaction rolls back and the customer confirms again.</li>
+<li><code>ProductDAO.reserveStock(productId, quantity)</code> per line: <code>UPDATE product SET stock_quantity = stock_quantity − ? WHERE product_id = ? AND status = 'ACTIVE' AND stock_quantity &gt;= ?</code>; 0 rows → <code>RuleViolation BR05</code> and rollback (tested by <code>CheckoutFlowTest.aFailedOrderWriteRollsBackTheStockReservation</code>).</li>
+<li><code>OrderDAO.insert(order)</code> (items and the first event), <code>CartDAO.clear(cart)</code>, commit. The order is <code>PENDING_PAYMENT</code> (card) or <code>PLACED</code> (cash on delivery).</li>
+<li>Card (G7): <code>PaymentForm.submitPayment(order, card)</code> → <code>POST /api/orders/{id}/payments</code> → <code>PaymentController.pay</code> builds <code>CardData</code> (format, Luhn and expiry checked) → <code>PaymentService.pay(orderId, customerId, card)</code>: transaction 1 loads the order (BR08) and checks it waits for a card payment; <code>CardProvider.charge(order code, total, card)</code> runs outside any transaction, so no database lock is held while the provider answers; transaction 2 reloads the order, <code>Order.recordCardPayment(payment, now)</code> (PAID only when approved, BR07, BR09), <code>PaymentDAO.saveAll</code>, <code>OrderDAO.saveProgress</code>.</li>
+</ol>
+<h2 id="5-key-interaction-ai-search-by-text-design-sequence-g9">5. Key interaction: AI search by text (design sequence G9)</h2>
+<ol>
+<li><code>SearchForm.showResults(q)</code> → <code>GET /api/search?q=</code> → <code>SearchController.search(q)</code> (input checked: at most 200 characters, AI06).</li>
+<li><code>SearchService.search(text)</code> reads the ACTIVE products in one short transaction (<code>Database.inTransaction</code>, <code>ProductDAO.search</code>) with fresh price and stock.</li>
+<li>If the catalogue changed since the last index (FR-S7), <code>ProductIndex.build(documents)</code> rebuilds the TF-IDF index and its vocabulary; <code>ImageIndex</code> is rebuilt the same way for the photo search.</li>
+<li><code>QueryInterpreter.interpret(text)</code> returns a <code>SearchQuery</code>: terms, related words from the lexicon, spelling corrections (Damerau-Levenshtein against the vocabulary) and price limits.</li>
+<li><code>ProductIndex.rank(q, k)</code> returns <code>Hit</code>s with a score and the reasons (the words that contributed most). No hit (AI04): the keyword search of UC04 runs in its place and the result says so.</li>
+<li>AI07: an out-of-stock product is ranked lower (text search only), then <code>SearchService.SearchResult(mode, understood, items, fallback, tookMs)</code> → <code>SearchView</code> → the page shows how the query was understood and why each product matched.</li>
+</ol>
+</main>
+</body>
+</html>

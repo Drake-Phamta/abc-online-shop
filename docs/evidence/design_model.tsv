@@ -1,0 +1,410 @@
+# package	class	kind	name	parameter types	type	parameter names
+vn.ptit.ecom.model	RuleViolation	class			
+vn.ptit.ecom.model	RuleViolation	attribute	rule		String
+vn.ptit.ecom.model	RuleViolation	attribute	details		List<?>
+vn.ptit.ecom.model	RuleViolation	operation	getRule		String	
+vn.ptit.ecom.model	RuleViolation	operation	getDetails		List<?>	
+vn.ptit.ecom.model.product	DetailKind	class	enumeration		
+vn.ptit.ecom.model.product	DetailKind	operation	table		String	
+vn.ptit.ecom.model.product	Category	class			
+vn.ptit.ecom.model.product	Category	attribute	id		int
+vn.ptit.ecom.model.product	Category	attribute	parentId		Integer
+vn.ptit.ecom.model.product	Category	attribute	name		String
+vn.ptit.ecom.model.product	Category	attribute	slug		String
+vn.ptit.ecom.model.product	Category	attribute	detailKind		DetailKind
+vn.ptit.ecom.model.product	Category	operation	isLeaf		boolean	
+vn.ptit.ecom.model.product	Product	class			
+vn.ptit.ecom.model.product	Product	attribute	id		int
+vn.ptit.ecom.model.product	Product	attribute	sku		String
+vn.ptit.ecom.model.product	Product	attribute	name		String
+vn.ptit.ecom.model.product	Product	attribute	brand		String
+vn.ptit.ecom.model.product	Product	attribute	price		long
+vn.ptit.ecom.model.product	Product	attribute	stockQuantity		int
+vn.ptit.ecom.model.product	Product	attribute	description		String
+vn.ptit.ecom.model.product	Product	attribute	imageFile		String
+vn.ptit.ecom.model.product	Product	attribute	status		Status
+vn.ptit.ecom.model.product	Product	operation	isAvailable	int	boolean	quantity
+vn.ptit.ecom.model.product	Product	operation	updateStock	int	void	quantity
+vn.ptit.ecom.model.product	ProductDetail	class	interface		
+vn.ptit.ecom.model.product	ProductDetail	operation	kind		DetailKind	
+vn.ptit.ecom.model.product	ProductDetail	operation	specs		List<Spec>	
+vn.ptit.ecom.model.product	BookDetail	class			
+vn.ptit.ecom.model.product	BookDetail	attribute	author		String
+vn.ptit.ecom.model.product	BookDetail	attribute	publisher		String
+vn.ptit.ecom.model.product	BookDetail	attribute	pages		Integer
+vn.ptit.ecom.model.product	BookDetail	attribute	language		String
+vn.ptit.ecom.model.product	BookDetail	operation	kind		DetailKind	
+vn.ptit.ecom.model.product	BookDetail	operation	specs		List<Spec>	
+vn.ptit.ecom.model.product	LaptopDetail	class			
+vn.ptit.ecom.model.product	LaptopDetail	attribute	cpu		String
+vn.ptit.ecom.model.product	LaptopDetail	attribute	ramGb		int
+vn.ptit.ecom.model.product	LaptopDetail	attribute	storageGb		int
+vn.ptit.ecom.model.product	LaptopDetail	attribute	screenInch		double
+vn.ptit.ecom.model.product	LaptopDetail	attribute	warrantyMonths		int
+vn.ptit.ecom.model.product	LaptopDetail	operation	kind		DetailKind	
+vn.ptit.ecom.model.product	LaptopDetail	operation	specs		List<Spec>	
+vn.ptit.ecom.model.product	PhoneDetail	class			
+vn.ptit.ecom.model.product	PhoneDetail	attribute	os		String
+vn.ptit.ecom.model.product	PhoneDetail	attribute	storageGb		int
+vn.ptit.ecom.model.product	PhoneDetail	attribute	cameraMp		Integer
+vn.ptit.ecom.model.product	PhoneDetail	attribute	screenInch		double
+vn.ptit.ecom.model.product	PhoneDetail	attribute	batteryMah		Integer
+vn.ptit.ecom.model.product	PhoneDetail	attribute	warrantyMonths		int
+vn.ptit.ecom.model.product	PhoneDetail	operation	kind		DetailKind	
+vn.ptit.ecom.model.product	PhoneDetail	operation	specs		List<Spec>	
+vn.ptit.ecom.model.product	ApparelDetail	class			
+vn.ptit.ecom.model.product	ApparelDetail	attribute	sizeLabel		String
+vn.ptit.ecom.model.product	ApparelDetail	attribute	color		String
+vn.ptit.ecom.model.product	ApparelDetail	attribute	material		String
+vn.ptit.ecom.model.product	ApparelDetail	operation	kind		DetailKind	
+vn.ptit.ecom.model.product	ApparelDetail	operation	specs		List<Spec>	
+vn.ptit.ecom.model.customer	FullName	class			
+vn.ptit.ecom.model.customer	FullName	attribute	firstName		String
+vn.ptit.ecom.model.customer	FullName	attribute	middleName		String
+vn.ptit.ecom.model.customer	FullName	attribute	lastName		String
+vn.ptit.ecom.model.customer	FullName	operation	display		String	
+vn.ptit.ecom.model.customer	Customer	class			
+vn.ptit.ecom.model.customer	Customer	attribute	id		int
+vn.ptit.ecom.model.customer	Customer	attribute	email		String
+vn.ptit.ecom.model.customer	Customer	attribute	phone		String
+vn.ptit.ecom.model.customer	Customer	operation	discountRate		BigDecimal	
+vn.ptit.ecom.model.customer	Customer	operation	kindLabel		String	
+vn.ptit.ecom.model.customer	CustomerVIP	class			
+vn.ptit.ecom.model.customer	CustomerVIP	attribute	vipLevel		int
+vn.ptit.ecom.model.customer	CustomerVIP	attribute	discountRate		BigDecimal
+vn.ptit.ecom.model.customer	CustomerVIP	attribute	rewardPoints		int
+vn.ptit.ecom.model.customer	CustomerVIP	operation	discountRate		BigDecimal	
+vn.ptit.ecom.model.customer	CustomerVIP	operation	kindLabel		String	
+vn.ptit.ecom.model.customer	CustomerNew	class			
+vn.ptit.ecom.model.customer	CustomerNew	attribute	registeredDate		LocalDate
+vn.ptit.ecom.model.customer	CustomerNew	attribute	welcomeVoucher		String
+vn.ptit.ecom.model.customer	CustomerNew	operation	kindLabel		String	
+vn.ptit.ecom.model.customer	Address	class			
+vn.ptit.ecom.model.customer	Address	attribute	id		int
+vn.ptit.ecom.model.customer	Address	attribute	customerId		int
+vn.ptit.ecom.model.customer	Address	attribute	recipientName		String
+vn.ptit.ecom.model.customer	Address	attribute	phone		String
+vn.ptit.ecom.model.customer	Address	attribute	houseNumber		String
+vn.ptit.ecom.model.customer	Address	attribute	street		String
+vn.ptit.ecom.model.customer	Address	attribute	district		String
+vn.ptit.ecom.model.customer	Address	attribute	city		String
+vn.ptit.ecom.model.customer	Address	attribute	isDefault		boolean
+vn.ptit.ecom.model.customer	Address	operation	oneLine		String	
+vn.ptit.ecom.model.customer	Role	class	enumeration		
+vn.ptit.ecom.model.customer	Account	class			
+vn.ptit.ecom.model.customer	Account	attribute	role		Role
+vn.ptit.ecom.model.customer	Account	attribute	id		int
+vn.ptit.ecom.model.customer	Account	attribute	displayName		String
+vn.ptit.ecom.model.customer	Account	attribute	passwordHash		String
+vn.ptit.ecom.model.cart	Cart	class			
+vn.ptit.ecom.model.cart	Cart	attribute	id		int
+vn.ptit.ecom.model.cart	Cart	attribute	customerId		int
+vn.ptit.ecom.model.cart	Cart	operation	addItem	Product,int	CartItem	product,quantity
+vn.ptit.ecom.model.cart	Cart	operation	setQuantity	int,int	void	productId,quantity
+vn.ptit.ecom.model.cart	Cart	operation	removeItem	int	void	productId
+vn.ptit.ecom.model.cart	Cart	operation	validate		List<CartIssue>	
+vn.ptit.ecom.model.cart	Cart	operation	calcTotal		long	
+vn.ptit.ecom.model.cart	Cart	operation	isEmpty		boolean	
+vn.ptit.ecom.model.cart	CartItem	class			
+vn.ptit.ecom.model.cart	CartItem	attribute	quantity		int
+vn.ptit.ecom.model.cart	CartItem	attribute	cartPrice		long
+vn.ptit.ecom.model.cart	CartItem	operation	subTotal		long	
+vn.ptit.ecom.model.cart	CartIssue	class			
+vn.ptit.ecom.model.cart	CartIssue	attribute	productId		int
+vn.ptit.ecom.model.cart	CartIssue	attribute	productName		String
+vn.ptit.ecom.model.cart	CartIssue	attribute	kind		Kind
+vn.ptit.ecom.model.cart	CartIssue	attribute	oldPrice		long
+vn.ptit.ecom.model.cart	CartIssue	attribute	newPrice		long
+vn.ptit.ecom.model.cart	CartIssue	attribute	available		int
+vn.ptit.ecom.model.cart	CartIssue	operation	message		String	
+vn.ptit.ecom.model.order	OrderStatus	class	enumeration		
+vn.ptit.ecom.model.order	OrderStatus	operation	canMoveTo	OrderStatus,Actor	boolean	to,actor
+vn.ptit.ecom.model.order	OrderStatus	operation	next	Actor	Set<OrderStatus>	actor
+vn.ptit.ecom.model.order	PaymentMethod	class	enumeration		
+vn.ptit.ecom.model.order	Totals	class			
+vn.ptit.ecom.model.order	Totals	attribute	subtotal		long
+vn.ptit.ecom.model.order	Totals	attribute	discount		long
+vn.ptit.ecom.model.order	Totals	attribute	shippingFee		long
+vn.ptit.ecom.model.order	Totals	attribute	total		long
+vn.ptit.ecom.model.order	Totals	operation	of	long,BigDecimal	Totals	subtotal,rate
+vn.ptit.ecom.model.order	Order	class			
+vn.ptit.ecom.model.order	Order	attribute	id		Integer
+vn.ptit.ecom.model.order	Order	attribute	customerId		int
+vn.ptit.ecom.model.order	Order	attribute	addressId		int
+vn.ptit.ecom.model.order	Order	attribute	orderDate		LocalDateTime
+vn.ptit.ecom.model.order	Order	attribute	status		OrderStatus
+vn.ptit.ecom.model.order	Order	attribute	paymentMethod		PaymentMethod
+vn.ptit.ecom.model.order	Order	attribute	subtotal		long
+vn.ptit.ecom.model.order	Order	attribute	discount		long
+vn.ptit.ecom.model.order	Order	attribute	shippingFee		long
+vn.ptit.ecom.model.order	Order	attribute	totalAmount		long
+vn.ptit.ecom.model.order	Order	operation	place	Customer,Cart,Address,PaymentMethod,LocalDateTime	Order	customer,cart,address,method,now
+vn.ptit.ecom.model.order	Order	operation	changeStatus	OrderStatus,Actor,String,LocalDateTime,String	void	to,actor,actorName,now,note
+vn.ptit.ecom.model.order	Order	operation	recordCardPayment	PayCredit,LocalDateTime	void	payment,now
+vn.ptit.ecom.model.order	Order	operation	cancel	Actor,String,LocalDateTime	void	actor,actorName,now
+vn.ptit.ecom.model.order	Order	operation	ship	String,String,String,LocalDateTime	Shipping	carrier,trackingNumber,actorName,now
+vn.ptit.ecom.model.order	Order	operation	deliver	String,LocalDateTime	void	actorName,now
+vn.ptit.ecom.model.order	Order	operation	code		String	
+vn.ptit.ecom.model.order	OrderItem	class			
+vn.ptit.ecom.model.order	OrderItem	attribute	id		Integer
+vn.ptit.ecom.model.order	OrderItem	attribute	productId		int
+vn.ptit.ecom.model.order	OrderItem	attribute	productName		String
+vn.ptit.ecom.model.order	OrderItem	attribute	quantity		int
+vn.ptit.ecom.model.order	OrderItem	attribute	unitPrice		long
+vn.ptit.ecom.model.order	OrderItem	operation	subTotal		long	
+vn.ptit.ecom.model.order	OrderEvent	class			
+vn.ptit.ecom.model.order	OrderEvent	attribute	id		Integer
+vn.ptit.ecom.model.order	OrderEvent	attribute	status		OrderStatus
+vn.ptit.ecom.model.order	OrderEvent	attribute	occurredAt		LocalDateTime
+vn.ptit.ecom.model.order	OrderEvent	attribute	actor		String
+vn.ptit.ecom.model.order	OrderEvent	attribute	note		String
+vn.ptit.ecom.model.order	Payment	class			
+vn.ptit.ecom.model.order	Payment	attribute	id		Integer
+vn.ptit.ecom.model.order	Payment	attribute	amount		long
+vn.ptit.ecom.model.order	Payment	attribute	status		Status
+vn.ptit.ecom.model.order	Payment	attribute	paymentDate		LocalDateTime
+vn.ptit.ecom.model.order	Payment	operation	method		String	
+vn.ptit.ecom.model.order	Payment	operation	isSuccessful		boolean	
+vn.ptit.ecom.model.order	PayCredit	class			
+vn.ptit.ecom.model.order	PayCredit	attribute	cardHolder		String
+vn.ptit.ecom.model.order	PayCredit	attribute	cardLast4		String
+vn.ptit.ecom.model.order	PayCredit	attribute	expiry		String
+vn.ptit.ecom.model.order	PayCredit	attribute	providerToken		String
+vn.ptit.ecom.model.order	PayCredit	operation	method		String	
+vn.ptit.ecom.model.order	PayCash	class			
+vn.ptit.ecom.model.order	PayCash	attribute	cashReceived		long
+vn.ptit.ecom.model.order	PayCash	attribute	changeAmount		long
+vn.ptit.ecom.model.order	PayCash	operation	method		String	
+vn.ptit.ecom.model.order	Shipping	class			
+vn.ptit.ecom.model.order	Shipping	attribute	id		Integer
+vn.ptit.ecom.model.order	Shipping	attribute	addressId		int
+vn.ptit.ecom.model.order	Shipping	attribute	carrier		String
+vn.ptit.ecom.model.order	Shipping	attribute	trackingNumber		String
+vn.ptit.ecom.model.order	Shipping	attribute	shippingFee		long
+vn.ptit.ecom.model.order	Shipping	attribute	status		Status
+vn.ptit.ecom.model.order	Shipping	attribute	shippedDate		LocalDateTime
+vn.ptit.ecom.model.order	Shipping	attribute	deliveredDate		LocalDateTime
+vn.ptit.ecom.dao	Database	class			
+vn.ptit.ecom.dao	Database	attribute	file		Path
+vn.ptit.ecom.dao	Database	operation	inTransaction	Work<T>	T	work
+vn.ptit.ecom.dao	Database	operation	create	boolean	void	replaceExisting
+vn.ptit.ecom.dao	Database	operation	getFile		Path	
+vn.ptit.ecom.dao	Daos	class			
+vn.ptit.ecom.dao	Daos	attribute	products		ProductDAO
+vn.ptit.ecom.dao	Daos	attribute	customers		CustomerDAO
+vn.ptit.ecom.dao	Daos	attribute	staff		StaffDAO
+vn.ptit.ecom.dao	Daos	attribute	carts		CartDAO
+vn.ptit.ecom.dao	Daos	attribute	orders		OrderDAO
+vn.ptit.ecom.dao	Daos	attribute	payments		PaymentDAO
+vn.ptit.ecom.dao	Daos	attribute	shipping		ShippingDAO
+vn.ptit.ecom.dao	Work	class	interface		
+vn.ptit.ecom.dao	Work	operation	run	Daos	T	daos
+vn.ptit.ecom.dao	DataAccessError	class			
+vn.ptit.ecom.dao	ProductDAO	class	interface		
+vn.ptit.ecom.dao	ProductDAO	operation	categories		List<Category>	
+vn.ptit.ecom.dao	ProductDAO	operation	search	String,String,Sort	List<Product>	keyword,categorySlug,sort
+vn.ptit.ecom.dao	ProductDAO	operation	findById	int	Optional<Product>	id
+vn.ptit.ecom.dao	ProductDAO	operation	findByIds	Collection<Integer>	Map<Integer, Product>	ids
+vn.ptit.ecom.dao	ProductDAO	operation	reserveStock	int,int	boolean	productId,quantity
+vn.ptit.ecom.dao	ProductDAO	operation	releaseStock	int,int	void	productId,quantity
+vn.ptit.ecom.dao	ProductDAO	operation	updateStock	int,int	void	productId,quantity
+vn.ptit.ecom.dao	ProductDAO	operation	listForStock		List<Product>	
+vn.ptit.ecom.dao	CustomerDAO	class	interface		
+vn.ptit.ecom.dao	CustomerDAO	operation	findAccount	String	Optional<Account>	email
+vn.ptit.ecom.dao	CustomerDAO	operation	findById	int	Optional<Customer>	id
+vn.ptit.ecom.dao	CustomerDAO	operation	addresses	int	List<Address>	customerId
+vn.ptit.ecom.dao	CustomerDAO	operation	address	int	Optional<Address>	addressId
+vn.ptit.ecom.dao	StaffDAO	class	interface		
+vn.ptit.ecom.dao	StaffDAO	operation	findAccount	String	Optional<Account>	email
+vn.ptit.ecom.dao	CartDAO	class	interface		
+vn.ptit.ecom.dao	CartDAO	operation	findOrCreate	int	Cart	customerId
+vn.ptit.ecom.dao	CartDAO	operation	save	Cart	void	cart
+vn.ptit.ecom.dao	CartDAO	operation	clear	Cart	void	cart
+vn.ptit.ecom.dao	OrderDAO	class	interface		
+vn.ptit.ecom.dao	OrderDAO	operation	insert	Order	void	order
+vn.ptit.ecom.dao	OrderDAO	operation	findById	int	Optional<Order>	id
+vn.ptit.ecom.dao	OrderDAO	operation	findByCustomer	int	List<OrderSummary>	customerId
+vn.ptit.ecom.dao	OrderDAO	operation	findAll		List<OrderSummary>	
+vn.ptit.ecom.dao	OrderDAO	operation	saveProgress	Order	void	order
+vn.ptit.ecom.dao	PaymentDAO	class	interface		
+vn.ptit.ecom.dao	PaymentDAO	operation	saveAll	int,List<Payment>	void	orderId,payments
+vn.ptit.ecom.dao	ShippingDAO	class	interface		
+vn.ptit.ecom.dao	ShippingDAO	operation	save	int,Shipping	void	orderId,shipping
+vn.ptit.ecom.dao	ProductDAOImpl	class			
+vn.ptit.ecom.dao	ProductDAOImpl	attribute	connection		Connection
+vn.ptit.ecom.dao	CustomerDAOImpl	class			
+vn.ptit.ecom.dao	CustomerDAOImpl	attribute	connection		Connection
+vn.ptit.ecom.dao	StaffDAOImpl	class			
+vn.ptit.ecom.dao	StaffDAOImpl	attribute	connection		Connection
+vn.ptit.ecom.dao	CartDAOImpl	class			
+vn.ptit.ecom.dao	CartDAOImpl	attribute	connection		Connection
+vn.ptit.ecom.dao	OrderDAOImpl	class			
+vn.ptit.ecom.dao	OrderDAOImpl	attribute	connection		Connection
+vn.ptit.ecom.dao	PaymentDAOImpl	class			
+vn.ptit.ecom.dao	PaymentDAOImpl	attribute	connection		Connection
+vn.ptit.ecom.dao	ShippingDAOImpl	class			
+vn.ptit.ecom.dao	ShippingDAOImpl	attribute	connection		Connection
+vn.ptit.ecom.integration	CardProvider	class	interface		
+vn.ptit.ecom.integration	CardProvider	operation	charge	String,long,CardData	Result	orderCode,amount,card
+vn.ptit.ecom.integration	SimulatedCardProvider	class			
+vn.ptit.ecom.integration	SimulatedCardProvider	operation	charge	String,long,CardData	Result	orderCode,amount,card
+vn.ptit.ecom.integration	CardData	class			
+vn.ptit.ecom.integration	CardData	attribute	holder		String
+vn.ptit.ecom.integration	CardData	attribute	number		String
+vn.ptit.ecom.integration	CardData	attribute	expiry		String
+vn.ptit.ecom.integration	CardData	attribute	cvv		String
+vn.ptit.ecom.integration	CardData	operation	last4		String	
+vn.ptit.ecom.integration	Result	class			
+vn.ptit.ecom.integration	Result	attribute	approved		boolean
+vn.ptit.ecom.integration	Result	attribute	token		String
+vn.ptit.ecom.integration	Result	attribute	reason		String
+vn.ptit.ecom.service	AuthService	class			
+vn.ptit.ecom.service	AuthService	attribute	db		Database
+vn.ptit.ecom.service	AuthService	operation	login	String,String	Optional<Account>	email,password
+vn.ptit.ecom.service	AuthService	operation	profile	int	CustomerProfile	customerId
+vn.ptit.ecom.service	CatalogService	class			
+vn.ptit.ecom.service	CatalogService	attribute	db		Database
+vn.ptit.ecom.service	CatalogService	operation	categories		List<Category>	
+vn.ptit.ecom.service	CatalogService	operation	search	String,String,Sort	List<Product>	keyword,categorySlug,sort
+vn.ptit.ecom.service	CatalogService	operation	product	int	ProductDetails	id
+vn.ptit.ecom.service	CatalogService	operation	stockList		List<Product>	
+vn.ptit.ecom.service	CatalogService	operation	updateStock	int,int	Product	productId,quantity
+vn.ptit.ecom.service	CartService	class			
+vn.ptit.ecom.service	CartService	attribute	db		Database
+vn.ptit.ecom.service	CartService	operation	cart	int	Cart	customerId
+vn.ptit.ecom.service	CartService	operation	addItem	int,int,int	Cart	customerId,productId,quantity
+vn.ptit.ecom.service	CartService	operation	changeQuantity	int,int,int	Cart	customerId,productId,quantity
+vn.ptit.ecom.service	CartService	operation	removeItem	int,int	Cart	customerId,productId
+vn.ptit.ecom.service	OrderService	class			
+vn.ptit.ecom.service	OrderService	attribute	db		Database
+vn.ptit.ecom.service	OrderService	operation	checkout	int	Checkout	customerId
+vn.ptit.ecom.service	OrderService	operation	placeOrder	int,int,PaymentMethod,Long	Order	customerId,addressId,method,expectedTotal
+vn.ptit.ecom.service	OrderService	operation	ordersOf	int	List<OrderSummary>	customerId
+vn.ptit.ecom.service	OrderService	operation	allOrders		List<OrderSummary>	
+vn.ptit.ecom.service	OrderService	operation	details	int,Integer	OrderDetails	orderId,customerId
+vn.ptit.ecom.service	OrderService	operation	cancel	int,Integer,Actor,String	OrderDetails	orderId,customerId,actor,actorName
+vn.ptit.ecom.service	OrderService	operation	process	int,String	OrderDetails	orderId,staffName
+vn.ptit.ecom.service	PaymentService	class			
+vn.ptit.ecom.service	PaymentService	attribute	db		Database
+vn.ptit.ecom.service	PaymentService	attribute	provider		CardProvider
+vn.ptit.ecom.service	PaymentService	operation	pay	int,int,CardData	PaymentResult	orderId,customerId,card
+vn.ptit.ecom.service	ShippingService	class			
+vn.ptit.ecom.service	ShippingService	attribute	db		Database
+vn.ptit.ecom.service	ShippingService	operation	ship	int,String,String,String	OrderDetails	orderId,carrier,trackingNumber,staffName
+vn.ptit.ecom.service	ShippingService	operation	deliver	int,String	OrderDetails	orderId,staffName
+vn.ptit.ecom.service	NotFound	class			
+vn.ptit.ecom.controller	AuthController	class			
+vn.ptit.ecom.controller	AuthController	attribute	auth		AuthService
+vn.ptit.ecom.controller	AuthController	operation	login	LoginRequest,HttpServletRequest	Map	req,http
+vn.ptit.ecom.controller	AuthController	operation	logout	HttpServletRequest	Map	http
+vn.ptit.ecom.controller	AuthController	operation	me	HttpSession	Map	session
+vn.ptit.ecom.controller	ProductController	class			
+vn.ptit.ecom.controller	ProductController	attribute	catalog		CatalogService
+vn.ptit.ecom.controller	ProductController	operation	categories		List<CategoryNode>	
+vn.ptit.ecom.controller	ProductController	operation	search	String,String,Sort	List<ProductCard>	q,category,sort
+vn.ptit.ecom.controller	ProductController	operation	product	int	ProductPage	id
+vn.ptit.ecom.controller	ProductController	operation	stock	HttpSession	List<StockRow>	session
+vn.ptit.ecom.controller	ProductController	operation	updateStock	int,StockChange,HttpSession	StockRow	id,change,session
+vn.ptit.ecom.controller	CartController	class			
+vn.ptit.ecom.controller	CartController	attribute	carts		CartService
+vn.ptit.ecom.controller	CartController	operation	viewCart	HttpSession	CartView	session
+vn.ptit.ecom.controller	CartController	operation	addItem	AddItem,HttpSession	CartView	req,session
+vn.ptit.ecom.controller	CartController	operation	changeQuantity	int,ChangeQuantity,HttpSession	CartView	productId,req,session
+vn.ptit.ecom.controller	CartController	operation	removeItem	int,HttpSession	CartView	productId,session
+vn.ptit.ecom.controller	OrderController	class			
+vn.ptit.ecom.controller	OrderController	attribute	orders		OrderService
+vn.ptit.ecom.controller	OrderController	operation	checkout	HttpSession	Map	session
+vn.ptit.ecom.controller	OrderController	operation	placeOrder	PlaceOrder,HttpSession	Map	req,session
+vn.ptit.ecom.controller	OrderController	operation	myOrders	HttpSession	List<OrderSummary>	session
+vn.ptit.ecom.controller	OrderController	operation	order	int,HttpSession	OrderView	id,session
+vn.ptit.ecom.controller	OrderController	operation	cancelByCustomer	int,HttpSession	OrderView	id,session
+vn.ptit.ecom.controller	OrderController	operation	board	HttpSession	List<BoardCard>	session
+vn.ptit.ecom.controller	OrderController	operation	process	int,HttpSession	OrderView	id,session
+vn.ptit.ecom.controller	OrderController	operation	cancelByStaff	int,HttpSession	OrderView	id,session
+vn.ptit.ecom.controller	PaymentController	class			
+vn.ptit.ecom.controller	PaymentController	attribute	payments		PaymentService
+vn.ptit.ecom.controller	PaymentController	operation	pay	int,CardPayment,HttpSession	Map	id,req,session
+vn.ptit.ecom.controller	ShippingController	class			
+vn.ptit.ecom.controller	ShippingController	attribute	shipping		ShippingService
+vn.ptit.ecom.controller	ShippingController	operation	ship	int,ShipRequest,HttpSession	OrderView	id,req,session
+vn.ptit.ecom.controller	ShippingController	operation	deliver	int,HttpSession	OrderView	id,session
+vn.ptit.ecom.controller	CurrentUser	class			
+vn.ptit.ecom.controller	CurrentUser	attribute	role		Role
+vn.ptit.ecom.controller	CurrentUser	attribute	id		int
+vn.ptit.ecom.controller	CurrentUser	attribute	name		String
+vn.ptit.ecom.controller	CurrentUser	operation	require	HttpSession,Role...	CurrentUser	session,roles
+vn.ptit.ecom.view	CustomerForm	class			
+vn.ptit.ecom.view	CustomerForm	operation	showLogin			next
+vn.ptit.ecom.view	CustomerForm	operation	submitLogin	,		email,password
+vn.ptit.ecom.view	CustomerForm	operation	submitLogout			
+vn.ptit.ecom.view	ProductForm	class			
+vn.ptit.ecom.view	ProductForm	operation	showHome			
+vn.ptit.ecom.view	ProductForm	operation	showCatalogue	,,		category,sort,q
+vn.ptit.ecom.view	ProductForm	operation	showProduct			id
+vn.ptit.ecom.view	CartForm	class			
+vn.ptit.ecom.view	CartForm	operation	submitAddItem	,		productId,quantity
+vn.ptit.ecom.view	CartForm	operation	showCart			cart
+vn.ptit.ecom.view	CartForm	operation	changeQuantity	,		productId,quantity
+vn.ptit.ecom.view	CartForm	operation	removeItem			productId
+vn.ptit.ecom.view	OrderForm	class			
+vn.ptit.ecom.view	OrderForm	operation	showCheckout			
+vn.ptit.ecom.view	OrderForm	operation	submitOrder	,,		addressId,paymentMethod,expectedTotal
+vn.ptit.ecom.view	OrderForm	operation	showOrders			
+vn.ptit.ecom.view	OrderForm	operation	showOrder			id
+vn.ptit.ecom.view	OrderForm	operation	submitCancel			o
+vn.ptit.ecom.view	PaymentForm	class			
+vn.ptit.ecom.view	PaymentForm	operation	showPayment			orderId
+vn.ptit.ecom.view	PaymentForm	operation	submitPayment	,		order,card
+vn.ptit.ecom.view	StaffOrderForm	class			
+vn.ptit.ecom.view	StaffOrderForm	operation	showBoard			
+vn.ptit.ecom.view	StaffOrderForm	operation	showOrder			id
+vn.ptit.ecom.view	StockForm	class			
+vn.ptit.ecom.view	StockForm	operation	showStock			
+vn.ptit.ecom.view	StockForm	operation	submitStock	,		productId,quantity
+vn.ptit.ecom.ai	Document	class			
+vn.ptit.ecom.ai	Document	attribute	id		int
+vn.ptit.ecom.ai	Document	attribute	price		long
+vn.ptit.ecom.ai	Document	attribute	name		String
+vn.ptit.ecom.ai	Document	attribute	brand		String
+vn.ptit.ecom.ai	Document	attribute	category		String
+vn.ptit.ecom.ai	Document	attribute	details		Map<String, String>
+vn.ptit.ecom.ai	Document	attribute	description		String
+vn.ptit.ecom.ai	SearchQuery	class			
+vn.ptit.ecom.ai	SearchQuery	attribute	text		String
+vn.ptit.ecom.ai	SearchQuery	attribute	terms		List<String>
+vn.ptit.ecom.ai	SearchQuery	attribute	related		Map<String, List<String>>
+vn.ptit.ecom.ai	SearchQuery	attribute	corrections		Map<String, String>
+vn.ptit.ecom.ai	SearchQuery	attribute	minPrice		Long
+vn.ptit.ecom.ai	SearchQuery	attribute	maxPrice		Long
+vn.ptit.ecom.ai	SearchQuery	attribute	cheap		boolean
+vn.ptit.ecom.ai	SearchQuery	operation	isEmpty		boolean	
+vn.ptit.ecom.ai	Hit	class			
+vn.ptit.ecom.ai	Hit	attribute	productId		int
+vn.ptit.ecom.ai	Hit	attribute	score		double
+vn.ptit.ecom.ai	Hit	attribute	reasons		List<String>
+vn.ptit.ecom.ai	QueryInterpreter	class			
+vn.ptit.ecom.ai	QueryInterpreter	attribute	vocabulary		Map<String, Integer>
+vn.ptit.ecom.ai	QueryInterpreter	operation	interpret	String	SearchQuery	text
+vn.ptit.ecom.ai	QueryInterpreter	operation	tokens	String	List<String>	text
+vn.ptit.ecom.ai	ProductIndex	class			
+vn.ptit.ecom.ai	ProductIndex	attribute	df		Map<String, Integer>
+vn.ptit.ecom.ai	ProductIndex	operation	build	List<Document>	ProductIndex	documents
+vn.ptit.ecom.ai	ProductIndex	operation	rank	SearchQuery,int	List<Hit>	q,k
+vn.ptit.ecom.ai	ProductIndex	operation	vocabulary		Map<String, Integer>	
+vn.ptit.ecom.ai	ImageIndex	class			
+vn.ptit.ecom.ai	ImageIndex	operation	build	Map<Integer, BufferedImage>	ImageIndex	images
+vn.ptit.ecom.ai	ImageIndex	operation	rank	BufferedImage,int	List<Hit>	photo,k
+vn.ptit.ecom.ai	ImageIndex	operation	size		int	
+vn.ptit.ecom.service	SearchService	class			
+vn.ptit.ecom.service	SearchService	attribute	db		Database
+vn.ptit.ecom.service	SearchService	operation	search	String	SearchResult	text
+vn.ptit.ecom.service	SearchService	operation	searchByPhoto	byte[]	SearchResult	photo
+vn.ptit.ecom.controller	SearchController	class			
+vn.ptit.ecom.controller	SearchController	attribute	search		SearchService
+vn.ptit.ecom.controller	SearchController	operation	search	String	SearchView	q
+vn.ptit.ecom.controller	SearchController	operation	searchByPhoto	MultipartFile	SearchView	photo
+vn.ptit.ecom.view	SearchForm	class			
+vn.ptit.ecom.view	SearchForm	operation	showResults			q
+vn.ptit.ecom.view	SearchForm	operation	startVoice			
+vn.ptit.ecom.view	SearchForm	operation	submitPhoto			file
+vn.ptit.ecom.view	SearchForm	operation	showPhotoResults			

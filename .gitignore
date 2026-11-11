@@ -1,0 +1,13 @@
+app/target/
+app/data/
+app/*.log
+*.log
+__pycache__/
+db/seed/_contact_sheet.jpg
+node_modules/
+app/data_run.*
+tests/e2e/package-lock.json
+# course folder parts that are not project sources: built essay, lecturer's material, archive
+/Bai_nop/
+/De_bai/
+/Luu_tru/

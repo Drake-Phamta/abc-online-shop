@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ABC Online Shop</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231f1c18'/%3E%3Ctext x='16' y='22' font-family='Georgia' font-size='15' font-weight='700' fill='%23f6f2ea' text-anchor='middle'%3EABC%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/css/shop.css">
+</head>
+<body>
+  <div id="staff-bar"></div>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="#/"><b>ABC</b><span>Online Shop</span></a>
+      <nav class="nav" id="nav">
+        <a href="#/c/books" data-dept="books">Books</a>
+        <a href="#/c/electronics" data-dept="electronics">Electronics</a>
+        <a href="#/c/fashion" data-dept="fashion">Fashion</a>
+      </nav>
+      <form class="search" id="search" role="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input name="q" type="search" placeholder="Try “red sneakers under 3 million”" aria-label="Search products" maxlength="200">
+        <div class="search-tools" data-trace="SearchForm.startVoice (speech to text in the browser) · SearchForm.submitPhoto → POST /api/search/photo">
+          <button type="button" id="voice" title="Search by voice" aria-label="Search by voice"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
+          <button type="button" id="camera" title="Search by photo" aria-label="Search by photo"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></button>
+          <input type="file" id="photo" accept="image/jpeg,image/png" hidden>
+        </div>
+      </form>
+      <div class="account" id="account"></div>
+    </div>
+  </header>
+  <main><div class="wrap" id="view"></div></main>
+  <footer>
+    <div class="wrap">
+      <span>ABC Online Shop · prototype of the essay “From Requirements to Code”, Information Systems Analysis and Design, PTIT 2026</span>
+      <label class="lens-toggle" title="Shortcut: Alt+L"><input type="checkbox" id="lens"> Design lens: show the view class, endpoint, DAO and tables behind each part</label>
+    </div>
+  </footer>
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>

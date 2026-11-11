@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CartService.java · ABC Online Shop</title>
+<link rel="stylesheet" href="../../../../../../../../../../app/src/main/resources/static/fonts/fonts.css">
+<link rel="stylesheet" href="../../../../../../../../../../showcase/assets/showcase.css">
+<link rel="stylesheet" href="../../../../../../../../../assets/code.css">
+<script src="../../../../../../../../../../showcase/pages/manifest.js" defer></script>
+<script src="../../../../../../../../../../showcase/assets/showcase.js" defer></script>
+</head>
+<body class="viewer" data-file="app/src/main/java/vn/ptit/ecom/service/CartService.java">
+<header class="vbar">
+  <a class="vback" href="../../../../../../../../../../showcase/index.html" data-i18n="back">← Showcase</a>
+  <span class="vpath">app/src/main/java/vn/ptit/ecom/service/<b>CartService.java</b></span>
+  <span class="vactions">
+    <button type="button" class="vbtn local-only" data-reveal="app/src/main/java/vn/ptit/ecom/service/CartService.java" data-i18n="reveal">Show in File Explorer</button>
+    <a class="vbtn" data-github="app/src/main/java/vn/ptit/ecom/service/CartService.java" hidden data-i18n="github">View on GitHub</a>
+  </span>
+</header>
+<div class="codewrap"><p class="codeinfo"><span data-num="50" data-i18n="lines">50 lines</span> · 1,658 bytes · Java</p><div class="code">
+<div class="ln" id="L1"><a href="#L1">1</a><span><span class="kn">package</span><span class="w"> </span><span class="nn">vn.ptit.ecom.service</span><span class="p">;</span></span></div>
+<div class="ln" id="L2"><a href="#L2">2</a><span> </span></div>
+<div class="ln" id="L3"><a href="#L3">3</a><span><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.stereotype.Service</span><span class="p">;</span></span></div>
+<div class="ln" id="L4"><a href="#L4">4</a><span><span class="kn">import</span><span class="w"> </span><span class="nn">vn.ptit.ecom.dao.Database</span><span class="p">;</span></span></div>
+<div class="ln" id="L5"><a href="#L5">5</a><span><span class="kn">import</span><span class="w"> </span><span class="nn">vn.ptit.ecom.model.cart.Cart</span><span class="p">;</span></span></div>
+<div class="ln" id="L6"><a href="#L6">6</a><span><span class="kn">import</span><span class="w"> </span><span class="nn">vn.ptit.ecom.model.product.Product</span><span class="p">;</span></span></div>
+<div class="ln" id="L7"><a href="#L7">7</a><span> </span></div>
+<div class="ln" id="L8"><a href="#L8">8</a><span><span class="cm">/** UC06 Manage Shopping Cart. Each operation loads the customer&#39;s cart, changes it through the model and saves it. */</span></span></div>
+<div class="ln" id="L9"><a href="#L9">9</a><span><span class="nd">@Service</span></span></div>
+<div class="ln" id="L10"><a href="#L10">10</a><span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">CartService</span><span class="w"> </span><span class="p">{</span></span></div>
+<div class="ln" id="L11"><a href="#L11">11</a><span><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Database</span><span class="w"> </span><span class="n">db</span><span class="p">;</span></span></div>
+<div class="ln" id="L12"><a href="#L12">12</a><span> </span></div>
+<div class="ln" id="L13"><a href="#L13">13</a><span><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">CartService</span><span class="p">(</span><span class="n">Database</span><span class="w"> </span><span class="n">db</span><span class="p">)</span><span class="w"> </span><span class="p">{</span></span></div>
+<div class="ln" id="L14"><a href="#L14">14</a><span><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">db</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">db</span><span class="p">;</span></span></div>
+<div class="ln" id="L15"><a href="#L15">15</a><span><span class="w">    </span><span class="p">}</span></span></div>
+<div class="ln" id="L16"><a href="#L16">16</a><span> </span></div>
+<div class="ln" id="L17"><a href="#L17">17</a><span><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Cart</span><span class="w"> </span><span class="nf">cart</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">customerId</span><span class="p">)</span><span class="w"> </span><span class="p">{</span></span></div>
+<div class="ln" id="L18"><a href="#L18">18</a><span><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">db</span><span class="p">.</span><span class="na">inTransaction</span><span class="p">(</span><span class="n">d</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="na">carts</span><span class="p">().</span><span class="na">findOrCreate</span><span class="p">(</span><span class="n">customerId</span><span class="p">));</span></span></div>
+<div class="ln" id="L19"><a href="#L19">19</a><span><span class="w">    </span><span class="p">}</span></span></div>
+<div class="ln" id="L20"><a href="#L20">20</a><span> </span></div>
+<div class="ln" id="L21"><a href="#L21">21</a><span><span class="w">    </span><span class="cm">/** UC06 steps 1 and 2: BR01 and BR02 are checked by Cart.addItem. */</span></span></div>
+<div class="ln" id="L22"><a href="#L22">22</a><span><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Cart</span><span class="w"> </span><span class="nf">addItem</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">customerId</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">productId</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">quantity</span><span class="p">)</span><span class="w"> </span><span class="p">{</span></span></div>
+<div class="ln" id="L23"><a href="#L23">23</a><span><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">db</span><span class="p">.</span><span class="na">inTransaction</span><span class="p">(</span><span class="n">d</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span></span></div>
+<div class="ln" id="L24"><a href="#L24">24</a><span><span class="w">            </span><span class="n">Product</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="na">products</span><span class="p">().</span><span class="na">findById</span><span class="p">(</span><span class="n">productId</span><span class="p">).</span><span class="na">orElseThrow</span><span class="p">(()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">NotFound</span><span class="p">(</span><span class="s">&quot;This product does not exist.&quot;</span><span class="p">));</span></span></div>
+<div class="ln" id="L25"><a href="#L25">25</a><span><span class="w">            </span><span class="n">Cart</span><span class="w"> </span><span class="n">cart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="na">carts</span><span class="p">().</span><span class="na">findOrCreate</span><span class="p">(</span><span class="n">customerId</span><span class="p">);</span></span></div>
+<div class="ln" id="L26"><a href="#L26">26</a><span><span class="w">            </span><span class="n">cart</span><span class="p">.</span><span class="na">addItem</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">quantity</span><span class="p">);</span></span></div>
+<div class="ln" id="L27"><a href="#L27">27</a><span><span class="w">            </span><span class="n">d</span><span class="p">.</span><span class="na">carts</span><span class="p">().</span><span class="na">save</span><span class="p">(</span><span class="n">cart</span><span class="p">);</span></span></div>
+<div class="ln" id="L28"><a href="#L28">28</a><span><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">cart</span><span class="p">;</span></span></div>
+<div class="ln" id="L29"><a href="#L29">29</a><span><span class="w">        </span><span class="p">});</span></span></div>
+<div class="ln" id="L30"><a href="#L30">30</a><span><span class="w">    </span><span class="p">}</span></span></div>
+<div class="ln" id="L31"><a href="#L31">31</a><span> </span></div>
+<div class="ln" id="L32"><a href="#L32">32</a><span><span class="w">    </span><span class="cm">/** UC06 step 3. */</span></span></div>
+<div class="ln" id="L33"><a href="#L33">33</a><span><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Cart</span><span class="w"> </span><span class="nf">changeQuantity</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">customerId</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">productId</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">quantity</span><span class="p">)</span><span class="w"> </span><span class="p">{</span></span></div>
+<div class="ln" id="L34"><a href="#L34">34</a><span><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">db</span><span class="p">.</span><span class="na">inTransaction</span><span class="p">(</span><span class="n">d</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span></span></div>
+<div class="ln" id="L35"><a href="#L35">35</a><span><span class="w">            </span><span class="n">Cart</span><span class="w"> </span><span class="n">cart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="na">carts</span><span class="p">().</span><span class="na">findOrCreate</span><span class="p">(</span><span class="n">customerId</span><span class="p">);</span></span></div>
+<div class="ln" id="L36"><a href="#L36">36</a><span><span class="w">            </span><span class="n">cart</span><span class="p">.</span><span class="na">setQuantity</span><span class="p">(</span><span class="n">productId</span><span class="p">,</span><span class="w"> </span><span class="n">quantity</span><span class="p">);</span></span></div>
+<div class="ln" id="L37"><a href="#L37">37</a><span><span class="w">            </span><span class="n">d</span><span class="p">.</span><span class="na">carts</span><span class="p">().</span><span class="na">save</span><span class="p">(</span><span class="n">cart</span><span class="p">);</span></span></div>
+<div class="ln" id="L38"><a href="#L38">38</a><span><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">cart</span><span class="p">;</span></span></div>
+<div class="ln" id="L39"><a href="#L39">39</a><span><span class="w">        </span><span class="p">});</span></span></div>
+<div class="ln" id="L40"><a href="#L40">40</a><span><span class="w">    </span><span class="p">}</span></span></div>
+<div class="ln" id="L41"><a href="#L41">41</a><span> </span></div>
+<div class="ln" id="L42"><a href="#L42">42</a><span><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Cart</span><span class="w"> </span><span class="nf">removeItem</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">customerId</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">productId</span><span class="p">)</span><span class="w"> </span><span class="p">{</span></span></div>
+<div class="ln" id="L43"><a href="#L43">43</a><span><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">db</span><span class="p">.</span><span class="na">inTransaction</span><span class="p">(</span><span class="n">d</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span></span></div>
+<div class="ln" id="L44"><a href="#L44">44</a><span><span class="w">            </span><span class="n">Cart</span><span class="w"> </span><span class="n">cart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="na">carts</span><span class="p">().</span><span class="na">findOrCreate</span><span class="p">(</span><span class="n">customerId</span><span class="p">);</span></span></div>
+<div class="ln" id="L45"><a href="#L45">45</a><span><span class="w">            </span><span class="n">cart</span><span class="p">.</span><span class="na">removeItem</span><span class="p">(</span><span class="n">productId</span><span class="p">);</span></span></div>
+<div class="ln" id="L46"><a href="#L46">46</a><span><span class="w">            </span><span class="n">d</span><span class="p">.</span><span class="na">carts</span><span class="p">().</span><span class="na">save</span><span class="p">(</span><span class="n">cart</span><span class="p">);</span></span></div>
+<div class="ln" id="L47"><a href="#L47">47</a><span><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">cart</span><span class="p">;</span></span></div>
+<div class="ln" id="L48"><a href="#L48">48</a><span><span class="w">        </span><span class="p">});</span></span></div>
+<div class="ln" id="L49"><a href="#L49">49</a><span><span class="w">    </span><span class="p">}</span></span></div>
+<div class="ln" id="L50"><a href="#L50">50</a><span><span class="p">}</span></span></div>
+</div></div>
+</body>
+</html>

@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TRACEABILITY.md · ABC Online Shop</title>
+<link rel="stylesheet" href="../../../app/src/main/resources/static/fonts/fonts.css">
+<link rel="stylesheet" href="../../../showcase/assets/showcase.css">
+<script src="../../../showcase/pages/manifest.js" defer></script>
+<script src="../../../showcase/assets/showcase.js" defer></script>
+</head>
+<body class="viewer" data-file="docs/TRACEABILITY.md">
+<header class="vbar">
+  <a class="vback" href="../../../showcase/index.html" data-i18n="back">← Showcase</a>
+  <span class="vpath">docs/<b>TRACEABILITY.md</b></span>
+  <span class="vactions"><span class="lang vlang" aria-label="Language"><a href="TRACEABILITY.md.html" lang="en" aria-current="page">EN</a><a href="TRACEABILITY.vi.md.html" lang="vi">VI</a></span>
+    <button type="button" class="vbtn local-only" data-reveal="docs/TRACEABILITY.md" data-i18n="reveal">Show in File Explorer</button>
+    <a class="vbtn" data-github="docs/TRACEABILITY.md" hidden data-i18n="github">View on GitHub</a>
+  </span>
+</header>
+<main class="doc">
+<h1 id="traceability-requirement--use-case--analysis--design--database--code--test">TRACEABILITY: requirement → use case → analysis → design → database → code → test</h1>
+<p>Every link below opens the artefact (diagram image, specification section, source line or test). Diagram codes are
+the names of the diagrams in the VP project <code>vp/ABC_Online_Shop_V4.vpp</code>; the images in <code>vp/png/</code> are captured from
+the VP canvas. Line numbers are those of the current commit; <code>tests/design_vs_code.py</code> checks that the design
+classes and the calls of the design sequences exist in the code, so the middle of each chain cannot drift.</p>
+<h2 id="1-chain-per-implemented-use-case">1. Chain per implemented use case</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Use case (FR)</th>
+<th>Specification</th>
+<th>Analysis</th>
+<th>Design</th>
+<th>Tables (D4)</th>
+<th>Tests</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UC02 Login (FR02, NFR03, NFR04)</td>
+<td><a href="SPEC.md.html#uc02-login">SPEC 4 UC02</a></td>
+<td>R3</td>
+<td><a href="../../../vp/png/G2b.png">G2b</a>, <a href="../../../vp/png/G4.png">G4</a></td>
+<td>customer, staff</td>
+<td>smoke &quot;UC02 …&quot;; e2e &quot;UC02 customer logged in&quot;</td>
+</tr>
+<tr>
+<td>UC04 Browse / Search (FR04, FR05, NFR01), UC05 View Product (FR06)</td>
+<td><a href="SPEC.md.html#uc04-browse--search-products-uc05-view-product">SPEC 4 UC04/UC05</a></td>
+<td><a href="../../../vp/png/A10.png">A10</a></td>
+<td><a href="../../../vp/png/G2a.png">G2a</a>, <a href="../../../vp/png/G3.png">G3</a>, <a href="../../../vp/png/G4.png">G4</a></td>
+<td>category, product, book_detail, laptop_detail, phone_detail, apparel_detail</td>
+<td>smoke &quot;UC04 …&quot;, &quot;UC05 product page with laptop_detail specs&quot;; e2e &quot;UC04 …&quot;, &quot;UC05 …&quot;</td>
+</tr>
+<tr>
+<td>UC06 Manage Shopping Cart (FR07, FR08)</td>
+<td><a href="SPEC.md.html#uc06-manage-shopping-cart">SPEC 4 UC06</a></td>
+<td><a href="../../../vp/png/A1.png">A1</a> activity, <a href="../../../vp/png/A7.png">A7</a> sequence, <a href="../../../vp/png/A10.png">A10</a></td>
+<td><a href="../../../vp/png/G5.png">G5</a> sequence, <a href="../../../vp/png/G2a.png">G2a</a>, <a href="../../../vp/png/G4b.png">G4b</a></td>
+<td>cart, cart_item</td>
+<td><code>addingTheSameProductMergesLinesAndRespectsStock</code>, <code>hiddenProductsCannotBeAdded</code>; smoke &quot;UC06 …&quot;, &quot;BR02 …&quot;; e2e &quot;UC06 …&quot;</td>
+</tr>
+<tr>
+<td>UC07 Place Order + UC21 Validate Cart (FR09, FR10, FR11, FR15, FR16, NFR10)</td>
+<td><a href="SPEC.md.html#uc07-place-order--checkout-uc21-validate-cart">SPEC 4 UC07</a>, <a href="SPEC.md.html#3-order-state-machine-br09">state machine</a></td>
+<td><a href="../../../vp/png/A2.png">A2</a>, <a href="../../../vp/png/A8.png">A8</a>, <a href="../../../vp/png/A6.png">A6</a> DFD process 4</td>
+<td><a href="../../../vp/png/G6.png">G6</a>, <a href="../../../vp/png/G2c.png">G2c</a>, <a href="../../../vp/png/G4b.png">G4b</a></td>
+<td>customer_order, order_item, order_event, address, product</td>
+<td><code>validationTakesOverChangedPrices</code>, <code>totalsApplyVipDiscountAndFreeDelivery</code>, <code>placingNeedsAnOwnAddressAndEnoughStock</code>, <code>lastUnitCanBeSoldOnlyOnce</code>, <code>aFailedOrderWriteRollsBackTheStockReservation</code>; e2e &quot;UC07 …&quot;</td>
+</tr>
+<tr>
+<td>UC08 Make Payment (FR14)</td>
+<td><a href="SPEC.md.html#uc08-make-payment">SPEC 4 UC08</a></td>
+<td><a href="../../../vp/png/A3.png">A3</a>, <a href="../../../vp/png/A9.png">A9</a></td>
+<td><a href="../../../vp/png/G7.png">G7</a>, <a href="../../../vp/png/G2c.png">G2c</a></td>
+<td>payment, pay_credit</td>
+<td><code>cardOrderBecomesPaidOnlyAfterApproval</code>; smoke &quot;UC08 …&quot;, &quot;BR07 only last four digits and token stored&quot;; e2e &quot;UC08 …&quot;</td>
+</tr>
+<tr>
+<td>UC09 Track Order (FR12, FR18)</td>
+<td><a href="SPEC.md.html#uc09-track-order">SPEC 4 UC09</a></td>
+<td><a href="../../../vp/png/A4.png">A4</a></td>
+<td><a href="../../../vp/png/G2c.png">G2c</a>, <a href="../../../vp/png/G4.png">G4</a></td>
+<td>customer_order, order_event, shipping</td>
+<td><code>ordersOfOtherCustomersAreNotFound</code>; smoke &quot;UC09 …&quot;, &quot;BR08 another customer gets 404&quot;; e2e &quot;UC09 …&quot;</td>
+</tr>
+<tr>
+<td>UC14 Process Orders (FR13, FR17, FR18)</td>
+<td><a href="SPEC.md.html#uc14-process-orders">SPEC 4 UC14</a></td>
+<td><a href="../../../vp/png/A5.png">A5</a></td>
+<td><a href="../../../vp/png/G2c.png">G2c</a> (OrderStatus), <a href="../../../vp/png/G4b.png">G4b</a></td>
+<td>customer_order, order_event, shipping, payment, pay_cash</td>
+<td><code>lifecycleFollowsTheTransitionTable</code>, <code>customersCannotCancelOncePackingStarted</code>, <code>cancellingAPaidOrderRefundsTheCard</code>, <code>staffFunctionsNeedTheStaffRole</code>; smoke &quot;UC14 …&quot;, &quot;BR09 …&quot;; e2e &quot;UC14 …&quot;</td>
+</tr>
+<tr>
+<td>UC15 Manage Inventory (FR16)</td>
+<td><a href="SPEC.md.html#uc15-manage-inventory">SPEC 4 UC15</a></td>
+<td>R3</td>
+<td><a href="../../../vp/png/G2a.png">G2a</a>, <a href="../../../vp/png/G3.png">G3</a></td>
+<td>product</td>
+<td><code>theDatabaseItselfRefusesNegativeStock</code>; smoke &quot;UC15 …&quot;, &quot;BR12 …&quot;; e2e &quot;UC15 …&quot;, &quot;BR12 …&quot;</td>
+</tr>
+<tr>
+<td>UC04 AI search: text, voice, photo (FR-S1 to FR-S7, AI01 to AI07)</td>
+<td><a href="SPEC.md.html#6-ai-search-chapter-3-specification-of-the-ai-component">SPEC 6</a></td>
+<td><a href="../../../vp/png/AI1.png">AI1</a> use cases, <a href="../../../vp/png/AI2.png">AI2</a> context, <a href="../../../vp/png/AI3.png">AI3</a> data flow, <a href="../../../vp/png/AI4.png">AI4</a> component</td>
+<td><a href="../../../vp/png/G8.png">G8</a> classes, <a href="../../../vp/png/G9.png">G9</a> sequence</td>
+<td>product, category and the four detail tables (read only; nothing new is stored)</td>
+<td><code>SearchTest</code> (10 tests, AT11 to AT17); smoke &quot;AT13 …&quot;, &quot;AT16 …&quot;, &quot;AI06 …&quot;; e2e &quot;AT11 …&quot;, &quot;AT12 …&quot;, &quot;AT15 …&quot;; <code>tests/search_eval.py</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Business level: process <a href="../../../vp/png/B1.png">B1</a> (BPMN), stakeholder map <a href="../../../vp/png/B2.png">B2</a> and problem tree <a href="../../../vp/png/B3.png">B3</a>
+(ArchiMate). Requirement level: context diagram <a href="../../../vp/png/R1.png">R1</a>, use case overview <a href="../../../vp/png/R2.png">R2</a> (21 use cases),
+implemented scope <a href="../../../vp/png/R3.png">R3</a>, detailed use cases per area <a href="../../../vp/png/R4.png">R4</a> to <a href="../../../vp/png/R8.png">R8</a>. Data model: <a href="../../../vp/png/D1.png">D1</a> (class
+diagram with ORM), <a href="../../../vp/png/D2.png">D2</a> conceptual, <a href="../../../vp/png/D3.png">D3</a> logical, <a href="../../../vp/png/D4.png">D4</a> physical,
+DDL <code>db/schema.sql</code> = VP export <code>db/vp/vp_ddl.sql</code> and the same tables, columns, CHECK and UNIQUE constraints as the
+database that VP's Generate Database wrote, <code>db/vp/abc_shop_vp.db</code> (<code>db/compare_schema.py</code>). Architecture: <a href="../../../vp/png/G0.png">G0</a> three
+layers, <a href="../../../vp/png/G1.png">G1</a> packages and <code>&lt;&lt;use&gt;&gt;</code> dependencies.</p>
+<h2 id="2-code-of-each-use-case-view--controller--service--model--dao">2. Code of each use case (view → controller → service → model / DAO)</h2>
+<p>Paths start at <code>app/src/main/</code>; <code>js/view/…</code> is <code>resources/static/js/view/…</code>, the Java files are under <code>java/vn/ptit/ecom/</code>.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Use case</th>
+<th>View (browser)</th>
+<th>Controller</th>
+<th>Service</th>
+<th>Model rule</th>
+<th>DAO</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UC02</td>
+<td><a href="../app/src/main/resources/static/js/view/CustomerForm.js.html#L51">CustomerForm.submitLogin</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/controller/AuthController.java.html#L28">AuthController.login</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/service/AuthService.java.html#L22">AuthService.login</a></td>
+<td>password hash check (PasswordHasher)</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/dao/CustomerDAOImpl.java.html#L26">CustomerDAOImpl.findAccount</a>, <a href="../app/src/main/java/vn/ptit/ecom/dao/StaffDAOImpl.java.html#L19">StaffDAOImpl.findAccount</a></td>
+</tr>
+<tr>
+<td>UC04</td>
+<td><a href="../app/src/main/resources/static/js/view/ProductForm.js.html#L61">ProductForm.showCatalogue</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/controller/ProductController.java.html#L52">ProductController.search</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/service/CatalogService.java.html#L27">CatalogService.search</a></td>
+<td></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/dao/ProductDAOImpl.java.html#L63">ProductDAOImpl.search</a></td>
+</tr>
+<tr>
+<td>UC05</td>
+<td><a href="../app/src/main/resources/static/js/view/ProductForm.js.html#L99">ProductForm.showProduct</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/controller/ProductController.java.html#L59">ProductController.product</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/service/CatalogService.java.html#L32">CatalogService.product</a></td>
+<td>DetailKind (category → detail table)</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/dao/ProductDAOImpl.java.html#L110">ProductDAOImpl.findById</a></td>
+</tr>
+<tr>
+<td>UC06</td>
+<td><a href="../app/src/main/resources/static/js/view/CartForm.js.html#L11">CartForm.submitAddItem</a>, <a href="../app/src/main/resources/static/js/view/CartForm.js.html#L72">changeQuantity</a>, <a href="../app/src/main/resources/static/js/view/CartForm.js.html#L82">removeItem</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/controller/CartController.java.html#L35">CartController</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/service/CartService.java.html#L22">CartService.addItem</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/model/cart/Cart.java.html#L23">Cart.addItem</a> (BR01, BR02)</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/dao/CartDAOImpl.java.html#L21">CartDAOImpl.findOrCreate</a>, <a href="../app/src/main/java/vn/ptit/ecom/dao/CartDAOImpl.java.html#L44">save</a></td>
+</tr>
+<tr>
+<td>UC07, UC21</td>
+<td><a href="../app/src/main/resources/static/js/view/OrderForm.js.html#L56">OrderForm.showCheckout</a>, <a href="../app/src/main/resources/static/js/view/OrderForm.js.html#L105">submitOrder</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/controller/OrderController.java.html#L46">OrderController.placeOrder</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/service/OrderService.java.html#L56">OrderService.placeOrder</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/model/cart/Cart.java.html#L57">Cart.validate</a> (BR03), <a href="../app/src/main/java/vn/ptit/ecom/model/order/Order.java.html#L69">Order.place</a>, <a href="../app/src/main/java/vn/ptit/ecom/model/order/Order.java.html#L57">Totals.of</a> (BR04)</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/dao/ProductDAOImpl.java.html#L135">ProductDAOImpl.reserveStock</a> (BR05), <a href="../app/src/main/java/vn/ptit/ecom/dao/OrderDAOImpl.java.html#L28">OrderDAOImpl.insert</a>, <a href="../app/src/main/java/vn/ptit/ecom/dao/CartDAOImpl.java.html#L53">CartDAOImpl.clear</a></td>
+</tr>
+<tr>
+<td>UC08</td>
+<td><a href="../app/src/main/resources/static/js/view/PaymentForm.js.html#L52">PaymentForm.submitPayment</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/controller/PaymentController.java.html#L24">PaymentController.pay</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/service/PaymentService.java.html#L30">PaymentService.pay</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/model/order/Order.java.html#L96">Order.recordCardPayment</a> (BR07)</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/dao/PaymentDAOImpl.java.html#L18">PaymentDAOImpl.saveAll</a>, <a href="../app/src/main/java/vn/ptit/ecom/dao/OrderDAOImpl.java.html#L64">OrderDAOImpl.saveProgress</a></td>
+</tr>
+<tr>
+<td>UC09</td>
+<td><a href="../app/src/main/resources/static/js/view/OrderForm.js.html#L125">OrderForm.showOrders</a>, <a href="../app/src/main/resources/static/js/view/OrderForm.js.html#L142">showOrder</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/controller/OrderController.java.html#L62">OrderController.order</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/service/OrderService.java.html#L86">OrderService.details</a></td>
+<td>owner check in <code>OrderService.load</code> (BR08)</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/dao/OrderDAOImpl.java.html#L41">OrderDAOImpl.findById</a>, <a href="../app/src/main/java/vn/ptit/ecom/dao/OrderDAOImpl.java.html#L54">findByCustomer</a></td>
+</tr>
+<tr>
+<td>UC14</td>
+<td><a href="../app/src/main/resources/static/js/view/StaffOrderForm.js.html#L20">StaffOrderForm.showBoard</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/controller/OrderController.java.html#L82">OrderController.process</a>, <a href="../app/src/main/java/vn/ptit/ecom/controller/ShippingController.java.html#L22">ShippingController.ship</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/service/OrderService.java.html#L103">OrderService.process</a>, <a href="../app/src/main/java/vn/ptit/ecom/service/ShippingService.java.html#L18">ShippingService.ship</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/model/order/OrderStatus.java.html#L15">OrderStatus transition table</a> (BR09), <a href="../app/src/main/java/vn/ptit/ecom/model/order/Order.java.html#L116">Order.ship</a> (BR10)</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/dao/OrderDAOImpl.java.html#L64">OrderDAOImpl.saveProgress</a>, <a href="../app/src/main/java/vn/ptit/ecom/dao/ShippingDAOImpl.java.html#L15">ShippingDAOImpl.save</a></td>
+</tr>
+<tr>
+<td>UC15</td>
+<td><a href="../app/src/main/resources/static/js/view/StockForm.js.html#L36">StockForm.submitStock</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/controller/ProductController.java.html#L75">ProductController.updateStock</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/service/CatalogService.java.html#L49">CatalogService.updateStock</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/model/product/Product.java.html#L42">Product.updateStock</a> (BR12)</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/dao/ProductDAOImpl.java.html#L146">ProductDAOImpl.updateStock</a></td>
+</tr>
+<tr>
+<td>UC04 AI search</td>
+<td><a href="../app/src/main/resources/static/js/view/SearchForm.js.html#L53">SearchForm.showResults</a>, <a href="../app/src/main/resources/static/js/view/SearchForm.js.html#L79">startVoice</a>, <a href="../app/src/main/resources/static/js/view/SearchForm.js.html#L130">submitPhoto</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/controller/SearchController.java.html#L46">SearchController.search</a>, <a href="../app/src/main/java/vn/ptit/ecom/controller/SearchController.java.html#L51">searchByPhoto</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/service/SearchService.java.html#L63">SearchService.search</a>, <a href="../app/src/main/java/vn/ptit/ecom/service/SearchService.java.html#L78">searchByPhoto</a></td>
+<td>package ai: <a href="../app/src/main/java/vn/ptit/ecom/ai/QueryInterpreter.java.html#L88">QueryInterpreter.interpret</a>, <a href="../app/src/main/java/vn/ptit/ecom/ai/ProductIndex.java.html#L91">ProductIndex.rank</a>, <a href="../app/src/main/java/vn/ptit/ecom/ai/ImageIndex.java.html#L44">ImageIndex.rank</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/dao/ProductDAOImpl.java.html#L63">ProductDAOImpl.search</a> (the catalogue to index; keyword fallback)</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="3-business-rules">3. Business rules</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Where it is enforced</th>
+<th>Test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BR01 active products only</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/model/cart/Cart.java.html#L23">Cart.addItem</a>; <code>reserveStock</code> checks <code>status = 'ACTIVE'</code></td>
+<td><code>hiddenProductsCannotBeAdded</code></td>
+</tr>
+<tr>
+<td>BR02 one line per product, quantity within stock</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/model/cart/Cart.java.html#L23">Cart.addItem</a>; UNIQUE(cart_id, product_id) in <code>db/schema.sql</code></td>
+<td><code>addingTheSameProductMergesLinesAndRespectsStock</code>; smoke &quot;BR02 …&quot;</td>
+</tr>
+<tr>
+<td>BR03 cart price checked at checkout</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/model/cart/Cart.java.html#L57">Cart.validate</a>; expected total in <a href="../app/src/main/java/vn/ptit/ecom/service/OrderService.java.html#L56">OrderService.placeOrder</a></td>
+<td><code>validationTakesOverChangedPrices</code></td>
+</tr>
+<tr>
+<td>BR04 totals</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/model/order/Order.java.html#L57">Totals.of</a>; CHECK on <code>customer_order</code></td>
+<td><code>totalsApplyVipDiscountAndFreeDelivery</code>; smoke &quot;BR04 …&quot;</td>
+</tr>
+<tr>
+<td>BR05 stock reserved, never negative</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/dao/ProductDAOImpl.java.html#L135">ProductDAOImpl.reserveStock</a>; CHECK stock_quantity ≥ 0</td>
+<td><code>lastUnitCanBeSoldOnlyOnce</code>, <code>theDatabaseItselfRefusesNegativeStock</code>, <code>aFailedOrderWriteRollsBackTheStockReservation</code></td>
+</tr>
+<tr>
+<td>BR06 own delivery address</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/service/OrderService.java.html#L56">OrderService.placeOrder</a></td>
+<td><code>placingNeedsAnOwnAddressAndEnoughStock</code></td>
+</tr>
+<tr>
+<td>BR07 PAID only after approval, no full card number</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/model/order/Order.java.html#L96">Order.recordCardPayment</a>, <code>pay_credit</code> has last 4 + token only</td>
+<td><code>cardOrderBecomesPaidOnlyAfterApproval</code>; smoke &quot;BR07 …&quot;</td>
+</tr>
+<tr>
+<td>BR08 own cart and orders only</td>
+<td>session customer id in the controllers, owner filter in <code>OrderService.load</code></td>
+<td><code>ordersOfOtherCustomersAreNotFound</code>; smoke &quot;BR08 …&quot;</td>
+</tr>
+<tr>
+<td>BR09 status transitions</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/model/order/OrderStatus.java.html#L15">OrderStatus</a></td>
+<td><code>lifecycleFollowsTheTransitionTable</code>, <code>customersCannotCancelOncePackingStarted</code>; smoke &quot;BR09 …&quot;</td>
+</tr>
+<tr>
+<td>BR10 one shipment per order</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/model/order/Order.java.html#L116">Order.ship</a>; UNIQUE(order_id) on <code>shipping</code></td>
+<td><code>lifecycleFollowsTheTransitionTable</code>; smoke &quot;UC14 ship creates the shipment (BR10)&quot;</td>
+</tr>
+<tr>
+<td>BR11 cash payment on delivery</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/model/order/Order.java.html#L125">Order.deliver</a></td>
+<td><code>lifecycleFollowsTheTransitionTable</code> (COD order delivered gets a CASH payment)</td>
+</tr>
+<tr>
+<td>BR12 stock ≥ 0</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/model/product/Product.java.html#L42">Product.updateStock</a>, called by <a href="../app/src/main/java/vn/ptit/ecom/service/CatalogService.java.html#L49">CatalogService.updateStock</a>; CHECK in the table</td>
+<td><code>theDatabaseItselfRefusesNegativeStock</code>; smoke and e2e &quot;BR12 …&quot;</td>
+</tr>
+<tr>
+<td>BR13 staff role</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/controller/CurrentUser.java.html#L16">CurrentUser.require</a></td>
+<td><code>staffFunctionsNeedTheStaffRole</code>; smoke and e2e &quot;BR13 …&quot;</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="3b-rules-of-the-ai-search-spec-61">3b. Rules of the AI search (SPEC 6.1)</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Where it is enforced</th>
+<th>Test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AI01 ACTIVE products only</td>
+<td>the index is built from <a href="../app/src/main/java/vn/ptit/ecom/service/SearchService.java.html#L97">activeProducts</a>; a product hidden since then is skipped in <a href="../app/src/main/java/vn/ptit/ecom/service/SearchService.java.html#L104">items</a></td>
+<td>no separate test: the index is built only from ACTIVE products (code review)</td>
+</tr>
+<tr>
+<td>AI02 explain the understanding and every result</td>
+<td>reasons in <a href="../app/src/main/java/vn/ptit/ecom/ai/ProductIndex.java.html#L91">ProductIndex.rank</a>; chips in <a href="../app/src/main/resources/static/js/view/SearchForm.js.html#L53">SearchForm.showResults</a></td>
+<td><code>synonymsAndColourFindTheRedSneakers</code>; e2e &quot;AI02/AI03 …&quot;</td>
+</tr>
+<tr>
+<td>AI03 price limit is a hard filter</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/ai/ProductIndex.java.html#L108">ProductIndex.rank</a></td>
+<td><code>priceLimitIsAHardFilter</code>; smoke &quot;AT13 …&quot;</td>
+</tr>
+<tr>
+<td>AI04 keyword fallback, said on the page</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/service/SearchService.java.html#L63">SearchService.search</a></td>
+<td><code>nothingFoundFallsBackToKeywordSearch</code>; smoke &quot;AT16 …&quot;</td>
+</tr>
+<tr>
+<td>AI05 photos and voice never stored</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/service/SearchService.java.html#L78">SearchService.searchByPhoto</a> decodes in memory; speech to text in the browser</td>
+<td>no separate test: SearchService writes no file and no table (code review)</td>
+</tr>
+<tr>
+<td>AI06 input limits (200 characters, 5 MB, JPEG or PNG)</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/ai/QueryInterpreter.java.html#L88">QueryInterpreter.interpret</a>, <a href="../app/src/main/java/vn/ptit/ecom/service/SearchService.java.html#L81">SearchService.searchByPhoto</a>, <a href="../app/src/main/java/vn/ptit/ecom/controller/ApiErrors.java.html#L39">ApiErrors</a></td>
+<td><code>tooLongQueryIsRefused</code>, <code>aTextFileIsNotAPhoto</code>; smoke &quot;AI06 …&quot;</td>
+</tr>
+<tr>
+<td>AI07 out of stock ranks 20 % lower in a text search</td>
+<td><code>OUT_OF_STOCK_FACTOR</code> in <a href="../app/src/main/java/vn/ptit/ecom/service/SearchService.java.html#L102">SearchService</a></td>
+<td><code>outOfStockProductRanksLower</code></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="4-test-evidence">4. Test evidence</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Suite</th>
+<th>Command</th>
+<th>Result (11/11/2026)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>JUnit 5 (model rules, checkout flow and AI search on a real SQLite file)</td>
+<td><code>mvn test</code> in <code>app/</code></td>
+<td>24 tests pass (OrderRulesTest 9, CheckoutFlowTest 5, SearchTest 10)</td>
+</tr>
+<tr>
+<td>API smoke test</td>
+<td><code>python tests/smoke_api.py</code> (server running)</td>
+<td>36/36 checks pass</td>
+</tr>
+<tr>
+<td>End-to-end in Microsoft Edge</td>
+<td><code>node tests/e2e/run_e2e.mjs</code> (fresh database)</td>
+<td>30/30 checks pass, screenshots in <a href="evidence/e2e/e2e_result.txt.html">docs/evidence/e2e</a></td>
+</tr>
+<tr>
+<td>Design model against code</td>
+<td><code>python tests/design_vs_code.py</code></td>
+<td>73 Java classes, 169 attributes, 134 operations, 8 view classes with 25 operations, 48 sequence calls agree; the 6 files of <code>ai</code> import nothing else of the application</td>
+</tr>
+<tr>
+<td>VP-generated code against the code</td>
+<td><code>python tests/vpgen_vs_code.py</code></td>
+<td>the 81 files of the Instant Generator (<code>docs/evidence/vp_codegen</code>): 73 classes, 190 fields, 157 methods, 8 view classes all present</td>
+</tr>
+<tr>
+<td>AI search quality</td>
+<td><code>python tests/search_eval.py</code> (server running)</td>
+<td>30 queries: hit@1 0.97 (keyword 0.23), MRR 0.97, zero results 0.03; 84 photos: top-1 0.93, top-3 1.00 (<a href="evidence/search_eval.txt.html">search_eval.txt</a>)</td>
+</tr>
+<tr>
+<td>VP DDL against the schema</td>
+<td><code>python db/compare_schema.py</code></td>
+<td>identical</td>
+</tr>
+</tbody>
+</table></div>
+</main>
+</body>
+</html>

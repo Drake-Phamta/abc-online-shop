@@ -1,0 +1,94 @@
+# diagram	number	sender	receiver	label	return
+G5 Design sequence - UC06 Manage Shopping Cart (add an item)	1	Customer	ProductForm	click Add to cart	false
+G5 Design sequence - UC06 Manage Shopping Cart (add an item)	2	ProductForm	CartForm	submitAddItem(productId, quantity)	false
+G5 Design sequence - UC06 Manage Shopping Cart (add an item)	3	CartForm	CartController	POST /api/cart/items: addItem(req, session)	false
+G5 Design sequence - UC06 Manage Shopping Cart (add an item)	4	CartController	CartService	addItem(customerId, productId, quantity)	false
+G5 Design sequence - UC06 Manage Shopping Cart (add an item)	5	CartService	Database	inTransaction(work)	false
+G5 Design sequence - UC06 Manage Shopping Cart (add an item)	6	Database	CartService	run(daos)	false
+G5 Design sequence - UC06 Manage Shopping Cart (add an item)	7	CartService	ProductDAO	findById(productId)	false
+G5 Design sequence - UC06 Manage Shopping Cart (add an item)	8	ProductDAO	CartService	Optional<Product>	true
+G5 Design sequence - UC06 Manage Shopping Cart (add an item)	9	CartService	CartDAO	findOrCreate(customerId)	false
+G5 Design sequence - UC06 Manage Shopping Cart (add an item)	10	CartDAO	CartService	cart	true
+G5 Design sequence - UC06 Manage Shopping Cart (add an item)	11	CartService	Cart	addItem(product, quantity)	false
+G5 Design sequence - UC06 Manage Shopping Cart (add an item)	12	Cart	CartService	CartItem, BR01 and BR02 checked	true
+G5 Design sequence - UC06 Manage Shopping Cart (add an item)	13	CartService	CartController	RuleViolation, the transaction rolls back	true
+G5 Design sequence - UC06 Manage Shopping Cart (add an item)	14	CartController	CartForm	409 {rule, message}	true
+G5 Design sequence - UC06 Manage Shopping Cart (add an item)	15	CartService	CartDAO	save(cart)	false
+G5 Design sequence - UC06 Manage Shopping Cart (add an item)	16	Database	CartService	cart (commit)	true
+G5 Design sequence - UC06 Manage Shopping Cart (add an item)	17	CartService	CartController	cart	true
+G5 Design sequence - UC06 Manage Shopping Cart (add an item)	18	CartController	CartForm	200 CartView	true
+G6 Design sequence - UC07 Place Order / Checkout	1	Customer	OrderForm	click Place order	false
+G6 Design sequence - UC07 Place Order / Checkout	2	OrderForm	OrderController	POST /api/orders: placeOrder(req, session)	false
+G6 Design sequence - UC07 Place Order / Checkout	3	OrderController	OrderService	placeOrder(customerId, addressId, method, expectedTotal)	false
+G6 Design sequence - UC07 Place Order / Checkout	4	OrderService	Database	inTransaction(work)	false
+G6 Design sequence - UC07 Place Order / Checkout	5	Database	OrderService	run(daos)	false
+G6 Design sequence - UC07 Place Order / Checkout	6	OrderService	CustomerDAO	findById(customerId)	false
+G6 Design sequence - UC07 Place Order / Checkout	7	CustomerDAO	OrderService	Optional<Customer>	true
+G6 Design sequence - UC07 Place Order / Checkout	8	OrderService	CustomerDAO	address(addressId)	false
+G6 Design sequence - UC07 Place Order / Checkout	9	CustomerDAO	OrderService	Optional<Address>	true
+G6 Design sequence - UC07 Place Order / Checkout	10	OrderService	CartDAO	findOrCreate(customerId)	false
+G6 Design sequence - UC07 Place Order / Checkout	11	CartDAO	OrderService	cart	true
+G6 Design sequence - UC07 Place Order / Checkout	12	OrderService	Order	place(customer, cart, address, method, now)	false
+G6 Design sequence - UC07 Place Order / Checkout	13	Order	OrderService	order with totals (BR04) and blocking issues (BR05)	true
+G6 Design sequence - UC07 Place Order / Checkout	14	OrderService	OrderController	RuleViolation, the transaction rolls back	true
+G6 Design sequence - UC07 Place Order / Checkout	15	OrderService	ProductDAO	reserveStock(productId, quantity)	false
+G6 Design sequence - UC07 Place Order / Checkout	16	ProductDAO	OrderService	reserved: true or false	true
+G6 Design sequence - UC07 Place Order / Checkout	17	OrderService	OrderController	RuleViolation, the transaction rolls back	true
+G6 Design sequence - UC07 Place Order / Checkout	18	OrderService	OrderDAO	insert(order)	false
+G6 Design sequence - UC07 Place Order / Checkout	19	OrderService	CartDAO	clear(cart)	false
+G6 Design sequence - UC07 Place Order / Checkout	20	Database	OrderService	order (commit)	true
+G6 Design sequence - UC07 Place Order / Checkout	21	OrderService	OrderController	order	true
+G6 Design sequence - UC07 Place Order / Checkout	22	OrderController	OrderForm	200 {orderId, code, status}	true
+G6 Design sequence - UC07 Place Order / Checkout	23	OrderForm	PaymentForm	showPayment(orderId)	false
+G6 Design sequence - UC07 Place Order / Checkout	24	OrderForm	OrderForm	showOrder(orderId)	false
+G7 Design sequence - UC08 Make Payment	1	Customer	PaymentForm	enter card, click Pay	false
+G7 Design sequence - UC08 Make Payment	2	PaymentForm	PaymentController	POST /api/orders/{id}/payments: pay(id, req, session)	false
+G7 Design sequence - UC08 Make Payment	3	PaymentController	CardData	CardData(holder, number, expiry, cvv)	false
+G7 Design sequence - UC08 Make Payment	4	CardData	PaymentController	card	true
+G7 Design sequence - UC08 Make Payment	5	PaymentController	PaymentForm	400 {field, message}	true
+G7 Design sequence - UC08 Make Payment	6	PaymentController	PaymentService	pay(orderId, customerId, card)	false
+G7 Design sequence - UC08 Make Payment	7	PaymentService	Database	inTransaction(work)	false
+G7 Design sequence - UC08 Make Payment	8	Database	PaymentService	run(daos)	false
+G7 Design sequence - UC08 Make Payment	9	PaymentService	OrderDAO	findById(id)	false
+G7 Design sequence - UC08 Make Payment	10	OrderDAO	PaymentService	Optional<Order>	true
+G7 Design sequence - UC08 Make Payment	11	Database	PaymentService	order	true
+G7 Design sequence - UC08 Make Payment	12	PaymentService	PaymentController	RuleViolation	true
+G7 Design sequence - UC08 Make Payment	13	PaymentController	PaymentForm	409 {rule, message}	true
+G7 Design sequence - UC08 Make Payment	14	PaymentService	CardProvider	charge(orderCode, amount, card)	false
+G7 Design sequence - UC08 Make Payment	15	CardProvider	PaymentService	Result(approved, token, reason)	true
+G7 Design sequence - UC08 Make Payment	16	PaymentService	Database	inTransaction(work)	false
+G7 Design sequence - UC08 Make Payment	17	Database	PaymentService	run(daos)	false
+G7 Design sequence - UC08 Make Payment	18	PaymentService	OrderDAO	findById(id)	false
+G7 Design sequence - UC08 Make Payment	19	OrderDAO	PaymentService	Optional<Order>	true
+G7 Design sequence - UC08 Make Payment	20	PaymentService	Order	recordCardPayment(payment, now)	false
+G7 Design sequence - UC08 Make Payment	21	Order	PaymentService	PAID if approved (BR07)	true
+G7 Design sequence - UC08 Make Payment	22	PaymentService	PaymentDAO	saveAll(orderId, payments)	false
+G7 Design sequence - UC08 Make Payment	23	PaymentService	OrderDAO	saveProgress(order)	false
+G7 Design sequence - UC08 Make Payment	24	Database	PaymentService	PaymentResult (commit)	true
+G7 Design sequence - UC08 Make Payment	25	PaymentService	PaymentController	PaymentResult(approved, order, reason)	true
+G7 Design sequence - UC08 Make Payment	26	PaymentController	PaymentForm	200 {approved, status, message}	true
+G7 Design sequence - UC08 Make Payment	27	PaymentForm	OrderForm	showOrder(orderId)	false
+G7 Design sequence - UC08 Make Payment	28	PaymentForm	PaymentForm	showPayment(orderId)	false
+G9 Design sequence - UC04 Browse / Search Products (AI search by text)	1	Customer	SearchForm	type or say the query	false
+G9 Design sequence - UC04 Browse / Search Products (AI search by text)	2	SearchForm	SearchController	GET /api/search?q=: search(q)	false
+G9 Design sequence - UC04 Browse / Search Products (AI search by text)	3	SearchController	SearchService	search(text)	false
+G9 Design sequence - UC04 Browse / Search Products (AI search by text)	4	SearchService	Database	inTransaction(work)	false
+G9 Design sequence - UC04 Browse / Search Products (AI search by text)	5	Database	SearchService	run(daos)	false
+G9 Design sequence - UC04 Browse / Search Products (AI search by text)	6	SearchService	ProductDAO	search(keyword, categorySlug, sort)	false
+G9 Design sequence - UC04 Browse / Search Products (AI search by text)	7	ProductDAO	SearchService	ACTIVE products with fresh price and stock	true
+G9 Design sequence - UC04 Browse / Search Products (AI search by text)	8	Database	SearchService	products	true
+G9 Design sequence - UC04 Browse / Search Products (AI search by text)	9	SearchService	ProductIndex	build(documents)	false
+G9 Design sequence - UC04 Browse / Search Products (AI search by text)	10	ProductIndex	SearchService	new index and vocabulary	true
+G9 Design sequence - UC04 Browse / Search Products (AI search by text)	11	SearchService	QueryInterpreter	interpret(text)	false
+G9 Design sequence - UC04 Browse / Search Products (AI search by text)	12	QueryInterpreter	SearchService	SearchQuery: terms, related words, corrections, prices	true
+G9 Design sequence - UC04 Browse / Search Products (AI search by text)	13	SearchService	ProductIndex	rank(q, k)	false
+G9 Design sequence - UC04 Browse / Search Products (AI search by text)	14	ProductIndex	SearchService	List<Hit> with scores and reasons	true
+G9 Design sequence - UC04 Browse / Search Products (AI search by text)	15	SearchService	Database	inTransaction(work)	false
+G9 Design sequence - UC04 Browse / Search Products (AI search by text)	16	Database	SearchService	run(daos)	false
+G9 Design sequence - UC04 Browse / Search Products (AI search by text)	17	SearchService	ProductDAO	search(keyword, categorySlug, sort)	false
+G9 Design sequence - UC04 Browse / Search Products (AI search by text)	18	ProductDAO	SearchService	keyword matches	true
+G9 Design sequence - UC04 Browse / Search Products (AI search by text)	19	Database	SearchService	products	true
+G9 Design sequence - UC04 Browse / Search Products (AI search by text)	20	SearchService	SearchService	AI07: out of stock lower	false
+G9 Design sequence - UC04 Browse / Search Products (AI search by text)	21	SearchService	SearchController	SearchResult(mode, understood, items, fallback)	true
+G9 Design sequence - UC04 Browse / Search Products (AI search by text)	22	SearchController	SearchForm	200 SearchView	true
+G9 Design sequence - UC04 Browse / Search Products (AI search by text)	23	SearchForm	SearchForm	show query and reasons	false

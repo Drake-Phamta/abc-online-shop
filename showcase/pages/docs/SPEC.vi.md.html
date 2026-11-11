@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SPEC.vi.md · ABC Online Shop</title>
+<link rel="stylesheet" href="../../../app/src/main/resources/static/fonts/fonts.css">
+<link rel="stylesheet" href="../../../showcase/assets/showcase.css">
+<script src="../../../showcase/pages/manifest.js" defer></script>
+<script src="../../../showcase/assets/showcase.js" defer></script>
+</head>
+<body class="viewer" data-file="docs/SPEC.vi.md">
+<header class="vbar">
+  <a class="vback" href="../../../showcase/index.html" data-i18n="back">← Showcase</a>
+  <span class="vpath">docs/<b>SPEC.vi.md</b></span>
+  <span class="vactions"><span class="lang vlang" aria-label="Language"><a href="SPEC.md.html" lang="en">EN</a><a href="SPEC.vi.md.html" lang="vi" aria-current="page">VI</a></span>
+    <button type="button" class="vbtn local-only" data-reveal="docs/SPEC.vi.md" data-i18n="reveal">Show in File Explorer</button>
+    <a class="vbtn" data-github="docs/SPEC.vi.md" hidden data-i18n="github">View on GitHub</a>
+  </span>
+</header>
+<main class="doc">
+<h1 id="spec-requirements-of-the-implemented-slice">SPEC: yêu cầu của phần đã cài đặt</h1>
+<p>Xuất phát từ tiểu luận (chương 1 FR/NFR, chương 2 các use case UC01 đến UC21 và đặc tả UC07). File này
+chỉ đặc tả những gì ứng dụng cài đặt; mỗi quy tắc đều có một mã định danh để mã nguồn và kiểm thử viện dẫn.</p>
+<h2 id="1-scope">1. Phạm vi</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Use case</th>
+<th>Tác nhân</th>
+<th>FR / NFR</th>
+<th>Đã cài đặt</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UC02 Login (đăng nhập)</td>
+<td>Customer (khách hàng), Sales Staff (nhân viên bán hàng), Warehouse Staff (nhân viên kho)</td>
+<td>FR02, NFR03, NFR04</td>
+<td>có</td>
+</tr>
+<tr>
+<td>UC04 Browse / Search Products (duyệt / tìm kiếm sản phẩm), kèm tìm kiếm AI ở mục 6 (văn bản, giọng nói, ảnh)</td>
+<td>Customer (cả khách vãng lai)</td>
+<td>FR04, FR05, NFR01, FR-S1 đến FR-S7</td>
+<td>có</td>
+</tr>
+<tr>
+<td>UC05 View Product (xem sản phẩm)</td>
+<td>Customer (cả khách vãng lai)</td>
+<td>FR06</td>
+<td>có</td>
+</tr>
+<tr>
+<td>UC06 Manage Shopping Cart (quản lý giỏ hàng)</td>
+<td>Customer</td>
+<td>FR07, FR08</td>
+<td>có</td>
+</tr>
+<tr>
+<td>UC07 Place Order / Checkout (đặt hàng / thanh toán), include UC21 Validate Cart (kiểm tra giỏ hàng)</td>
+<td>Customer</td>
+<td>FR09, FR10, FR11, FR15, FR16, NFR10</td>
+<td>có</td>
+</tr>
+<tr>
+<td>UC08 Make Payment (thanh toán)</td>
+<td>Customer, Payment Provider (nhà cung cấp thanh toán, mô phỏng)</td>
+<td>FR14</td>
+<td>có</td>
+</tr>
+<tr>
+<td>UC09 Track Order (theo dõi đơn hàng)</td>
+<td>Customer</td>
+<td>FR12, FR18</td>
+<td>có</td>
+</tr>
+<tr>
+<td>UC14 Process Orders (xử lý đơn hàng, gồm cả dữ liệu vận chuyển của UC16)</td>
+<td>Sales Staff</td>
+<td>FR13, FR17, FR18</td>
+<td>có</td>
+</tr>
+<tr>
+<td>UC15 Manage Inventory (quản lý tồn kho)</td>
+<td>Warehouse Staff</td>
+<td>FR16</td>
+<td>có</td>
+</tr>
+<tr>
+<td>UC01, UC03, UC10 đến UC13, UC16 đến UC20</td>
+<td></td>
+<td></td>
+<td>chỉ đặc tả trong tiểu luận</td>
+</tr>
+</tbody>
+</table></div>
+<p>Payment Provider được mô phỏng ngay trong ứng dụng (không có mạng thẻ thật): số thẻ kết thúc bằng <code>0002</code>
+bị từ chối, mọi số hợp lệ khác được chấp nhận. Nhà cung cấp trả về một token; cửa hàng không bao giờ lưu đầy đủ
+số thẻ (BR07).</p>
+<h2 id="2-business-rules">2. Quy tắc nghiệp vụ</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Quy tắc</th>
+<th>Thực thi tại</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BR01</td>
+<td>Chỉ sản phẩm có trạng thái ACTIVE mới được thêm vào giỏ hàng hoặc đặt hàng.</td>
+<td>model + controller</td>
+</tr>
+<tr>
+<td>BR02</td>
+<td>Một giỏ hàng chỉ có tối đa một dòng cho mỗi sản phẩm; thêm lại sản phẩm đó thì tăng số lượng. Số lượng của một dòng nằm giữa 1 và tồn kho hiện tại.</td>
+<td>model + DB UNIQUE(cart_id, product_id), CHECK</td>
+</tr>
+<tr>
+<td>BR03</td>
+<td>Một dòng giỏ hàng giữ giá hiển thị lúc nó được thêm vào (giá trong giỏ). Khi đặt hàng, từng dòng được kiểm tra lại theo giá, trạng thái và tồn kho hiện tại (UC21). Nếu giá đã đổi, dòng đó lấy giá hiện tại và khách hàng phải xác nhận lại.</td>
+<td>Cart validation</td>
+</tr>
+<tr>
+<td>BR04</td>
+<td>Tổng đơn hàng = tạm tính − giảm giá VIP + phí vận chuyển. Tạm tính = Σ số lượng × đơn giá. Giảm giá VIP = round(tạm tính × tỷ lệ giảm giá). Phí vận chuyển = 30 000 VND, miễn phí khi tạm tính sau giảm giá từ 500 000 VND trở lên. Số tiền là số nguyên VND.</td>
+<td>Order</td>
+</tr>
+<tr>
+<td>BR05</td>
+<td>Tồn kho được giữ khi đơn hàng được tạo và không bao giờ âm; được trả lại khi đơn hàng bị hủy.</td>
+<td>cập nhật có điều kiện trong DAO + DB CHECK</td>
+</tr>
+<tr>
+<td>BR06</td>
+<td>Một đơn hàng cần có địa chỉ giao hàng thuộc về khách hàng.</td>
+<td>controller + FK</td>
+</tr>
+<tr>
+<td>BR07</td>
+<td>Một đơn hàng chỉ được đánh dấu PAID sau khi nhà cung cấp trả kết quả chấp nhận. Cửa hàng lưu tên chủ thẻ, bốn số cuối, ngày hết hạn và token của nhà cung cấp, không bao giờ lưu đầy đủ số thẻ.</td>
+<td>Payment</td>
+</tr>
+<tr>
+<td>BR08</td>
+<td>Khách hàng chỉ xem và thay đổi giỏ hàng và đơn hàng của chính mình.</td>
+<td>controller (id khách hàng trong session)</td>
+</tr>
+<tr>
+<td>BR09</td>
+<td>Trạng thái đơn hàng chỉ thay đổi theo các chuyển trạng thái ở mục 3, do tác nhân được nêu ở đó thực hiện.</td>
+<td>bảng chuyển trạng thái của OrderStatus</td>
+</tr>
+<tr>
+<td>BR10</td>
+<td>Mỗi đơn hàng có một lô vận chuyển, được tạo khi đơn hàng được giao đi (đơn vị vận chuyển, mã vận đơn, phí).</td>
+<td>DB UNIQUE(order_id)</td>
+</tr>
+<tr>
+<td>BR11</td>
+<td>Đơn hàng thanh toán khi nhận hàng (COD) có bản ghi thanh toán tiền mặt khi đơn được giao đến nơi.</td>
+<td>vòng đời của Order</td>
+</tr>
+<tr>
+<td>BR12</td>
+<td>Nhân viên kho có thể đặt tồn kho là bất kỳ số lượng ≥ 0 cho một sản phẩm đã có.</td>
+<td>controller + DB CHECK</td>
+</tr>
+<tr>
+<td>BR13</td>
+<td>Các chức năng của nhân viên đòi hỏi tài khoản nhân viên có đúng vai trò (SALES cho đơn hàng, WAREHOUSE cho tồn kho).</td>
+<td>controller</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="3-order-state-machine-br09">3. Máy trạng thái của đơn hàng (BR09)</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Từ</th>
+<th>Đến</th>
+<th>Tác nhân / điều kiện kích hoạt</th>
+<th>Hệ quả</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(mới)</td>
+<td>PENDING_PAYMENT</td>
+<td>Khách hàng xác nhận đặt hàng bằng thẻ</td>
+<td>tạo đơn hàng + các dòng, giữ tồn kho, làm rỗng giỏ hàng</td>
+</tr>
+<tr>
+<td>(mới)</td>
+<td>PLACED</td>
+<td>Khách hàng xác nhận đặt hàng thanh toán khi nhận hàng</td>
+<td>như trên</td>
+</tr>
+<tr>
+<td>PENDING_PAYMENT</td>
+<td>PAID</td>
+<td>Nhà cung cấp chấp nhận thanh toán bằng thẻ (UC08)</td>
+<td>thanh toán APPROVED + một dòng pay_credit</td>
+</tr>
+<tr>
+<td>PENDING_PAYMENT</td>
+<td>PENDING_PAYMENT</td>
+<td>Nhà cung cấp từ chối (UC08 A4)</td>
+<td>một dòng thanh toán DECLINED; khách hàng có thể thử lại</td>
+</tr>
+<tr>
+<td>PENDING_PAYMENT</td>
+<td>CANCELLED</td>
+<td>Khách hàng bỏ dở</td>
+<td>trả lại tồn kho</td>
+</tr>
+<tr>
+<td>PLACED</td>
+<td>CANCELLED</td>
+<td>Khách hàng hoặc nhân viên bán hàng</td>
+<td>trả lại tồn kho</td>
+</tr>
+<tr>
+<td>PLACED, PAID</td>
+<td>PROCESSING</td>
+<td>Nhân viên bán hàng</td>
+<td></td>
+</tr>
+<tr>
+<td>PAID, PROCESSING</td>
+<td>CANCELLED</td>
+<td>Nhân viên bán hàng</td>
+<td>trả lại tồn kho; khoản thanh toán đã chấp nhận chuyển thành REFUNDED</td>
+</tr>
+<tr>
+<td>PROCESSING</td>
+<td>SHIPPED</td>
+<td>Nhân viên bán hàng nhập đơn vị vận chuyển và mã vận đơn</td>
+<td>tạo một dòng vận chuyển</td>
+</tr>
+<tr>
+<td>SHIPPED</td>
+<td>DELIVERED</td>
+<td>Nhân viên bán hàng (đơn vị vận chuyển xác nhận)</td>
+<td>vận chuyển DELIVERED; COD: thanh toán COMPLETED + một dòng pay_cash</td>
+</tr>
+</tbody>
+</table></div>
+<p>Thay đổi so với nội dung UC07 trong tiểu luận: đơn hàng nay được tạo <strong>trước</strong> khi thanh toán (trạng thái PENDING_PAYMENT) vì
+FR14 ghi kết quả của nhà cung cấp &quot;vào đúng đơn hàng&quot;, điều này cần có sẵn một tham chiếu đến đơn hàng, và tồn kho
+phải được giữ trong lúc khách hàng thanh toán. Đơn hàng vẫn chỉ chuyển sang PAID sau khi được chấp nhận (BR07), đúng như UC07 yêu cầu.</p>
+<h2 id="4-use-case-specifications">4. Đặc tả use case</h2>
+<h3 id="uc02-login">UC02 Login</h3>
+<p>Luồng chính: 1. Người dùng nhập email và mật khẩu. 2. Hệ thống kiểm tra tài khoản (khách hàng hoặc nhân viên) và mã băm
+của mật khẩu. 3. Hệ thống tạo một session với id và vai trò của người dùng rồi mở trang bắt đầu của vai trò đó.
+Luồng thay thế: A1 sai email hoặc mật khẩu: thông báo chung, không gợi ý cái nào sai.</p>
+<h3 id="uc04-browse--search-products-uc05-view-product">UC04 Browse / Search Products, UC05 View Product</h3>
+<p>Luồng chính: 1. Khách hàng mở danh mục sản phẩm, có thể chọn một danh mục (danh mục cha hiển thị sản phẩm của các danh mục con),
+hoặc gõ nội dung tìm kiếm ở phần đầu trang. 2. Duyệt: Hệ thống liệt kê các sản phẩm ACTIVE của danh mục kèm
+giá và tình trạng còn hàng, sắp xếp theo độ liên quan, giá hoặc mới nhất. Tìm kiếm: tìm kiếm AI ở mục 6 diễn giải
+truy vấn, xếp hạng các sản phẩm ACTIVE và cho biết nó đã hiểu truy vấn ra sao và vì sao từng kết quả khớp. 3. Khách hàng
+mở một sản phẩm. 4. Hệ thống hiển thị dữ liệu chung (tên, thương hiệu, giá, tình trạng tồn kho, mô tả) và các thuộc tính
+của loại chi tiết của sản phẩm (book, laptop, phone, apparel).
+Các kiểu tìm kiếm (biểu đồ AI1: use case trừu tượng Search Products (tìm kiếm sản phẩm) được chuyên biệt hóa bởi Search by Text (theo văn bản), Search by
+Voice (bằng giọng nói) và Search by Photo (bằng ảnh); mọi kiểu đều include Rank and Explain Results (xếp hạng và giải thích kết quả), tìm bằng văn bản và giọng nói còn include Interpret
+Query (diễn giải truy vấn)): bằng văn bản như ở bước 2; bằng giọng nói, trình duyệt chuyển giọng nói thành văn bản, khách hàng có thể sửa văn bản đó, rồi
+việc tìm kiếm chạy như tìm bằng văn bản; bằng ảnh, khách hàng tải lên một ảnh và Hệ thống xếp hạng các sản phẩm có hình ảnh giống
+nhất. Luồng thay thế: A1 không tìm thấy gì sau một truy vấn gõ hoặc nói (AI04, Fall Back to Keyword Search (quay về tìm theo từ khóa) extend
+Search Products tại &quot;không tìm thấy gì&quot;): tìm theo từ khóa trên tên, thương hiệu và danh mục; nếu kết quả cũng rỗng thì hiện một
+trạng thái rỗng kèm truy vấn và một liên kết quay về toàn bộ sản phẩm.</p>
+<h3 id="uc06-manage-shopping-cart">UC06 Manage Shopping Cart</h3>
+<p>Luồng chính: 1. Khách hàng thêm một sản phẩm kèm số lượng. 2. Hệ thống kiểm tra BR01, BR02 và tồn kho, rồi thêm hoặc gộp dòng
+với giá hiện tại làm giá trong giỏ. 3. Khách hàng đổi số lượng hoặc xóa một dòng. 4. Hệ thống tính lại
+tạm tính.
+Các luồng thay thế: A1 số lượng vượt tồn kho: bị từ chối kèm số lượng còn lại. A2 chưa đăng nhập: yêu cầu đăng nhập, rồi
+đưa quay lại sản phẩm.</p>
+<h3 id="uc07-place-order--checkout-uc21-validate-cart">UC07 Place Order / Checkout, UC21 Validate Cart</h3>
+<p>Luồng chính: 1. Khách hàng mở trang đặt hàng. 2. Hệ thống kiểm tra giỏ hàng (UC21, BR03). 3. Khách hàng chọn một địa chỉ
+giao hàng và một phương thức thanh toán (thẻ hoặc thanh toán khi nhận hàng). 4. Hệ thống hiển thị tạm tính, giảm giá VIP, phí vận chuyển và
+tổng cộng (BR04). 5. Khách hàng xác nhận. 6. Hệ thống, trong một giao dịch, kiểm tra lại giỏ hàng, tạo đơn hàng và các
+dòng của nó với đơn giá, giữ tồn kho (BR05) và làm rỗng giỏ hàng. 7. Thanh toán khi nhận hàng: đơn hàng PLACED,
+hiển thị xác nhận. Thẻ: UC08 chạy.
+Các luồng thay thế: A1 sản phẩm không còn bán hoặc không đủ tồn kho: việc xác nhận bị chặn, dòng bị đánh dấu, giỏ hàng không đổi. A2 không có
+địa chỉ hoặc địa chỉ của người khác: bị từ chối (BR06). A3 giá đã đổi kể từ khi vào giỏ: các dòng được cập nhật, khách hàng phải xác nhận tổng
+mới.</p>
+<h3 id="uc08-make-payment">UC08 Make Payment</h3>
+<p>Luồng chính: 1. Khách hàng nhập tên chủ thẻ, số thẻ, ngày hết hạn và CVV cho một đơn hàng PENDING_PAYMENT của chính mình. 2. Hệ thống
+gửi số tiền và tham chiếu đơn hàng cho nhà cung cấp. 3. Nhà cung cấp chấp nhận và trả về một token. 4. Hệ thống
+ghi nhận thanh toán (APPROVED, bốn số cuối, token) và đặt đơn hàng thành PAID.
+Các luồng thay thế: A1 bị từ chối: thanh toán được ghi là DECLINED, đơn hàng vẫn PENDING_PAYMENT, khách hàng có thể thử lại hoặc hủy.
+A2 dữ liệu thẻ không hợp lệ (định dạng, hết hạn): bị từ chối trước khi gọi nhà cung cấp.</p>
+<h3 id="uc09-track-order">UC09 Track Order</h3>
+<p>Luồng chính: 1. Khách hàng mở &quot;My orders&quot;. 2. Hệ thống liệt kê các đơn hàng của khách hàng, mới nhất trước. 3. Khách hàng mở một đơn.
+4. Hệ thống hiển thị các dòng, tổng tiền, các bản ghi thanh toán, lô vận chuyển (đơn vị vận chuyển, mã vận đơn) và lịch sử trạng thái.
+Luồng thay thế: A1 đơn hàng thuộc về người khác: &quot;not found&quot; (BR08), giống như đơn hàng không tồn tại.</p>
+<h3 id="uc14-process-orders">UC14 Process Orders</h3>
+<p>Luồng chính: 1. Nhân viên bán hàng mở bảng đơn hàng được nhóm theo trạng thái. 2. Nhân viên chuyển một đơn hàng theo BR09 (xử lý,
+giao đi kèm đơn vị vận chuyển và mã vận đơn, giao đến nơi, hủy). 3. Hệ thống áp dụng các hệ quả ở mục 3.
+Luồng thay thế: A1 không được phép chuyển trạng thái từ trạng thái hiện tại: bị từ chối kèm các thao tác được phép.</p>
+<h3 id="uc15-manage-inventory">UC15 Manage Inventory</h3>
+<p>Luồng chính: 1. Nhân viên kho mở danh sách tồn kho (hàng sắp hết lên trước). 2. Nhân viên đặt một số lượng mới. 3. Hệ thống lưu số lượng đó
+(BR12).
+Luồng thay thế: A1 số lượng âm hoặc không phải số: bị từ chối.</p>
+<h2 id="5-acceptance-tests-behaviour">5. Kiểm thử chấp nhận (hành vi)</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Cho trước</th>
+<th>Khi</th>
+<th>Thì</th>
+<th>Quy tắc</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AT01</td>
+<td>sản phẩm có tồn kho 2</td>
+<td>khách hàng thêm 3</td>
+<td>bị từ chối, giỏ hàng không đổi</td>
+<td>BR02</td>
+</tr>
+<tr>
+<td>AT02</td>
+<td>dòng giỏ hàng được thêm với giá 1 000 000, giá hiện tại là 900 000</td>
+<td>kiểm tra khi đặt hàng</td>
+<td>giá dòng 900 000, cờ &quot;giá đã đổi&quot;</td>
+<td>BR03</td>
+</tr>
+<tr>
+<td>AT03</td>
+<td>VIP 5 %, tạm tính 1 000 000</td>
+<td>tính tổng</td>
+<td>giảm giá 50 000, phí vận chuyển 0, tổng 950 000</td>
+<td>BR04</td>
+</tr>
+<tr>
+<td>AT04</td>
+<td>tồn kho 1, hai đơn hàng mỗi đơn 1</td>
+<td>lần đặt hàng thứ hai</td>
+<td>bị từ chối, tồn kho vẫn là 0</td>
+<td>BR05</td>
+</tr>
+<tr>
+<td>AT05</td>
+<td>thẻ kết thúc bằng 0002</td>
+<td>thanh toán</td>
+<td>DECLINED, đơn hàng vẫn PENDING_PAYMENT; thử lại với thẻ hợp lệ → PAID</td>
+<td>BR07</td>
+</tr>
+<tr>
+<td>AT06</td>
+<td>đơn hàng của khách hàng B</td>
+<td>khách hàng A yêu cầu xem</td>
+<td>404</td>
+<td>BR08</td>
+</tr>
+<tr>
+<td>AT07</td>
+<td>đơn hàng PLACED</td>
+<td>nhân viên giao đi ngay</td>
+<td>bị từ chối (phải đang PROCESSING)</td>
+<td>BR09</td>
+</tr>
+<tr>
+<td>AT08</td>
+<td>đơn COD đang SHIPPED</td>
+<td>nhân viên xác nhận đã giao</td>
+<td>DELIVERED, ghi nhận thanh toán tiền mặt</td>
+<td>BR11</td>
+</tr>
+<tr>
+<td>AT09</td>
+<td>đơn hàng PAID đã giữ tồn kho</td>
+<td>nhân viên hủy</td>
+<td>CANCELLED, trả lại tồn kho, thanh toán REFUNDED</td>
+<td>BR05, BR09</td>
+</tr>
+<tr>
+<td>AT10</td>
+<td>session của khách hàng</td>
+<td>gọi endpoint dành cho nhân viên</td>
+<td>403</td>
+<td>BR13</td>
+</tr>
+<tr>
+<td>AT11</td>
+<td>danh mục sản phẩm của dữ liệu demo</td>
+<td>tìm &quot;red sneakers&quot;</td>
+<td>Converse Chuck Taylor (giày vải đỏ) đứng đầu; &quot;sneakers&quot; được hiểu là giày</td>
+<td>AI02</td>
+</tr>
+<tr>
+<td>AT12</td>
+<td>như trên</td>
+<td>tìm &quot;macbok air&quot;</td>
+<td>Apple MacBook Air đứng đầu; trang hiện phần sửa lỗi macbok → macbook</td>
+<td>AI02</td>
+</tr>
+<tr>
+<td>AT13</td>
+<td>như trên</td>
+<td>tìm &quot;laptop under 10 million&quot;</td>
+<td>chỉ gồm laptop có giá tối đa 10 000 000 ₫ (ThinkPad T470, Latitude 5480)</td>
+<td>AI03</td>
+</tr>
+<tr>
+<td>AT14</td>
+<td>như trên</td>
+<td>tìm &quot;book for a programmer&quot;</td>
+<td>Clean Code và The Pragmatic Programmer nằm trong ba kết quả đầu</td>
+<td>AI02</td>
+</tr>
+<tr>
+<td>AT15</td>
+<td>ảnh một sản phẩm trong danh mục, đã cắt, tối hơn và trên nền khác</td>
+<td>tìm bằng ảnh</td>
+<td>sản phẩm đó đứng đầu</td>
+<td>FR-S5</td>
+</tr>
+<tr>
+<td>AT16</td>
+<td>như trên</td>
+<td>tìm &quot;xyzzy&quot;</td>
+<td>tìm kiếm AI và tìm theo từ khóa đều không thấy gì; trạng thái rỗng nói rõ điều đó</td>
+<td>AI04</td>
+</tr>
+<tr>
+<td>AT17</td>
+<td>một file văn bản gửi như ảnh</td>
+<td>tìm bằng ảnh</td>
+<td>400 &quot;not a JPEG or PNG image&quot;, không lưu gì</td>
+<td>AI05, AI06</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="6-ai-search-chapter-3-specification-of-the-ai-component">6. Tìm kiếm AI (chương 3): đặc tả thành phần AI</h2>
+<p>Xây dựng từ ghi chú của giảng viên &quot;Integrating AI into E-Commerce Systems&quot; (tích hợp AI vào hệ thống thương mại điện tử): vấn đề nghiệp vụ, yêu cầu, yêu cầu về AI và
+dữ liệu, rồi đến thành phần, các tương tác, lỗi, rủi ro và đánh giá.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Hạng mục</th>
+<th>ABC Online Shop</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vấn đề nghiệp vụ</td>
+<td>Khách hàng không gõ đúng tên sản phẩm thì không tìm thấy gì: tìm theo từ khóa chỉ khớp chuỗi con của tên, thương hiệu và danh mục. &quot;red sneakers&quot;, &quot;macbok&quot;, &quot;laptop under 10 million&quot; hay ảnh một chiếc giày đều không trả về sản phẩm nào, nên khách muốn mua lại bỏ đi. Chương 1 đòi hỏi nhiều hơn: nhu cầu của bên liên quan SN02 &quot;duyệt và tìm kiếm danh mục sản phẩm một cách hiệu quả&quot; và FR05 (Must) &quot;cho phép khách hàng tìm kiếm danh mục sản phẩm&quot;.</td>
+</tr>
+<tr>
+<td>Mục tiêu nghiệp vụ</td>
+<td>Nhiều lượt tìm kiếm kết thúc ở trang sản phẩm hoặc trong giỏ hàng hơn (tỷ lệ tìm kiếm thành công), ít lượt tìm kiếm không có kết quả hơn.</td>
+</tr>
+<tr>
+<td>Yêu cầu nghiệp vụ</td>
+<td>Cửa hàng giúp khách hàng tìm đúng sản phẩm chỉ trong một lần tìm, dù khách gõ, nói hay đưa ảnh.</td>
+</tr>
+<tr>
+<td>Yêu cầu chức năng</td>
+<td>FR-S1 diễn giải truy vấn văn bản tự do: từ đồng nghĩa và từ liên quan, lỗi chính tả, giới hạn giá; FR-S2 xếp hạng các sản phẩm ACTIVE theo độ liên quan; FR-S3 hiển thị truy vấn đã được hiểu ra sao và vì sao từng kết quả khớp; FR-S4 nhận truy vấn bằng giọng nói (chuyển giọng nói thành văn bản ngay trong trình duyệt, cho sửa trước khi gửi); FR-S5 nhận một ảnh và trả về các sản phẩm có hình giống nhất; FR-S6 quay về tìm theo từ khóa khi tìm kiếm AI không thấy gì; FR-S7 giữ chỉ mục đồng bộ với danh mục sản phẩm (dựng từ cơ sở dữ liệu khi khởi động).</td>
+</tr>
+<tr>
+<td>Chức năng AI</td>
+<td>Xếp hạng: với truy vấn q và mỗi sản phẩm p, một điểm liên quan s(q, p); kết quả là k sản phẩm đứng đầu. Văn bản: mô hình không gian vector với trọng số từ (TF-IDF) học từ văn bản của danh mục sản phẩm, kèm mở rộng truy vấn. Ảnh: một vector đặc trưng về màu sắc và hình dạng cho mỗi ảnh, độ tương đồng cosine.</td>
+</tr>
+<tr>
+<td>Đầu vào</td>
+<td>văn bản tối đa 200 ký tự, hoặc một ảnh JPEG hoặc PNG tối đa 5 MB</td>
+</tr>
+<tr>
+<td>Đầu ra</td>
+<td>tối đa 12 sản phẩm, mỗi sản phẩm kèm điểm và lý do; truy vấn đã được hiểu (từ khóa, phần mở rộng, phần sửa lỗi, giới hạn giá); một cờ khi đã dùng phương án dự phòng</td>
+</tr>
+<tr>
+<td>Nguồn dữ liệu</td>
+<td>product (tên, thương hiệu, mô tả, giá, trạng thái), category (tên và danh mục cha), book_detail, laptop_detail, phone_detail, apparel_detail (mọi giá trị), ảnh sản phẩm trong thư mục ảnh của cửa hàng; không lưu thêm gì mới</td>
+</tr>
+<tr>
+<td>Vị trí</td>
+<td>Thành phần AI nằm ở tầng logic nghiệp vụ (package <code>ai</code>), được SearchService gọi; không dùng dịch vụ bên ngoài</td>
+</tr>
+<tr>
+<td>Tương tác</td>
+<td>SearchForm (view) → SearchController → SearchService → QueryInterpreter, ProductIndex, ImageIndex; SearchService đọc danh mục sản phẩm qua ProductDAO</td>
+</tr>
+<tr>
+<td>Hiệu năng</td>
+<td>tìm bằng văn bản dưới 300 ms, tìm bằng ảnh dưới 1 s trên máy demo; hit@1 và MRR tốt hơn tìm theo từ khóa trên các truy vấn đã gán nhãn (mục 6.2)</td>
+</tr>
+<tr>
+<td>Cập nhật</td>
+<td>chỉ mục được dựng từ cơ sở dữ liệu khi lần tìm kiếm đầu tiên chạy và được dựng lại sau khi danh mục sản phẩm thay đổi</td>
+</tr>
+<tr>
+<td>Vai trò của con người</td>
+<td>nhân viên bán hàng giữ danh sách từ liên quan (lexicon trong QueryInterpreter) và kiểm tra các truy vấn đã gán nhãn trước khi một thay đổi được đưa vào chạy thật</td>
+</tr>
+<tr>
+<td>Rủi ro</td>
+<td>kết quả sai hoặc thiếu; xếp hạng thiếu công bằng (một thương hiệu luôn đứng đầu); ảnh có người; đầu vào quá dài hoặc cố tình tạo ra; xem 6.3</td>
+</tr>
+<tr>
+<td>Đánh giá</td>
+<td>kỹ thuật: hit@1, recall@5, MRR, tỷ lệ truy vấn không có kết quả, độ chính xác top-1 và top-3 của tìm bằng ảnh, độ trễ; nghiệp vụ: tỷ lệ tìm kiếm thành công và chuyển đổi sau tìm kiếm (cần lưu lượng thật, đã lên kế hoạch)</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="61-rules-of-the-ai-search">6.1 Các quy tắc của tìm kiếm AI</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Quy tắc</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AI01</td>
+<td>Chỉ các sản phẩm ACTIVE được lập chỉ mục và trả về (BR01).</td>
+</tr>
+<tr>
+<td>AI02</td>
+<td>Trang kết quả cho biết truy vấn đã được hiểu ra sao (từ được mở rộng, phần sửa lỗi, giới hạn giá) và mỗi kết quả cho biết vì sao nó khớp (khả năng giải thích).</td>
+</tr>
+<tr>
+<td>AI03</td>
+<td>Giới hạn giá trong truy vấn (&quot;under 10 million&quot;, &quot;below 500k&quot;) là bộ lọc cứng: không có kết quả nào vượt quá giới hạn đó.</td>
+</tr>
+<tr>
+<td>AI04</td>
+<td>Khi tìm kiếm AI không thấy gì, tìm theo từ khóa sẽ chạy; trang cho biết kết quả do kiểu tìm kiếm nào tạo ra.</td>
+</tr>
+<tr>
+<td>AI05</td>
+<td>Ảnh và giọng nói được xử lý trong bộ nhớ và không bao giờ được lưu; văn bản tìm kiếm không được ghi log kèm khách hàng.</td>
+</tr>
+<tr>
+<td>AI06</td>
+<td>Giới hạn đầu vào: văn bản tối đa 200 ký tự, ảnh tối đa 5 MB, chỉ nhận JPEG hoặc PNG.</td>
+</tr>
+<tr>
+<td>AI07</td>
+<td>Trong tìm kiếm bằng văn bản, sản phẩm hết hàng vẫn được hiển thị, kèm nhãn tồn kho, nhưng độ liên quan của nó bị tính ít đi 20 %: nó chỉ còn đứng trước khi rõ ràng liên quan hơn các sản phẩm đang có thể mua. Một ảnh chỉ thể hiện một sản phẩm, nên tìm bằng ảnh giữ nguyên vị trí của nó (khách hàng biết là sản phẩm đã hết hàng).</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="62-evaluation-protocol">6.2 Quy trình đánh giá</h3>
+<p><code>tests/search_eval.py</code> chạy trên một máy chủ mới: 30 truy vấn đã gán nhãn (<code>tests/search/queries.json</code>, mỗi truy vấn kèm các
+SKU mà một nhân viên bán hàng sẽ chỉ cho khách) qua tìm theo từ khóa và tìm kiếm AI, cùng 84 ảnh làm từ các ảnh trong
+danh mục sản phẩm (cắt, xoay, đổi ánh sáng, đổi nền; <code>tests/search/make_photos.py</code>) qua tìm bằng
+ảnh. Kết quả ở <code>docs/evidence/search_eval.txt</code>.</p>
+<h3 id="63-failure-and-risk-analysis">6.3 Phân tích lỗi và rủi ro</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Lỗi hoặc rủi ro</th>
+<th>Hậu quả</th>
+<th>Cách xử lý trong thiết kế</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Truy vấn dùng những từ không có trong danh mục sản phẩm</td>
+<td>không có kết quả</td>
+<td>mở rộng bằng lexicon, sửa lỗi chính tả, rồi quay về tìm theo từ khóa (AI04)</td>
+</tr>
+<tr>
+<td>Ảnh chất lượng thấp hoặc không liên quan</td>
+<td>hiển thị những sản phẩm không liên quan</td>
+<td>trang hiển thị điểm tương đồng; kết quả dưới ngưỡng không được hiển thị</td>
+</tr>
+<tr>
+<td>Trình duyệt không có nhận dạng giọng nói (hoặc không có mạng cho việc đó)</td>
+<td>nút giọng nói không nghe được</td>
+<td>hộp thoại báo điều đó và giữ ô nhập văn bản; vẫn gõ được</td>
+</tr>
+<tr>
+<td>Danh mục sản phẩm thay đổi</td>
+<td>kết quả cũ</td>
+<td>chỉ mục được dựng lại sau khi thay đổi; giá và tồn kho của kết quả được đọc mới từ cơ sở dữ liệu</td>
+</tr>
+<tr>
+<td>Xếp hạng thiếu công bằng</td>
+<td>một số sản phẩm không bao giờ được thấy</td>
+<td>xếp hạng chỉ dùng các từ của truy vấn, không ưu tiên thương hiệu; các truy vấn đã gán nhãn kiểm tra những thương hiệu khác</td>
+</tr>
+<tr>
+<td>Quyền riêng tư của ảnh</td>
+<td>dữ liệu cá nhân trong ảnh</td>
+<td>xử lý trong bộ nhớ, không lưu, không ghi log (AI05)</td>
+</tr>
+<tr>
+<td>Đầu vào quá lớn hoặc cố tình tạo ra</td>
+<td>tìm chậm, lỗi</td>
+<td>các giới hạn của AI06, loại file được kiểm tra trước khi giải mã</td>
+</tr>
+</tbody>
+</table></div>
+</main>
+</body>
+</html>

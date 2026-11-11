@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bảo vệ ABC Online Shop</title>
+<link rel="stylesheet" href="../app/src/main/resources/static/fonts/fonts.css">
+<link rel="stylesheet" href="assets/showcase.css">
+<script src="pages/manifest.js" defer></script>
+<script src="assets/showcase.js" defer></script>
+</head>
+<body>
+<div class="layout">
+<nav class="side" aria-label="Các phần">
+  <div class="brand">ABC Online Shop<small>Trình bày bảo vệ kỹ thuật</small></div>
+  <div class="lang" aria-label="Ngôn ngữ"><a href="index.html" lang="en">EN</a><a href="index.vi.html" aria-current="page" lang="vi">VI</a></div>
+  <div class="sep"></div>
+  <a href="#a"><b>A</b>Tổng quan dự án</a>
+  <a href="#b"><b>B</b>Quy trình phát triển</a>
+  <a href="#c"><b>C</b>Diễn tiến của biểu đồ</a>
+  <a href="#all"><b>42</b>Tất cả sơ đồ</a>
+  <a href="#d"><b>D</b>Từ thiết kế đến mã</a>
+  <a href="#e"><b>E</b>Cơ sở dữ liệu</a>
+  <a href="#ai"><b>AI</b>Tìm kiếm AI</a>
+  <a href="#f"><b>F</b>Demo trực tiếp</a>
+  <a href="#g"><b>G</b>Kiểm chứng</a>
+  <a href="#vp"><b>+</b>Vẽ trong VP</a>
+  <div class="sep"></div>
+  <div class="tools">
+    <a href="http://localhost:8080/" target="_blank" rel="noopener" data-shop>Mở cửa hàng ↗</a>
+    <a href="../Bai_nop/tieuluan_V4_04_10_phamtuananh_018.pdf">Tiểu luận (PDF)</a>
+    <a href="../docs/DEFENSE.md">Hướng dẫn bảo vệ và 50 câu trả lời 🔒</a>
+    <a href="../docs/TRACEABILITY.md">Bảng truy vết đầy đủ</a>
+    <a href="../docs/SPEC.md">Đặc tả</a>
+    <a href="../vp/ABC_Online_Shop_V4.vpp">Dự án VP (.vpp)</a>
+  </div>
+</nav>
+
+<main>
+<!-- ============================================================ A -->
+<section id="a">
+  <p class="eyebrow">Phân tích và thiết kế hệ thống thông tin · PTIT 2026</p>
+  <h1>Từ yêu cầu đến mã chạy được. <span class="muted">Một chuỗi liền mạch để lần theo và kiểm tra.</span></h1>
+  <p class="lead">ABC Online Shop bán sách, đồ điện tử và quần áo trực tuyến. Tình huống đề bài nêu bảy vấn đề xuất phát
+  từ ba nguyên nhân gốc: dữ liệu sản phẩm, tồn kho và đơn hàng nằm ở những nơi tách biệt, nhiều cập nhật phải làm thủ công,
+  và dữ liệu được duy trì thiếu nhất quán. Hệ thống giải quyết các nguyên nhân gốc đó: một cơ sở dữ liệu dùng chung, cập nhật
+  được kích hoạt bởi các sự kiện nghiệp vụ, và vòng đời đơn hàng mà mọi vai trò đều thấy ở cùng một trạng thái.</p>
+  <div class="grid g4" style="margin:22px 0">
+    <div class="card stat"><b>21 / 9</b><span>use case được đặc tả / cài đặt trọn vẹn</span></div>
+    <div class="card stat"><b>42</b><span>biểu đồ gốc của Visual Paradigm, trong một dự án, tất cả đều có trong tiểu luận</span></div>
+    <div class="card stat"><b>20</b><span>bảng do Visual Paradigm sinh ra từ mô hình vật lý</span></div>
+    <div class="card stat"><b>81 / 81</b><span>lớp thiết kế có trong mã nguồn (73 lớp Java, 8 lớp view ở trình duyệt)</span></div>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <h4>Mục tiêu và phạm vi</h4>
+      <p>Đã cài đặt: đăng nhập (UC02), duyệt và tìm kiếm (UC04), trang sản phẩm (UC05), giỏ hàng (UC06), đặt hàng kèm
+      kiểm tra giỏ hàng (UC07, UC21), thanh toán bằng thẻ (UC08), theo dõi đơn hàng (UC09), xử lý đơn hàng (UC14), kho hàng (UC15).
+      Chỉ đặc tả: đăng ký, hồ sơ cá nhân, đánh giá, khuyến mãi, báo cáo, cung ứng.</p>
+      <div class="chips"><a class="chip" href="../vp/png/R2.png">R2 các use case</a><a class="chip" href="../vp/png/R3.png">R3 phạm vi đã cài đặt</a><a class="chip" href="../docs/SPEC.md">SPEC</a></div>
+    </div>
+    <div class="card">
+      <h4>Người dùng</h4>
+      <p>Khách hàng (khách vãng lai, khách mới, VIP được giảm giá), nhân viên bán hàng (bảng đơn hàng), nhân viên kho (tồn kho).
+      Bên ngoài: nhà cung cấp thanh toán (mô phỏng, thẻ có đuôi 0002 bị từ chối) và nhà cung cấp vận chuyển (đơn vị vận chuyển và mã vận đơn).</p>
+      <div class="chips"><a class="chip" href="../vp/png/R1.png">R1 biểu đồ ngữ cảnh</a><a class="chip" href="../vp/png/B1.png">B1 quy trình nghiệp vụ</a><a class="chip" href="../vp/png/R4.png">R4 đến R8 use case chi tiết</a></div>
+    </div>
+  </div>
+  <h3>Điểm đáng bảo vệ của giải pháp</h3>
+  <div class="grid g3">
+    <div class="card"><h4>Product, Category và bảng chi tiết</h4><p>Product giữ dữ liệu chung một lần; category chỉ ra bảng chi tiết (book, laptop, phone, apparel). Danh mục mới có bộ thuộc tính đã biết thì không cần thêm bảng.</p></div>
+    <div class="card"><h4>Ba tầng, mỗi bước một giao dịch</h4><p>Controller, Service, DAO, Model. Mỗi thao tác của service là một bước của use case, chạy trong một giao dịch cơ sở dữ liệu; lời gọi nhà cung cấp thanh toán nằm ngoài giao dịch đó.</p></div>
+    <div class="card"><h4>Quy tắc đặt cạnh dữ liệu</h4><p>Cart (BR01 đến BR03), tổng tiền của Order (BR04), bảng chuyển trạng thái (BR09); các ràng buộc CHECK và UNIQUE lặp lại những quy tắc này ngay trong cơ sở dữ liệu.</p></div>
+  </div>
+</section>
+
+<!-- ============================================================ B -->
+<section id="b">
+  <div class="sec-head"><span class="letter">B</span><h2>Quy trình phát triển</h2></div>
+  <p class="lead">Mỗi giai đoạn tạo ra một mô hình cho giai đoạn sau sử dụng. Các liên kết mở sản phẩm chính của từng giai đoạn.</p>
+  <div class="process">
+    <div class="phase"><span class="n">01</span><h4>Yêu cầu</h4><p>8 bên liên quan, 28 FR, 10 NFR, 21 use case, quy tắc nghiệp vụ BR01 đến BR13.</p>
+      <ul><li><a href="../vp/png/R1.png">R1 biểu đồ ngữ cảnh</a></li><li><a href="../vp/png/R2.png">R2 tổng quan use case</a></li><li><a href="../vp/png/B1.png">B1 quy trình nghiệp vụ (BPMN)</a></li><li><a href="../vp/png/B2.png">B2 bản đồ bên liên quan</a>, <a href="../vp/png/B3.png">B3 cây vấn đề</a></li><li><a href="../vp/png/R4.png">R4 đến R8 use case chi tiết</a></li><li><a href="../docs/SPEC.md">SPEC: quy tắc và kiểm thử</a></li></ul></div>
+    <div class="phase"><span class="n">02</span><h4>Phân tích</h4><p>Hệ thống làm gì, nói theo ngôn ngữ nghiệp vụ: luồng công việc, dịch chuyển dữ liệu, trách nhiệm.</p>
+      <ul><li><a href="../vp/png/A2.png">A1 đến A5 biểu đồ hoạt động</a></li><li><a href="../vp/png/A6.png">A6 DFD mức 1</a></li><li><a href="../vp/png/A8.png">A7 đến A9 biểu đồ tuần tự phân tích</a></li><li><a href="../vp/png/A10.png">A10 lớp phân tích</a></li><li><a href="../vp/png/AI1.png">AI1 đến AI4 tìm kiếm AI</a></li></ul></div>
+    <div class="phase"><span class="n">03</span><h4>Thiết kế</h4><p>Hệ thống được xây dựng như thế nào: mô hình dữ liệu thành bảng, các tầng, lớp kèm phương thức, biểu đồ tuần tự thiết kế.</p>
+      <ul><li><a href="../vp/png/D2.png">D1 đến D4 mô hình dữ liệu</a></li><li><a href="../vp/png/G0.png">G0 ba tầng</a></li><li><a href="../vp/png/G2c.png">G2 đến G4, G8 lớp thiết kế</a></li><li><a href="../vp/png/G6.png">G5 đến G7, G9 biểu đồ tuần tự thiết kế</a></li><li><a href="../docs/evidence/vp_generation/">cơ sở dữ liệu và mã do VP sinh ra</a></li></ul></div>
+    <div class="phase"><span class="n">04</span><h4>Cài đặt</h4><p>Java 17, Spring Boot, JDBC thuần trên SQLite; các lớp view ở trình duyệt. Package = package thiết kế.</p>
+      <ul><li><a href="../app/src/main/java/vn/ptit/ecom/service/OrderService.java">service</a> · <a href="../app/src/main/java/vn/ptit/ecom/dao/Database.java">dao</a></li><li><a href="../app/src/main/java/vn/ptit/ecom/model/order/Order.java">model</a> · <a href="../app/src/main/java/vn/ptit/ecom/controller/OrderController.java">controller</a></li><li><a href="../app/src/main/resources/static/js/view/OrderForm.js">view</a></li><li><a href="../db/schema.sql">db/schema.sql</a></li></ul></div>
+    <div class="phase"><span class="n">05</span><h4>Kiểm chứng</h4><p>Các quy tắc, các luồng xử lý và chính thiết kế đều được kiểm thử.</p>
+      <ul><li><a href="../app/src/test/java/vn/ptit/ecom/">24 test JUnit</a></li><li><a href="../tests/smoke_api.py">36 phép kiểm tra API</a></li><li><a href="../docs/evidence/e2e/e2e_result.txt">30 phép kiểm tra trên Edge</a></li><li><a href="../tests/design_vs_code.py">thiết kế so với mã</a> · <a href="../tests/vpgen_vs_code.py">mã do VP sinh so với mã</a></li><li><a href="../docs/evidence/search_eval.txt">đánh giá tìm kiếm AI</a></li></ul></div>
+  </div>
+</section>
+
+<!-- ============================================================ C -->
+<section id="c">
+  <div class="sec-head"><span class="letter">C</span><h2>Diễn tiến của biểu đồ</h2></div>
+  <p class="lead">Ba chuỗi, mỗi chuỗi đọc từ trái sang phải. Dưới mỗi chuỗi: điều gì thay đổi giữa các bước, vì sao, và thay đổi đó mang lại lợi ích gì. Bấm vào hình để mở kích thước đầy đủ.</p>
+
+  <div class="evo">
+    <div class="evo-title"><h3>1. Lớp phân tích → lớp thiết kế → mã</h3><span class="note">Cart và Order, trung tâm của bước đặt hàng</span></div>
+    <div class="steps">
+      <div class="step"><div class="label"><span>Phân tích</span><a href="../vp/png/A10.png">A10</a></div><a class="thumb" href="../vp/png/A10.png"><img src="../vp/png/A10.png" alt="A10 biểu đồ lớp phân tích" loading="lazy"></a><div class="cap">Lớp, tên thuộc tính và trách nhiệm viết bằng lời; bản số lấy từ các use case.</div></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="label"><span>Thiết kế</span><a href="../vp/png/G2c.png">G2c</a></div><a class="thumb" href="../vp/png/G2c.png"><img src="../vp/png/G2c.png" alt="G2c lớp thiết kế cho đơn hàng" loading="lazy"></a><div class="cap">Kiểu dữ liệu, thao tác kèm tham số, kiểu liệt kê OrderStatus, Totals là một value object.</div></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="label"><span>Mã</span><a href="../app/src/main/java/vn/ptit/ecom/model/order/Order.java">Order.java</a></div>
+<div class="thumb code"><span class="k">public static</span> Order place(Customer customer,
+        Cart cart, Address address,
+        PaymentMethod method, LocalDateTime now)
+<span class="c">// validates the cart (BR03),</span>
+<span class="c">// copies lines with their prices,</span>
+<span class="c">// Totals.of(subtotal, rate) (BR04),</span>
+<span class="c">// first OrderEvent</span>
+<span class="k">public void</span> recordCardPayment(PayCredit p,
+        LocalDateTime now)   <span class="c">// BR07</span>
+<span class="k">public void</span> cancel(Actor a, String by,
+        LocalDateTime now)   <span class="c">// BR09</span></div>
+        <div class="cap">Cùng tên và kiểu tham số với G2c; <a href="../tests/design_vs_code.py">design_vs_code.py</a> kiểm tra cả 81 lớp thiết kế.</div></div>
+    </div>
+    <div class="changes">
+      <div><h4>Thay đổi gì</h4><ul><li>tên thuộc tính trở thành trường có kiểu (số tiền là <code>long</code>, đơn vị VND)</li><li>trách nhiệm trở thành thao tác: <code>Cart.validate(): List&lt;CartIssue&gt;</code>, <code>Order.place(…)</code></li><li>trạng thái trở thành kiểu liệt kê kèm bảng chuyển trạng thái</li><li>Payment giữ các lớp con PayCredit và PayCash</li></ul></div>
+      <div><h4>Vì sao</h4><ul><li>quy tắc nằm cùng chỗ với dữ liệu mà nó kiểm tra (giỏ hàng biết các dòng hàng và giá của mình)</li><li>một bảng chuyển trạng thái thay cho việc kiểm tra trạng thái ở từng màn hình</li><li>Totals ở một chỗ: bước đặt hàng, đơn hàng và test tính ra cùng một con số</li></ul></div>
+      <div><h4>Lợi ích</h4><ul><li>BR01 đến BR04 và BR09 được unit test mà không cần cơ sở dữ liệu (<a href="../app/src/test/java/vn/ptit/ecom/model/OrderRulesTest.java">OrderRulesTest</a>)</li><li>bảng đơn hàng chỉ hiện các hành động được phép: nó hỏi <code>OrderStatus.next(actor)</code></li></ul></div>
+    </div>
+  </div>
+
+  <div class="evo">
+    <div class="evo-title"><h3>2. Tuần tự phân tích → tuần tự thiết kế → lúc chạy</h3><span class="note">UC07 Place Order</span></div>
+    <div class="steps">
+      <div class="step"><div class="label"><span>Phân tích</span><a href="../vp/png/A8.png">A8</a></div><a class="thumb" href="../vp/png/A8.png"><img src="../vp/png/A8.png" alt="A8 biểu đồ tuần tự phân tích" loading="lazy"></a><div class="cap">CheckoutView (boundary), OrderControl (control), Cart, Product, Order (các entity).</div></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="label"><span>Thiết kế</span><a href="../vp/png/G6.png">G6</a></div><a class="thumb" href="../vp/png/G6.png"><img src="../vp/png/G6.png" alt="G6 biểu đồ tuần tự thiết kế" loading="lazy"></a><div class="cap">OrderForm (boundary) → OrderController, OrderService, các DAO (control) → Order (entity); tên phương thức thật.</div></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="label"><span>Lúc chạy</span><a href="../docs/evidence/e2e/17_trace_lens.png">lens</a></div><a class="thumb" href="../docs/evidence/e2e/17_trace_lens.png"><img src="../docs/evidence/e2e/17_trace_lens.png" alt="Design lens trong cửa hàng đang chạy" loading="lazy"></a><div class="cap">Cửa hàng đang chạy với design lens (Alt+L): mỗi phần cho biết view, endpoint, controller, service, DAO và các bảng của nó.</div></div>
+    </div>
+    <div class="changes">
+      <div><h4>Thay đổi gì</h4><ul><li>đối tượng điều khiển được tách thành <b>OrderController</b> (HTTP, session, đầu vào) và <b>OrderService</b> (một bước của use case)</li><li>tầng lưu trữ trở nên tường minh: mỗi nhóm bảng một DAO</li><li>ranh giới giao dịch xuất hiện dưới dạng <code>inTransaction(work)</code></li></ul></div>
+      <div><h4>Vì sao</h4><ul><li>tầng phân tích không được biết HTTP hay SQL; tầng thiết kế thì phải biết</li><li>tạo đơn hàng, các dòng hàng, giữ chỗ tồn kho và làm rỗng giỏ hàng phải hoặc cùng thành công, hoặc không việc nào được thực hiện (NFR10)</li></ul></div>
+      <div><h4>Lợi ích</h4><ul><li>một lần ghi thất bại sẽ rollback tồn kho (<a href="../app/src/test/java/vn/ptit/ecom/CheckoutFlowTest.java">test</a>)</li><li>controller gọn: <a href="../app/src/main/java/vn/ptit/ecom/controller/OrderController.java">OrderController</a> giảm từ 169 xuống 112 dòng</li></ul></div>
+    </div>
+  </div>
+
+  <div class="evo">
+    <div class="evo-title"><h3>3. Khái niệm → logic → vật lý → cơ sở dữ liệu thực tế</h3><span class="note">20 thực thể, 22 quan hệ có tên</span></div>
+    <div class="steps">
+      <div class="step"><div class="label"><span>Khái niệm</span><a href="../vp/png/D2.png">D2</a></div><a class="thumb" href="../vp/png/D2.png"><img src="../vp/png/D2.png" alt="D2 ERD khái niệm" loading="lazy"></a><div class="cap">Thực thể và các quan hệ có tên kèm bản số ("Order is paid by Payment", đơn hàng được trả bằng một khoản thanh toán).</div></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="label"><span>Logic → vật lý</span><a href="../vp/png/D3.png">D3</a> <a href="../vp/png/D4.png">D4</a></div><a class="thumb" href="../vp/png/D4.png"><img src="../vp/png/D4.png" alt="D4 ERD vật lý" loading="lazy"></a><div class="cap">Khóa và thuộc tính (D3), rồi kiểu dữ liệu SQLite, NOT NULL, UNIQUE và CHECK (D4).</div></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="label"><span>Cơ sở dữ liệu</span><a href="../db/schema.sql">schema.sql</a></div>
+<div class="thumb code"><span class="k">CREATE TABLE</span> customer_order (
+  order_id INTEGER NOT NULL,
+  status VARCHAR(16) NOT NULL CHECK
+    (status IN ('PENDING_PAYMENT', ...)),
+  subtotal INTEGER NOT NULL CHECK (subtotal &gt; 0),
+  total_amount INTEGER NOT NULL CHECK
+    (total_amount = subtotal - discount
+                    + shipping_fee),
+  PRIMARY KEY (order_id),
+  FOREIGN KEY (customer_id) REFERENCES ...</div>
+        <div class="cap">DDL xuất từ D4 trùng với <code>db/schema.sql</code> (<a href="../db/compare_schema.py">compare_schema.py</a>).</div></div>
+    </div>
+    <div class="changes">
+      <div><h4>Thay đổi gì</h4><ul><li>quan hệ nhiều-nhiều được tách bằng <code>cart_item</code> và <code>order_item</code></li><li>các kiểu con trở thành bảng có PK = FK (<code>customer_vip</code>, <code>pay_credit</code>, <code>book_detail</code>)</li><li>quy tắc nghiệp vụ trở thành ràng buộc CHECK và UNIQUE</li></ul></div>
+      <div><h4>Vì sao</h4><ul><li>góp ý của giảng viên: Product giữ dữ liệu chung, Category trỏ tới bảng chi tiết</li><li>cơ sở dữ liệu phải tự bảo vệ các quy tắc, kể cả khi chương trình có lỗi hoặc có người chạy script thủ công</li></ul></div>
+      <div><h4>Lợi ích</h4><ul><li>không thể có tồn kho âm (<a href="../app/src/test/java/vn/ptit/ecom/CheckoutFlowTest.java">test</a>)</li><li>đổi giá không bao giờ làm thay đổi đơn hàng cũ (<code>order_item.unit_price</code> là dữ kiện lịch sử)</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ ALL DIAGRAMS -->
+<section id="all">
+  <div class="sec-head"><span class="letter">42</span><h2>Toàn bộ 42 sơ đồ của project VP</h2></div>
+  <p class="lead">Mọi sơ đồ vẽ trong Visual Paradigm, đúng như trong tiểu luận (kèm số hình). Bấm vào một sơ đồ để mở; phím ← và → lật qua tất cả. Project: <a href="../vp/ABC_Online_Shop_V4.vpp">vp/ABC_Online_Shop_V4.vpp</a>.</p>
+  <h3>Nghiệp vụ <span class="note">(3)</span></h3>
+  <div class="shots">
+    <a href="../vp/png/B1.png" class="lbx"><div class="thumb"><img src="../vp/png/B1.png" alt="B1" loading="lazy"></div><span><b>B1</b> · Hình 1.1: Quy trình nghiệp vụ tổng quát (BPMN): pool, lane, luồng tuần tự và luồng thông điệp</span></a>
+    <a href="../vp/png/B2.png" class="lbx"><div class="thumb"><img src="../vp/png/B2.png" alt="B2" loading="lazy"></div><span><b>B2</b> · Hình 1.2: Bản đồ các bên liên quan (ArchiMate) và các mối quan tâm chung</span></a>
+    <a href="../vp/png/B3.png" class="lbx"><div class="thumb"><img src="../vp/png/B3.png" alt="B3" loading="lazy"></div><span><b>B3</b> · Hình 1.3: Cây vấn đề (ArchiMate): nguyên nhân gốc, vấn đề trung tâm, hệ quả</span></a>
+  </div>
+  <h3>Yêu cầu <span class="note">(8)</span></h3>
+  <div class="shots">
+    <a href="../vp/png/R1.png" class="lbx"><div class="thumb"><img src="../vp/png/R1.png" alt="R1" loading="lazy"></div><span><b>R1</b> · Hình 1.4: Biểu đồ ngữ cảnh (DFD mức 0) với các tác nhân ngoài và luồng dữ liệu</span></a>
+    <a href="../vp/png/R2.png" class="lbx"><div class="thumb"><img src="../vp/png/R2.png" alt="R2" loading="lazy"></div><span><b>R2</b> · Hình 2.1: Biểu đồ use case tổng quan: 21 use case, include và extend có điểm mở rộng</span></a>
+    <a href="../vp/png/R3.png" class="lbx"><div class="thumb"><img src="../vp/png/R3.png" alt="R3" loading="lazy"></div><span><b>R3</b> · Hình 2.2: Các use case được cài đặt trong bản mẫu và tác nhân của chúng</span></a>
+    <a href="../vp/png/R4.png" class="lbx"><div class="thumb"><img src="../vp/png/R4.png" alt="R4" loading="lazy"></div><span><b>R4</b> · Hình 2.3: Use case chi tiết: tài khoản khách hàng</span></a>
+    <a href="../vp/png/R5.png" class="lbx"><div class="thumb"><img src="../vp/png/R5.png" alt="R5" loading="lazy"></div><span><b>R5</b> · Hình 2.4: Use case chi tiết: danh mục và tồn kho</span></a>
+    <a href="../vp/png/R6.png" class="lbx"><div class="thumb"><img src="../vp/png/R6.png" alt="R6" loading="lazy"></div><span><b>R6</b> · Hình 2.5: Use case chi tiết: mua hàng và thanh toán, include và extend của UC07</span></a>
+    <a href="../vp/png/R7.png" class="lbx"><div class="thumb"><img src="../vp/png/R7.png" alt="R7" loading="lazy"></div><span><b>R7</b> · Hình 2.6: Use case chi tiết: xử lý đơn hàng</span></a>
+    <a href="../vp/png/R8.png" class="lbx"><div class="thumb"><img src="../vp/png/R8.png" alt="R8" loading="lazy"></div><span><b>R8</b> · Hình 2.7: Use case chi tiết: đánh giá, khuyến mãi và báo cáo</span></a>
+  </div>
+  <h3>Phân tích <span class="note">(10)</span></h3>
+  <div class="shots">
+    <a href="../vp/png/A1.png" class="lbx"><div class="thumb"><img src="../vp/png/A1.png" alt="A1" loading="lazy"></div><span><b>A1</b> · Hình 2.9: Biểu đồ hoạt động UC06 Manage Shopping Cart</span></a>
+    <a href="../vp/png/A2.png" class="lbx"><div class="thumb"><img src="../vp/png/A2.png" alt="A2" loading="lazy"></div><span><b>A2</b> · Hình 2.8: Biểu đồ hoạt động UC07 Place Order / Checkout (lane khách hàng và hệ thống)</span></a>
+    <a href="../vp/png/A3.png" class="lbx"><div class="thumb"><img src="../vp/png/A3.png" alt="A3" loading="lazy"></div><span><b>A3</b> · Hình 2.14: Biểu đồ hoạt động UC08 Make Payment (lane khách hàng, hệ thống, nhà cung cấp thanh toán)</span></a>
+    <a href="../vp/png/A4.png" class="lbx"><div class="thumb"><img src="../vp/png/A4.png" alt="A4" loading="lazy"></div><span><b>A4</b> · Hình 2.16: Biểu đồ hoạt động UC09 Track Order</span></a>
+    <a href="../vp/png/A5.png" class="lbx"><div class="thumb"><img src="../vp/png/A5.png" alt="A5" loading="lazy"></div><span><b>A5</b> · Hình 2.10: Biểu đồ hoạt động UC14 Process Orders (lane nhân viên bán hàng, hệ thống, đơn vị vận chuyển)</span></a>
+    <a href="../vp/png/A6.png" class="lbx"><div class="thumb"><img src="../vp/png/A6.png" alt="A6" loading="lazy"></div><span><b>A6</b> · Hình 2.11: DFD mức 1: bảy tiến trình, sáu kho dữ liệu và các tác nhân ngoài, cân bằng với biểu đồ ngữ cảnh</span></a>
+    <a href="../vp/png/A7.png" class="lbx"><div class="thumb"><img src="../vp/png/A7.png" alt="A7" loading="lazy"></div><span><b>A7</b> · Hình 2.12: Biểu đồ tuần tự phân tích UC06 Manage Shopping Cart, thêm một sản phẩm (boundary, control, entity)</span></a>
+    <a href="../vp/png/A8.png" class="lbx"><div class="thumb"><img src="../vp/png/A8.png" alt="A8" loading="lazy"></div><span><b>A8</b> · Hình 2.13: Biểu đồ tuần tự phân tích UC07 Place Order / Checkout</span></a>
+    <a href="../vp/png/A9.png" class="lbx"><div class="thumb"><img src="../vp/png/A9.png" alt="A9" loading="lazy"></div><span><b>A9</b> · Hình 2.15: Biểu đồ tuần tự phân tích UC08 Make Payment</span></a>
+    <a href="../vp/png/A10.png" class="lbx"><div class="thumb"><img src="../vp/png/A10.png" alt="A10" loading="lazy"></div><span><b>A10</b> · Hình 4.1: Biểu đồ lớp phân tích sau khi sửa: Category, Product và các lớp chi tiết, OrderEvent, Staff (20 lớp)</span></a>
+  </div>
+  <h3>Tìm kiếm AI (Chương 3) <span class="note">(4)</span></h3>
+  <div class="shots">
+    <a href="../vp/png/AI1.png" class="lbx"><div class="thumb"><img src="../vp/png/AI1.png" alt="AI1" loading="lazy"></div><span><b>AI1</b> · Hình 3.1: Use case tìm kiếm AI: UC04 trừu tượng với ba cách tìm (generalization), include và extend</span></a>
+    <a href="../vp/png/AI2.png" class="lbx"><div class="thumb"><img src="../vp/png/AI2.png" alt="AI2" loading="lazy"></div><span><b>AI2</b> · Hình 3.2: Biểu đồ ngữ cảnh của shop có AI</span></a>
+    <a href="../vp/png/AI3.png" class="lbx"><div class="thumb"><img src="../vp/png/AI3.png" alt="AI3" loading="lazy"></div><span><b>AI3</b> · Hình 3.3: Luồng dữ liệu của tìm kiếm AI: tiến trình 2.1 đến 2.5 và các kho dữ liệu</span></a>
+    <a href="../vp/png/AI4.png" class="lbx"><div class="thumb"><img src="../vp/png/AI4.png" alt="AI4" loading="lazy"></div><span><b>AI4</b> · Hình 3.4: Thành phần AI trong shop: ba phần của nó và các phần của shop mà nó làm việc cùng</span></a>
+  </div>
+  <h3>Mô hình dữ liệu <span class="note">(4)</span></h3>
+  <div class="shots">
+    <a href="../vp/png/D1.png" class="lbx"><div class="thumb"><img src="../vp/png/D1.png" alt="D1" loading="lazy"></div><span><b>D1</b> · Hình 2.17: Mô hình dữ liệu với các lớp ORM Persistable, bản số và tên quan hệ</span></a>
+    <a href="../vp/png/D2.png" class="lbx"><div class="thumb"><img src="../vp/png/D2.png" alt="D2" loading="lazy"></div><span><b>D2</b> · Hình 2.18: Mô hình dữ liệu mức khái niệm: thực thể và quan hệ có tên</span></a>
+    <a href="../vp/png/D3.png" class="lbx"><div class="thumb"><img src="../vp/png/D3.png" alt="D3" loading="lazy"></div><span><b>D3</b> · Hình 4.2: Mô hình dữ liệu mức logic: cột, khoá, cột được rỗng (N) và duy nhất (U)</span></a>
+    <a href="../vp/png/D4.png" class="lbx"><div class="thumb"><img src="../vp/png/D4.png" alt="D4" loading="lazy"></div><span><b>D4</b> · Hình 4.3: Mô hình dữ liệu mức vật lý: hai mươi bảng với tên và kiểu SQL</span></a>
+  </div>
+  <h3>Thiết kế <span class="note">(13)</span></h3>
+  <div class="shots">
+    <a href="../vp/png/G0.png" class="lbx"><div class="thumb"><img src="../vp/png/G0.png" alt="G0" loading="lazy"></div><span><b>G0</b> · Hình 4.9: Các tầng logic: trình bày, nghiệp vụ (có tìm kiếm AI), truy cập dữ liệu, mô hình miền dùng chung đặt cạnh; SQLite, cổng thanh toán, nhận dạng giọng nói ở ngoài</span></a>
+    <a href="../vp/png/G1.png" class="lbx"><div class="thumb"><img src="../vp/png/G1.png" alt="G1" loading="lazy"></div><span><b>G1</b> · Hình 4.10: Các package thiết kế và phụ thuộc &lt;&lt;use&gt;&gt; giữa chúng</span></a>
+    <a href="../vp/png/G2a.png" class="lbx"><div class="thumb"><img src="../vp/png/G2a.png" alt="G2a" loading="lazy"></div><span><b>G2a</b> · Hình 4.6: Lớp thiết kế phần 1: danh mục, sản phẩm và các lớp chi tiết, giỏ hàng</span></a>
+    <a href="../vp/png/G2b.png" class="lbx"><div class="thumb"><img src="../vp/png/G2b.png" alt="G2b" loading="lazy"></div><span><b>G2b</b> · Hình 4.7: Lớp thiết kế phần 2: khách hàng, tên, địa chỉ và tài khoản đăng nhập</span></a>
+    <a href="../vp/png/G2c.png" class="lbx"><div class="thumb"><img src="../vp/png/G2c.png" alt="G2c" loading="lazy"></div><span><b>G2c</b> · Hình 4.8: Lớp thiết kế phần 3: đơn hàng, dòng đơn, sự kiện, thanh toán, vận chuyển</span></a>
+    <a href="../vp/png/G3.png" class="lbx"><div class="thumb"><img src="../vp/png/G3.png" alt="G3" loading="lazy"></div><span><b>G3</b> · Hình 4.11: Lớp truy cập dữ liệu: các interface DAO và lớp cài đặt, Database, Daos, Work</span></a>
+    <a href="../vp/png/G4.png" class="lbx"><div class="thumb"><img src="../vp/png/G4.png" alt="G4" loading="lazy"></div><span><b>G4</b> · Hình 4.15: View và controller cùng các service mà chúng gọi</span></a>
+    <a href="../vp/png/G4b.png" class="lbx"><div class="thumb"><img src="../vp/png/G4b.png" alt="G4b" loading="lazy"></div><span><b>G4b</b> · Hình 4.16: Service với Database cho giao dịch và CardProvider mà chúng gọi</span></a>
+    <a href="../vp/png/G5.png" class="lbx"><div class="thumb"><img src="../vp/png/G5.png" alt="G5" loading="lazy"></div><span><b>G5</b> · Hình 4.12: Biểu đồ tuần tự thiết kế UC06 Manage Shopping Cart, thêm một sản phẩm: một bước use case là một thao tác service, một giao dịch</span></a>
+    <a href="../vp/png/G6.png" class="lbx"><div class="thumb"><img src="../vp/png/G6.png" alt="G6" loading="lazy"></div><span><b>G6</b> · Hình 4.13: Biểu đồ tuần tự thiết kế UC07 Place Order / Checkout</span></a>
+    <a href="../vp/png/G7.png" class="lbx"><div class="thumb"><img src="../vp/png/G7.png" alt="G7" loading="lazy"></div><span><b>G7</b> · Hình 4.14: Biểu đồ tuần tự thiết kế UC08 Make Payment: hai giao dịch, gọi cổng thanh toán ở giữa</span></a>
+    <a href="../vp/png/G8.png" class="lbx"><div class="thumb"><img src="../vp/png/G8.png" alt="G8" loading="lazy"></div><span><b>G8</b> · Hình 4.17: Lớp thiết kế của tìm kiếm AI: view, controller, service và package ai</span></a>
+    <a href="../vp/png/G9.png" class="lbx"><div class="thumb"><img src="../vp/png/G9.png" alt="G9" loading="lazy"></div><span><b>G9</b> · Hình 4.18: Biểu đồ tuần tự thiết kế UC04 Browse / Search Products, tìm kiếm AI bằng chữ: đọc danh mục, dựng chỉ mục, diễn giải, xếp hạng, dự phòng</span></a>
+  </div>
+</section>
+
+<!-- ============================================================ D -->
+<section id="d">
+  <div class="sec-head"><span class="letter">D</span><h2>Truy vết từ thiết kế đến mã</h2></div>
+  <p class="lead">Ba use case mang giá trị nghiệp vụ chính. Mỗi ô mở ra tài liệu tương ứng; bảng đầy đủ cho cả chín use case và mọi quy tắc nghiệp vụ nằm trong <a href="../docs/TRACEABILITY.md">TRACEABILITY.md</a>.</p>
+
+  <div class="uc-title"><span class="id">UC07</span><h3>Place Order (đặt hàng, kèm UC21 Validate Cart)</h3></div>
+  <div class="trace">
+    <div><div class="t">Yêu cầu</div>FR09 đến FR11, FR15, FR16, NFR10<a href="../docs/SPEC.md#uc07-place-order--checkout-uc21-validate-cart">SPEC UC07</a><a href="../docs/SPEC.md#2-business-rules">BR03 đến BR06</a></div>
+    <div><div class="t">Phân tích</div><a href="../vp/png/A2.png">A2 hoạt động</a><a href="../vp/png/A8.png">A8 tuần tự</a><a href="../vp/png/A6.png">A6 DFD tiến trình 4</a></div>
+    <div><div class="t">Thiết kế</div><a href="../vp/png/G6.png">G6 tuần tự</a><a href="../vp/png/G2c.png">G2c các lớp</a><a href="../vp/png/G4b.png">G4b các service</a></div>
+    <div><div class="t">Mã</div><a href="../app/src/main/resources/static/js/view/OrderForm.js#L105">OrderForm.submitOrder</a><a href="../app/src/main/java/vn/ptit/ecom/controller/OrderController.java#L46">OrderController.placeOrder</a><a href="../app/src/main/java/vn/ptit/ecom/service/OrderService.java#L56">OrderService.placeOrder</a><a href="../app/src/main/java/vn/ptit/ecom/model/order/Order.java#L69">Order.place</a><a href="../app/src/main/java/vn/ptit/ecom/dao/ProductDAOImpl.java#L135">ProductDAOImpl.reserveStock</a></div>
+    <div><div class="t">Dữ liệu</div>customer_order, order_item, order_event, product<a href="../vp/png/D4.png">D4</a></div>
+    <div><div class="t">Kiểm thử</div><a href="../app/src/test/java/vn/ptit/ecom/CheckoutFlowTest.java#L71">lastUnitCanBeSoldOnlyOnce</a><a href="../app/src/test/java/vn/ptit/ecom/CheckoutFlowTest.java#L127">test rollback</a><a href="../app/src/test/java/vn/ptit/ecom/model/OrderRulesTest.java#L70">tổng tiền (BR04)</a><a href="../docs/evidence/e2e/08_checkout.png">e2e đặt hàng</a></div>
+  </div>
+
+  <div class="uc-title"><span class="id">UC08</span><h3>Make Payment (thanh toán)</h3></div>
+  <div class="trace">
+    <div><div class="t">Yêu cầu</div>FR14, BR07<a href="../docs/SPEC.md#uc08-make-payment">SPEC UC08</a></div>
+    <div><div class="t">Phân tích</div><a href="../vp/png/A3.png">A3 hoạt động</a><a href="../vp/png/A9.png">A9 tuần tự</a></div>
+    <div><div class="t">Thiết kế</div><a href="../vp/png/G7.png">G7 tuần tự</a><a href="../vp/png/G2c.png">G2c Payment</a></div>
+    <div><div class="t">Mã</div><a href="../app/src/main/resources/static/js/view/PaymentForm.js#L52">PaymentForm.submitPayment</a><a href="../app/src/main/java/vn/ptit/ecom/controller/PaymentController.java#L24">PaymentController.pay</a><a href="../app/src/main/java/vn/ptit/ecom/service/PaymentService.java#L30">PaymentService.pay</a><a href="../app/src/main/java/vn/ptit/ecom/model/order/Order.java#L96">Order.recordCardPayment</a></div>
+    <div><div class="t">Dữ liệu</div>payment, pay_credit (chỉ lưu bốn số cuối và token)</div>
+    <div><div class="t">Kiểm thử</div><a href="../app/src/test/java/vn/ptit/ecom/model/OrderRulesTest.java#L91">chỉ PAID sau khi được duyệt</a><a href="../docs/evidence/e2e/10_payment_declined.png">e2e thẻ bị từ chối</a><a href="../docs/evidence/e2e/11_order_paid.png">e2e được duyệt</a></div>
+  </div>
+
+  <div class="uc-title"><span class="id">UC14</span><h3>Process Orders (xử lý đơn hàng)</h3></div>
+  <div class="trace">
+    <div><div class="t">Yêu cầu</div>FR13, FR17, FR18, BR09, BR10<a href="../docs/SPEC.md#3-order-state-machine-br09">máy trạng thái</a></div>
+    <div><div class="t">Phân tích</div><a href="../vp/png/A5.png">A5 hoạt động</a></div>
+    <div><div class="t">Thiết kế</div><a href="../vp/png/G2c.png">G2c OrderStatus</a><a href="../vp/png/G4b.png">G4b các service</a></div>
+    <div><div class="t">Mã</div><a href="../app/src/main/resources/static/js/view/StaffOrderForm.js#L20">StaffOrderForm.showBoard</a><a href="../app/src/main/java/vn/ptit/ecom/service/OrderService.java#L103">OrderService.process</a><a href="../app/src/main/java/vn/ptit/ecom/service/ShippingService.java#L18">ShippingService.ship</a><a href="../app/src/main/java/vn/ptit/ecom/model/order/OrderStatus.java#L15">chuyển trạng thái của OrderStatus</a></div>
+    <div><div class="t">Dữ liệu</div>customer_order, order_event, shipping (UNIQUE order_id)</div>
+    <div><div class="t">Kiểm thử</div><a href="../app/src/test/java/vn/ptit/ecom/model/OrderRulesTest.java#L103">vòng đời đơn hàng</a><a href="../app/src/test/java/vn/ptit/ecom/CheckoutFlowTest.java#L99">vai trò nhân viên (BR13)</a><a href="../docs/evidence/e2e/14_ship_dialog.png">e2e giao hàng</a></div>
+  </div>
+  <h3 id="codegen">Code do Visual Paradigm sinh (Instant Generator): làm thế nào và kết quả ra sao</h3>
+  <ol class="howto"><li><b>Tools → Code → Instant Generator</b>, ngôn ngữ Java.</li><li>Tab Model Elements: chọn package thiết kế <b>4 Design / vn</b>; xoá tiền tố của thuộc tính và tham số; bỏ chọn file Ant và các thao tác của association; chọn thư mục đầu ra.</li><li><b>Generate</b>: VP ghi 81 file Java, mỗi lớp thiết kế một file, vào <a href="../docs/evidence/vp_codegen/">docs/evidence/vp_codegen</a>.</li><li><b>Kiểm tra</b>: <a href="../tests/vpgen_vs_code.py">tests/vpgen_vs_code.py</a> đọc các file vừa sinh và code đã biên dịch: mọi lớp, thuộc tính, phương thức mà VP sinh đều có trong code.</li></ol>
+  <div class="shots"><a href="../docs/evidence/vp_generation/06_code_menu.png" class="lbx"><div class="thumb"><img src="../docs/evidence/vp_generation/06_code_menu.png" alt="" loading="lazy"></div><span>1. Tools → Code</span></a><a href="../docs/evidence/vp_generation/07_code_instant_generator.png" class="lbx"><div class="thumb"><img src="../docs/evidence/vp_generation/07_code_instant_generator.png" alt="" loading="lazy"></div><span>2. Instant Generator: các tuỳ chọn</span></a><a href="../docs/evidence/vp_generation/08_code_generation_finished.png" class="lbx"><div class="thumb"><img src="../docs/evidence/vp_generation/08_code_generation_finished.png" alt="" loading="lazy"></div><span>3. Sinh xong</span></a><a href="../docs/evidence/vp_generation/09_code_generator_output.png" class="lbx"><div class="thumb"><img src="../docs/evidence/vp_generation/09_code_generator_output.png" alt="" loading="lazy"></div><span>3. Các file đã sinh</span></a></div>
+  <div class="grid g2" style="margin-top:14px">
+    <div><h4 class="sub">Kết quả (<a href="../tests/vpgen_vs_code.py">vpgen_vs_code.py</a>)</h4><pre class="ddl">81 generated files; checked 73 classes, 190 fields, 157 methods, 8 view classes, 25 view operations
+the code implements every class, field and method that VP generated</pre>
+      <div class="chips"><a class="chip" href="../docs/evidence/vp_codegen/SearchService.java">SearchService.java do VP sinh</a><a class="chip" href="../app/src/main/java/vn/ptit/ecom/service/SearchService.java">SearchService.java đã cài đặt</a><a class="chip" href="../docs/evidence/vp_codegen/">cả 81 file</a></div></div>
+    <div class="callout"><b>Lần sinh code tìm ra hai lỗi trong mô hình</b>, đã sửa cả trong mô hình lẫn code: SearchService trả về kiểu tên Result, VP gắn nhầm sang lớp Result của package integration (nay là SearchResult); và tham số kiểu byte[] bị sinh thành byte__ (nay là kiểu byte với array modifier). Tiểu luận kể ở mục 4.5.1.</div>
+  </div>
+</section>
+
+<!-- ============================================================ E -->
+<section id="e">
+  <div class="sec-head"><span class="letter">E</span><h2>Thiết kế và sinh cơ sở dữ liệu</h2></div>
+  <p class="lead">Mô hình dữ liệu được thiết kế từ đặc tả trước khi viết mã: khái niệm, logic, vật lý, rồi đến cơ sở dữ liệu do Visual Paradigm sinh ra từ mô hình vật lý.</p>
+  <div class="grid g2">
+    <div class="card">
+      <h4>Category, Product và các bảng chi tiết</h4>
+      <p><code>category</code> là một cây với <code>detail_kind</code> (BOOK, LAPTOP, PHONE, APPAREL). <code>product</code> giữ định danh và các thuộc tính chung (sku, name, brand, price, stock, status). Mỗi bảng chi tiết có <code>product_id</code> vừa là PK vừa là FK với ON DELETE CASCADE. Quần áo và giày dùng chung <code>apparel_detail</code> vì bộ thuộc tính của chúng giống hệt nhau.</p>
+      <p class="note">Phương án đã loại: mỗi loại sản phẩm một bảng (giá và tồn kho lặp sáu lần, tìm kiếm phải đi qua sáu bảng); một bảng rộng với nhiều cột để trống.</p>
+      <div class="chips"><a class="chip" href="../vp/png/D4.png">D4 mô hình vật lý</a><a class="chip" href="../app/src/main/java/vn/ptit/ecom/model/product/DetailKind.java">DetailKind</a><a class="chip" href="../app/src/main/java/vn/ptit/ecom/dao/ProductDAOImpl.java#L27">các mapper chi tiết</a></div>
+    </div>
+    <div class="card">
+      <h4>Từ mô hình đến cơ sở dữ liệu</h4>
+      <p>1. D2 → D3 → D4 trong VP. 2. Tools → DB → Database Configuration (SQLite, driver sqlite-jdbc), rồi Generate Database: VP ghi cơ sở dữ liệu <a href="../db/vp/abc_shop_vp.db">abc_shop_vp.db</a> và DDL của nó <a href="../db/vp/vp_generated.ddl">vp_generated.ddl</a>. 3. <a href="../db/compare_schema.py">compare_schema.py</a>: cùng 20 bảng, 122 cột, 34 ràng buộc CHECK và 9 ràng buộc UNIQUE như <a href="../db/schema.sql">db/schema.sql</a> (VP không ghi FOREIGN KEY cho SQLite, schema.sql bổ sung chúng). 4. Khi khởi động, ứng dụng tạo file SQLite từ schema.sql cộng với dữ liệu mẫu.</p>
+      <div class="shots" style="margin-top:10px"><a href="../docs/evidence/vp_generation/02_db_configuration_sqlite.png" class="lbx"><div class="thumb"><img src="../docs/evidence/vp_generation/02_db_configuration_sqlite.png" alt="" loading="lazy"></div><span>Database Configuration: SQLite</span></a><a href="../docs/evidence/vp_generation/10_db_generation_composite.png" class="lbx"><div class="thumb"><img src="../docs/evidence/vp_generation/10_db_generation_composite.png" alt="" loading="lazy"></div><span>Generate Database: tùy chọn, kết nối, kết quả</span></a><a href="../docs/evidence/vp_generation/09_code_generator_output.png" class="lbx"><div class="thumb"><img src="../docs/evidence/vp_generation/09_code_generator_output.png" alt="" loading="lazy"></div><span>Instant Generator: bộ khung Java của thiết kế</span></a></div>
+      <div class="chips"><a class="chip" href="../db/schema.sql">schema.sql</a><a class="chip" href="../app/src/main/java/vn/ptit/ecom/dao/Database.java#L52">Database.create</a></div>
+    </div>
+  </div>
+  <h3 id="dbgen">Từ mô hình vật lý D4 ra cơ sở dữ liệu: làm thế nào và kết quả ra sao</h3>
+  <ol class="howto"><li><b>Mô hình vật lý.</b> <a href="../vp/png/D4.png">D4</a> chứa 20 bảng với tên và kiểu SQL (varchar(120), decimal(3, 1), timestamp), khoá chính, NOT NULL, CHECK, UNIQUE và 22 đường quan hệ.</li><li><b>Database Configuration</b> (Tools → DB → Database Configuration): chọn SQLite, file driver sqlite-jdbc 3.45.1 (đúng driver của ứng dụng), file cơ sở dữ liệu; Test Connection thành công.</li><li><b>Generate Database</b> (Tools → DB → Generate Database): chọn Create Database, Export to database, Generate DDL.</li><li><b>Kết quả.</b> VP ghi script <a href="../db/vp/vp_generated.ddl">db/vp/vp_generated.ddl</a> và tạo file SQLite <a href="../db/vp/abc_shop_vp.db">db/vp/abc_shop_vp.db</a> với 20 bảng, chưa có dữ liệu (dữ liệu demo lấy từ <a href="../db/seed.sql">seed.sql</a> khi ứng dụng tự tạo cơ sở dữ liệu của nó).</li><li><b>Kiểm tra.</b> <a href="../db/compare_schema.py">db/compare_schema.py</a> so sánh cơ sở dữ liệu vừa sinh với <a href="../db/schema.sql">db/schema.sql</a>, script mà ứng dụng chạy khi khởi động.</li></ol>
+  <div class="shots"><a href="../docs/evidence/vp_generation/01_db_menu.png" class="lbx"><div class="thumb"><img src="../docs/evidence/vp_generation/01_db_menu.png" alt="" loading="lazy"></div><span>1. Menu Tools → DB</span></a><a href="../docs/evidence/vp_generation/02_db_configuration_sqlite.png" class="lbx"><div class="thumb"><img src="../docs/evidence/vp_generation/02_db_configuration_sqlite.png" alt="" loading="lazy"></div><span>2. Database Configuration: SQLite</span></a><a href="../docs/evidence/vp_generation/03_db_connection_ok.png" class="lbx"><div class="thumb"><img src="../docs/evidence/vp_generation/03_db_connection_ok.png" alt="" loading="lazy"></div><span>2. Test Connection thành công</span></a><a href="../docs/evidence/vp_generation/04_db_generation_dialog.png" class="lbx"><div class="thumb"><img src="../docs/evidence/vp_generation/04_db_generation_dialog.png" alt="" loading="lazy"></div><span>3. Generate Database: các tuỳ chọn</span></a><a href="../docs/evidence/vp_generation/05_db_generation_finished.png" class="lbx"><div class="thumb"><img src="../docs/evidence/vp_generation/05_db_generation_finished.png" alt="" loading="lazy"></div><span>4. Sinh xong</span></a><a href="../docs/evidence/vp_generation/10_db_generation_composite.png" class="lbx"><div class="thumb"><img src="../docs/evidence/vp_generation/10_db_generation_composite.png" alt="" loading="lazy"></div><span>Bước 3 và 4, như trong tiểu luận</span></a></div>
+  <h4 class="sub">Cơ sở dữ liệu vừa sinh chứa gì (đọc trực tiếp từ abc_shop_vp.db)</h4>
+  <table class="compact"><tr><th>Bảng</th><th>Số cột</th><th>Khoá chính</th><th>UNIQUE</th><th>CHECK</th><th>FK do VP ghi</th><th>FK trong schema.sql</th><th>Số dòng</th></tr><tr><td><code>category</code></td><td>5</td><td><code>category_id</code></td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td></tr><tr><td><code>product</code></td><td>11</td><td><code>product_id</code></td><td>1</td><td>3</td><td>0</td><td>1</td><td>0</td></tr><tr><td><code>book_detail</code></td><td>5</td><td><code>product_id</code></td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td></tr><tr><td><code>laptop_detail</code></td><td>6</td><td><code>product_id</code></td><td>0</td><td>3</td><td>0</td><td>1</td><td>0</td></tr><tr><td><code>phone_detail</code></td><td>7</td><td><code>product_id</code></td><td>0</td><td>4</td><td>0</td><td>1</td><td>0</td></tr><tr><td><code>apparel_detail</code></td><td>4</td><td><code>product_id</code></td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td></tr><tr><td><code>customer</code></td><td>9</td><td><code>customer_id</code></td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td><code>address</code></td><td>9</td><td><code>address_id</code></td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td></tr><tr><td><code>customer_vip</code></td><td>4</td><td><code>customer_id</code></td><td>0</td><td>3</td><td>0</td><td>1</td><td>0</td></tr><tr><td><code>customer_new</code></td><td>3</td><td><code>customer_id</code></td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td></tr><tr><td><code>staff</code></td><td>5</td><td><code>staff_id</code></td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td><code>cart</code></td><td>4</td><td><code>cart_id</code></td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td></tr><tr><td><code>cart_item</code></td><td>5</td><td><code>cart_item_id</code></td><td>1</td><td>2</td><td>0</td><td>2</td><td>0</td></tr><tr><td><code>customer_order</code></td><td>10</td><td><code>order_id</code></td><td>0</td><td>6</td><td>0</td><td>2</td><td>0</td></tr><tr><td><code>order_item</code></td><td>6</td><td><code>order_item_id</code></td><td>1</td><td>2</td><td>0</td><td>2</td><td>0</td></tr><tr><td><code>order_event</code></td><td>6</td><td><code>event_id</code></td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td></tr><tr><td><code>payment</code></td><td>6</td><td><code>payment_id</code></td><td>0</td><td>3</td><td>0</td><td>1</td><td>0</td></tr><tr><td><code>pay_cash</code></td><td>3</td><td><code>payment_id</code></td><td>0</td><td>2</td><td>0</td><td>1</td><td>0</td></tr><tr><td><code>pay_credit</code></td><td>5</td><td><code>payment_id</code></td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td></tr><tr><td><code>shipping</code></td><td>9</td><td><code>shipping_id</code></td><td>2</td><td>2</td><td>0</td><td>2</td><td>0</td></tr><tr><td><b>Tổng</b></td><td><b>122</b></td><td></td><td><b>9</b></td><td><b>34</b></td><td><b>0</b></td><td><b>22</b></td><td><b>0</b></td></tr></table>
+  <div class="grid g2" style="margin-top:14px">
+    <div><h4 class="sub">Một bảng đúng như Visual Paradigm đã ghi (<a href="../db/vp/vp_generated.ddl">vp_generated.ddl</a>)</h4><pre class="ddl">CREATE TABLE customer_order (
+  order_id       INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
+  customer_id    integer(10) NOT NULL, 
+  address_id     integer(10) NOT NULL, 
+  order_date     timestamp NOT NULL, 
+  status         varchar(16) NOT NULL CHECK(status IN (&#x27;PENDING_PAYMENT&#x27;, &#x27;PLACED&#x27;, &#x27;PAID&#x27;, &#x27;PROCESSING&#x27;, &#x27;SHIPPED&#x27;, &#x27;DELIVERED&#x27;, &#x27;CANCELLED&#x27;)), 
+  payment_method varchar(4) NOT NULL CHECK(payment_method IN (&#x27;CARD&#x27;, &#x27;COD&#x27;)), 
+  subtotal       integer(10) NOT NULL CHECK(subtotal &gt; 0), 
+  discount       integer(10) NOT NULL CHECK(discount &gt;= 0), 
+  shipping_fee   integer(10) NOT NULL CHECK(shipping_fee &gt;= 0), 
+  total_amount   integer(10) NOT NULL CHECK(total_amount = subtotal - discount + shipping_fee));</pre></div>
+    <div><h4 class="sub">So sánh với schema.sql (<a href="../db/compare_schema.py">compare_schema.py</a>)</h4><pre class="ddl">vp_ddl.sql: 20 statements, schema.sql: 20 statements
+tables 20, foreign keys 22, textually identical: True, structurally identical: True
+database generated by Visual Paradigm: tables 20, columns 122, CHECK 34, unique keys 9, foreign keys 0;
+same tables, columns, types, NOT NULL, keys, CHECK and UNIQUE as schema.sql: True</pre>
+      <div class="callout"><b>Khác biệt duy nhất: khoá ngoại.</b> Script mà VP ghi cho SQLite không có khoá ngoại nào: SQLite chỉ nhận khoá ngoại bên trong CREATE TABLE, còn bộ sinh không đặt chúng ở đó. 22 khoá ngoại lấy từ các đường quan hệ của chính D4, qua phần xuất DDL của script plugin (<a href="../db/vp/vp_ddl.sql">db/vp/vp_ddl.sql</a>), cũng chính là <a href="../db/schema.sql">db/schema.sql</a>. Lần sinh đầu còn cho em một bài học: mọi cột chữ ra kiểu integer, cho đến khi các cột lấy kiểu từ danh sách kiểu của VP cho SQLite (mục 4.2.3 của tiểu luận).</div></div>
+  </div>
+  <h3>Ánh xạ: mô hình thiết kế → bảng → mã</h3>
+  <table>
+    <tr><th>Thiết kế (VP)</th><th>Bảng</th><th>Ràng buộc toàn vẹn</th><th>Lớp model / DAO</th></tr>
+    <tr><td>Category (cây)</td><td>category</td><td>slug UNIQUE, FK tới cha</td><td><a href="../app/src/main/java/vn/ptit/ecom/model/product/Category.java">Category</a> / ProductDAO.categories</td></tr>
+    <tr><td>Product ◆ ProductDetail</td><td>product + book_detail, laptop_detail, phone_detail, apparel_detail</td><td>sku UNIQUE, stock ≥ 0, detail PK = FK</td><td><a href="../app/src/main/java/vn/ptit/ecom/model/product/Product.java">Product</a> / <a href="../app/src/main/java/vn/ptit/ecom/dao/ProductDAOImpl.java">ProductDAOImpl</a></td></tr>
+    <tr><td>Cart ◆ CartItem</td><td>cart, cart_item</td><td>cart.customer_id UNIQUE, UNIQUE(cart_id, product_id)</td><td><a href="../app/src/main/java/vn/ptit/ecom/model/cart/Cart.java">Cart</a> / <a href="../app/src/main/java/vn/ptit/ecom/dao/CartDAOImpl.java">CartDAOImpl</a></td></tr>
+    <tr><td>Order ◆ OrderItem, OrderEvent</td><td>customer_order, order_item, order_event</td><td>status CHECK, CHECK công thức tổng tiền, UNIQUE(order_id, product_id)</td><td><a href="../app/src/main/java/vn/ptit/ecom/model/order/Order.java">Order</a> / <a href="../app/src/main/java/vn/ptit/ecom/dao/OrderDAOImpl.java">OrderDAOImpl</a></td></tr>
+    <tr><td>Payment ← PayCredit, PayCash</td><td>payment, pay_credit, pay_cash</td><td>kiểu con PK = FK; không có cột số thẻ</td><td><a href="../app/src/main/java/vn/ptit/ecom/model/order/Payment.java">Payment</a> / <a href="../app/src/main/java/vn/ptit/ecom/dao/PaymentDAOImpl.java">PaymentDAOImpl</a></td></tr>
+    <tr><td>Shipping</td><td>shipping</td><td>order_id UNIQUE (BR10), tracking_number UNIQUE</td><td><a href="../app/src/main/java/vn/ptit/ecom/model/order/Shipping.java">Shipping</a> / <a href="../app/src/main/java/vn/ptit/ecom/dao/ShippingDAOImpl.java">ShippingDAOImpl</a></td></tr>
+    <tr><td>Customer ← CustomerVIP, CustomerNew</td><td>customer, customer_vip, customer_new, address</td><td>email UNIQUE, kiểu con PK = FK</td><td><a href="../app/src/main/java/vn/ptit/ecom/model/customer/Customer.java">Customer</a> / <a href="../app/src/main/java/vn/ptit/ecom/dao/CustomerDAOImpl.java">CustomerDAOImpl</a></td></tr>
+  </table>
+</section>
+
+<!-- ============================================================ AI -->
+<section id="ai">
+  <div class="sec-head"><span class="letter">AI</span><h2>Tìm kiếm AI (Chương 3)</h2></div>
+  <p class="lead">Khách hàng không gõ đúng tên sản phẩm thì không tìm thấy gì. Tìm kiếm AI hiểu các từ liên quan, lỗi chính tả, giới hạn giá, câu nói bằng giọng nói và cả ảnh chụp, đồng thời cho biết vì sao từng sản phẩm được tìm ra. Đây là một thành phần của hệ thống thông tin như mọi thành phần khác: được đặc tả, mô hình hóa, thiết kế, kiểm thử và đo đạc.</p>
+  <div class="grid g3">
+    <div class="card"><h4>Văn bản</h4><p>Mô hình không gian vector TF-IDF học từ danh mục sản phẩm; một từ điển các từ liên quan; sửa lỗi chính tả bằng khoảng cách Damerau-Levenshtein; "under 10 million" trở thành bộ lọc giá cứng (AI03).</p></div>
+    <div class="card"><h4>Giọng nói và ảnh</h4><p>Chuyển giọng nói thành văn bản ngay trong trình duyệt, cho sửa trước khi gửi (FR-S4). Ảnh chụp được so với ảnh sản phẩm bằng histogram màu, hướng cạnh và đường bao (FR-S5); ảnh không bao giờ được lưu (AI05).</p></div>
+    <div class="card"><h4>Độ tin cậy</h4><p>Mỗi kết quả đều nêu lý do (AI02); không có kết quả thì chạy tìm kiếm theo từ khóa và trang báo rõ điều đó (AI04); sản phẩm hết hàng bị giảm 20 % điểm (AI07).</p></div>
+  </div>
+  <h3>Đo so với tìm kiếm theo từ khóa</h3>
+  <table>
+    <tr><th>Bộ kiểm thử</th><th>Chỉ số</th><th>Tìm kiếm từ khóa</th><th>Tìm kiếm AI</th></tr>
+    <tr><td>30 truy vấn đã gán nhãn</td><td>hit@1 · MRR · tỷ lệ không có kết quả</td><td>0.23 · 0.23 · 0.77</td><td><b>0.97 · 0.97 · 0.03</b></td></tr>
+    <tr><td>84 ảnh (cắt, xoay, tối hơn, nền khác)</td><td>top-1 · top-3</td><td>(không có tìm kiếm bằng ảnh)</td><td><b>0.93 · 1.00</b></td></tr>
+  </table>
+  <div class="chips" style="margin-top:12px"><a class="chip" href="../docs/SPEC.md">SPEC mục 6</a><a class="chip" href="../vp/png/AI1.png">AI1 use case</a><a class="chip" href="../vp/png/AI3.png">AI3 luồng dữ liệu</a><a class="chip" href="../vp/png/AI4.png">AI4 thành phần</a><a class="chip" href="../vp/png/G8.png">G8 các lớp</a><a class="chip" href="../vp/png/G9.png">G9 tuần tự</a><a class="chip" href="../app/src/main/java/vn/ptit/ecom/ai/ProductIndex.java">ProductIndex.java</a><a class="chip" href="../docs/evidence/search_eval.txt">search_eval.txt</a></div>
+  <div class="shots" style="margin-top:18px">
+    <a href="../docs/evidence/e2e/20_search_ai_text.png" class="lbx"><div class="thumb"><img src="../docs/evidence/e2e/20_search_ai_text.png" alt="" loading="lazy"></div><span>"red sneakers under 3 million": câu truy vấn đã hiểu và các lý do</span></a>
+    <a href="../docs/evidence/e2e/21_search_photo.png" class="lbx"><div class="thumb"><img src="../docs/evidence/e2e/21_search_photo.png" alt="" loading="lazy"></div><span>Tìm bằng ảnh: Nike Air Max 90 đứng đầu</span></a>
+    <a href="../docs/evidence/e2e/22_search_voice_dialog.png" class="lbx"><div class="thumb"><img src="../docs/evidence/e2e/22_search_voice_dialog.png" alt="" loading="lazy"></div><span>Giọng nói: có thể sửa văn bản đã nghe được</span></a>
+  </div>
+</section>
+
+<!-- ============================================================ F -->
+<section id="f">
+  <div class="sec-head"><span class="letter">F</span><h2>Demo trực tiếp</h2></div>
+  <p class="lead">Khởi động cửa hàng trên một cơ sở dữ liệu mới, rồi theo dõi một đơn hàng từ danh mục sản phẩm đến tận cửa nhà khách hàng.</p>
+  <div class="row" style="margin-bottom:16px">
+    <a class="btn" href="http://localhost:8080/" target="_blank" rel="noopener" data-shop>Mở cửa hàng ↗</a>
+    <code style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px 12px">nút này chạy CHAY_DEMO.bat khi máy chủ chưa chạy (Java 17, cơ sở dữ liệu demo mới)</code>
+  </div>
+  <div class="grid g4">
+    <div class="card"><h4>1. Khách hàng mua</h4><p>Đăng nhập bằng <code>an.nguyen@example.com</code> (VIP). Laptops → MacBook Air → Add to cart. Đặt hàng: giảm 5 %, miễn phí giao hàng.</p></div>
+    <div class="card"><h4>2. Thanh toán lỗi, rồi thành công</h4><p>Thẻ <code>4000 0000 0000 0002</code> bị từ chối, đơn hàng chờ. Thẻ <code>4242 4242 4242 4242</code> → PAID.</p></div>
+    <div class="card"><h4>3. Nhân viên bán hàng xử lý đơn</h4><p>Đăng nhập bằng <code>sales@example.com</code>. Bảng đơn hàng: Start processing → Ship (đơn vị vận chuyển, mã vận đơn) → Mark delivered.</p></div>
+    <div class="card"><h4>4. Khách hàng theo dõi</h4><p>Với tài khoản của An: My orders → đơn hàng hiện dòng thời gian và mã vận đơn. Alt+L mở design lens.</p></div>
+  </div>
+  <p class="note" style="margin-top:10px">Tìm kiếm AI: gõ <code>red sneakers under 3 million</code> hoặc <code>macbok air</code>; nút máy ảnh chọn một ảnh từ <code>tests/search/photos</code>. Mọi mật khẩu: <code>demo1234</code>. Kho: <code>warehouse@example.com</code> (tồn kho, BR12 từ chối giá trị âm). Các ảnh chụp màn hình bên dưới lấy từ lần chạy tự động trên Edge.</p>
+  <div class="shots" style="margin-top:18px">
+    <a href="../docs/evidence/e2e/08_checkout.png" class="lbx"><div class="thumb"><img src="../docs/evidence/e2e/08_checkout.png" alt="" loading="lazy"></div><span>Đặt hàng với giảm giá VIP</span></a>
+    <a href="../docs/evidence/e2e/10_payment_declined.png" class="lbx"><div class="thumb"><img src="../docs/evidence/e2e/10_payment_declined.png" alt="" loading="lazy"></div><span>Thẻ bị từ chối, đơn hàng vẫn được giữ</span></a>
+    <a href="../docs/evidence/e2e/13_order_board.png" class="lbx"><div class="thumb"><img src="../docs/evidence/e2e/13_order_board.png" alt="" loading="lazy"></div><span>Bảng đơn hàng theo trạng thái</span></a>
+    <a href="../docs/evidence/e2e/16_order_tracking.png" class="lbx"><div class="thumb"><img src="../docs/evidence/e2e/16_order_tracking.png" alt="" loading="lazy"></div><span>Theo dõi và lịch sử</span></a>
+  </div>
+</section>
+
+<!-- ============================================================ G -->
+<section id="g">
+  <div class="sec-head"><span class="letter">G</span><h2>Kiểm chứng và kết luận</h2></div>
+  <table>
+    <tr><th>Bằng chứng</th><th>Chứng minh điều gì</th><th>Kết quả</th><th>Mở</th></tr>
+    <tr><td>JUnit, quy tắc của model</td><td>BR01 đến BR04, BR07, BR09 đến BR11, không cần cơ sở dữ liệu</td><td><span class="chip ok">9 đạt</span></td><td><a href="../app/src/test/java/vn/ptit/ecom/model/OrderRulesTest.java">OrderRulesTest</a></td></tr>
+    <tr><td>JUnit, luồng đặt hàng</td><td>controller → service → DAO → SQLite: đơn vị hàng cuối cùng, quyền sở hữu, vai trò, CHECK, rollback</td><td><span class="chip ok">5 đạt</span></td><td><a href="../app/src/test/java/vn/ptit/ecom/CheckoutFlowTest.java">CheckoutFlowTest</a></td></tr>
+    <tr><td>JUnit, tìm kiếm AI</td><td>AT11 đến AT17 trên một file SQLite thật: từ đồng nghĩa, chính tả, lọc giá, phương án dự phòng, giới hạn đầu vào, ảnh</td><td><span class="chip ok">10 đạt</span></td><td><a href="../app/src/test/java/vn/ptit/ecom/SearchTest.java">SearchTest</a></td></tr>
+    <tr><td>Smoke test API</td><td>mọi use case đã cài đặt qua HTTP, có kiểm tra cơ sở dữ liệu</td><td><span class="chip ok">36 / 36</span></td><td><a href="../tests/smoke_api.py">smoke_api.py</a></td></tr>
+    <tr><td>End-to-end trên Edge</td><td>góc nhìn của người dùng với UC02 đến UC15, dữ liệu được kiểm tra qua API</td><td><span class="chip ok">30 / 30</span></td><td><a href="../docs/evidence/e2e/e2e_result.txt">kết quả</a> · <a href="../tests/e2e/run_e2e.mjs">script</a></td></tr>
+    <tr><td>Thiết kế so với mã</td><td>73 lớp Java, 169 thuộc tính, 134 thao tác; 8 lớp view, 25 thao tác của view; 48 lời gọi trong biểu đồ tuần tự; package ai không import gì khác</td><td><span class="chip ok">khớp</span></td><td><a href="../tests/design_vs_code.py">design_vs_code.py</a></td></tr>
+    <tr><td>Mã do VP sinh so với mã</td><td>81 file do Instant Generator của VP sinh ra: 190 trường, 157 phương thức, tất cả đều có trong mã</td><td><span class="chip ok">khớp</span></td><td><a href="../tests/vpgen_vs_code.py">vpgen_vs_code.py</a> · <a href="../docs/evidence/vp_codegen/">các file được sinh</a></td></tr>
+    <tr><td>Chất lượng tìm kiếm AI</td><td>30 truy vấn đã gán nhãn, 84 ảnh</td><td><span class="chip ok">hit@1 0.97 · ảnh top-1 0.93</span></td><td><a href="../docs/evidence/search_eval.txt">search_eval.txt</a></td></tr>
+    <tr><td>Cơ sở dữ liệu VP so với schema</td><td>cơ sở dữ liệu VP sinh ra và DDL của mô hình vật lý đều trùng với schema.sql</td><td><span class="chip ok">giống hệt</span></td><td><a href="../db/compare_schema.py">compare_schema.py</a></td></tr>
+    <tr><td>Lint bố cục biểu đồ</td><td>không nhãn nào chồng nhau, không đường nào cắt xuyên qua một hộp, không nhãn nào nằm trên đường của đối tượng khác</td><td><span class="chip ok">0 lỗi</span></td><td><a href="../vp/png/">vp/png</a></td></tr>
+  </table>
+  <div class="grid g2" style="margin-top:18px">
+    <div class="card"><h4>Các quyết định chính</h4><p>Product + Category + bảng chi tiết; tạo đơn hàng trước khi thanh toán; một bảng chuyển trạng thái duy nhất cho trạng thái đơn; mỗi thao tác của service là một giao dịch; lời gọi nhà cung cấp nằm ngoài giao dịch; tồn kho được giữ chỗ bằng UPDATE có điều kiện. Lý do: <a href="../docs/DESIGN.md">DESIGN.md</a> và chương 4 của tiểu luận.</p></div>
+    <div class="card"><h4>Hạn chế</h4><p>Mới cài đặt 9 trong 21 use case; dùng SQLite và nhà cung cấp thanh toán mô phỏng; tìm kiếm bằng ảnh chưa được thử với một ảnh khác của cùng một mẫu sản phẩm; từ điển các từ liên quan chỉ là một danh sách trong mã; chưa có CSRF token và chưa giới hạn số lần đăng nhập. Hướng cải tiến: <a href="../Bai_nop/tieuluan_V4_04_10_phamtuananh_018.pdf">mục 5.13 của tiểu luận</a>.</p></div>
+  </div>
+</section>
+
+<!-- ============================================================ VP -->
+<section id="vp">
+  <div class="sec-head"><span class="letter">+</span><h2>Vẽ trực tiếp trong Visual Paradigm</h2></div>
+  <p class="lead">Cách vẽ các biểu đồ trong VP: với mỗi loại biểu đồ, thanh công cụ VP thật với các công cụ đã dùng, đánh số theo thứ tự sử dụng, cùng các bước kéo thả.</p>
+  <div class="callout">Mở biểu đồ mới: ribbon <b>Diagram</b> → <b>New</b> → chọn loại biểu đồ → đặt tên. Với mọi hình: kéo công cụ từ palette vào vùng vẽ, gõ tên, nhấn Enter. Nhanh hơn: rê chuột vào một hình rồi kéo một biểu tượng <b>Resource Catalog</b> của nó (góc trên bên phải của hình) tới một chỗ trống; VP tạo connector và hình tiếp theo chỉ trong một thao tác.</div>
+
+  <details class="draw" open><summary>Biểu đồ use case (R2, R3)</summary><div class="palette">
+    <a class="lbx" href="palette/usecase.png"><img src="palette/usecase.png" alt="Palette use case, các công cụ đã dùng được đánh số"></a>
+    <ol><li><b>System</b>: kéo một hình chữ nhật lớn, đặt tên "ABC Online Shop E-Commerce Information System".</li>
+      <li><b>Actor</b>: thả Customer bên trái ranh giới hệ thống, nhân viên và các nhà cung cấp bên phải.</li>
+      <li><b>Use Case</b>: thả vào trong ranh giới, đặt tên "UC07 Place Order / Checkout" (VP tự đưa nó vào hệ thống).</li>
+      <li><b>Association</b>: bấm vào actor, rồi bấm vào use case (hoặc kéo biểu tượng Resource Catalog của actor tới use case).</li>
+      <li><b>Include</b>: từ UC07 gốc tới UC21 được include (mũi tên chỉ về UC21).</li>
+      <li><b>Extend</b>: từ UC08 mở rộng tới UC07 gốc. Sau đó chuột phải UC07 → Add → Extension Point "card payment chosen"; bấm đúp vào extend → Condition "payment method = CARD".</li></ol>
+      <p class="note" style="margin-top:10px"><b>Generalization</b> (cùng palette): kéo từ phần tử con tới phần tử cha, ví dụ từ Search by Text tới use case trừu tượng UC04 Search Products (AI1), hoặc từ Sales Staff tới Staff (R2). Use case cha được đặt là trừu tượng trong specification của nó (Abstract).</p></div></details>
+
+  <details class="draw"><summary>Biểu đồ hoạt động có swimlane (A1 đến A5)</summary><div class="palette">
+    <a class="lbx" href="palette/activity.png"><img src="palette/activity.png" alt="Palette hoạt động, các công cụ đã dùng được đánh số"></a>
+    <ol><li><b>Horizontal Swimlane</b>, tam giác nhỏ → <b>Vertical Swimlane</b>: thả vào, chuột phải → Add Partition, đặt tên các làn là Customer, Shop System.</li>
+      <li><b>Initial Node</b> trong làn Customer.</li>
+      <li><b>Action</b>: "Open checkout", "Validate the cart: price, status, stock (UC21)" trong đúng làn.</li>
+      <li><b>Decision Node</b> (tam giác nhỏ → <b>Merge Node</b> nơi các nhánh gặp lại nhau). Không ghi chữ trong hình thoi.</li>
+      <li><b>Activity Final Node</b> cho mỗi điểm kết thúc.</li>
+      <li><b>Control Flow</b>: từ nút này sang nút khác; trên luồng đi ra từ decision, bấm đúp → Guard, ví dụ "blocking issue" (VP hiển thị là [blocking issue]).</li></ol></div></details>
+
+  <details class="draw"><summary>Biểu đồ tuần tự (A7 đến A9 phân tích, G5 đến G7 thiết kế)</summary><div class="palette">
+    <a class="lbx" href="palette/sequence.png"><img src="palette/sequence.png" alt="Palette tuần tự, các công cụ đã dùng được đánh số"></a>
+    <ol><li><b>Actor</b>: Customer ở bên trái.</li>
+      <li><b>Lifeline</b>: phân tích: chuột phải → Stereotypes → boundary / control / entity (CheckoutView, OrderControl, Order); thiết kế: mở specification của lifeline → Base classifier → lớp thiết kế (OrderController), VP hiển thị ": OrderController"; sau đó Stereotypes → vai trò theo tầng (form: boundary; controller, service, DAO: control; lớp mô hình: entity), VP vẽ biểu tượng tương ứng.</li>
+      <li><b>Message</b>: kéo từ đường nét đứt của bên gửi tới bên nhận; gõ lời gọi "placeOrder(customerId, addressId, method, expectedTotal)". Với phản hồi: vẽ một Message ngược lại, mở specification của nó → Action Type → <b>Return</b> (khi đó VP vẽ nét đứt).</li>
+      <li><b>Self Message</b> cho lời gọi tới chính nó (kiểm tra định dạng và hạn của thẻ).</li>
+      <li><b>Alt. Combined Fragment</b>: kéo bao quanh các message; chuột phải → Operator (alt, loop, opt, critical); chuột phải → Add Operand cho "else"; bấm đúp vào operand → Guard.</li></ol>
+      <p class="note" style="margin-top:10px">Tạo đối tượng (Order, CartItem): một Message có Action Type là <b>Create</b>; lifeline được tạo bắt đầu tại message đó. Lối thoát khi lỗi (thẻ bị từ chối, hết hàng): Combined Fragment với operator <b>break</b>. Thanh kích hoạt chạy từ lời gọi lifeline nhận được tới message cuối cùng của nó.</p></div></details>
+
+  <details class="draw"><summary>Biểu đồ lớp (A10 phân tích, D1 mô hình dữ liệu, G1 đến G4b thiết kế)</summary><div class="palette">
+    <a class="lbx" href="palette/class.png"><img src="palette/class.png" alt="Palette lớp, các công cụ đã dùng được đánh số"></a>
+    <ol><li><b>Package</b> (biểu đồ phân tầng G1): thả một khung cho mỗi tầng, đặt tên service, dao, …</li>
+      <li><b>Class</b>: đặt tên; chuột phải → Add → Attribute "-total : long" (Alt+Shift+A) hoặc Operation "+place(…) : Order" (Alt+Shift+O); stereotype interface hoặc enumeration lấy từ chuột phải → Stereotypes.</li>
+      <li><b>Association</b> (tam giác nhỏ → <b>Composition</b> cho Order ◆ OrderItem): kéo từ toàn thể tới bộ phận; bấm đúp vào hai đầu để đặt bản số (1, 1..*) và vai trò (items).</li>
+      <li><b>Generalization</b>: kéo từ lớp con PayCredit tới Payment (tam giác nhỏ → <b>Realization</b> cho BookDetail → ProductDetail).</li>
+      <li><b>Dependency</b>: từ lớp sử dụng tới lớp hoặc package được dùng; chuột phải → Stereotypes → use.</li></ol></div></details>
+
+  <details class="draw"><summary>Biểu đồ luồng dữ liệu (R1 ngữ cảnh, A6 mức 1)</summary><div class="palette">
+    <a class="lbx" href="palette/dfd.png"><img src="palette/dfd.png" alt="Palette DFD, các công cụ đã dùng được đánh số"></a>
+    <ol><li><b>External Entity</b>: Customer, Sales Staff, Payment Provider…</li>
+      <li><b>Process</b>: số thứ tự ở dải trên (1 đến 7), tên ở bên dưới ("Place, pay and track orders").</li>
+      <li><b>Data Store</b>: id (1 đến 6, VP ghi là D1 đến D6) và tên (Orders).</li>
+      <li><b>Data Flow</b>: từ nguồn tới đích, đặt tên cho dữ liệu đi qua ("stock reservation"). Mỗi kho dữ liệu phải có một luồng vào và một luồng ra.</li></ol></div></details>
+
+  <details class="draw"><summary>Biểu đồ thực thể quan hệ (D2 khái niệm, D3 logic, D4 vật lý) và sinh cơ sở dữ liệu</summary><div class="palette">
+    <a class="lbx" href="palette/erd.png"><img src="palette/erd.png" alt="Palette ERD, các công cụ đã dùng được đánh số"></a>
+    <ol><li><b>Entity</b>: đặt tên bảng (customer_order); chuột phải → New Column: tên, kiểu (INTEGER), Primary Key, Nullable, Unique.</li>
+      <li><b>One-to-Many Relationship</b>: kéo từ bảng cha (customer_order) tới bảng con (order_item); VP tự thêm cột khóa ngoại order_id vào bảng con.</li>
+      <li><b>One-to-One Relationship</b> cho các bảng kiểu con (payment → pay_credit, khóa vừa là PK vừa là FK).</li></ol>
+      <p class="note" style="margin-top:10px">Sinh cơ sở dữ liệu: trước hết ribbon <b>Tools</b> → <b>DB</b> → <b>Database Configuration</b>: SQLite, file driver sqlite-jdbc và file cơ sở dữ liệu, Test Connection; sau đó <b>Tools</b> → <b>DB</b> → <b>Generate Database</b>: tạo cơ sở dữ liệu và xuất DDL. Kết quả được đối chiếu với <a href="../db/schema.sql">schema.sql</a> bằng <a href="../db/compare_schema.py">compare_schema.py</a>. Sinh mã: Tools → Code → <b>Instant Generator</b>, Java, tab Model Elements, đánh dấu <i>4 Design / vn</i>, xóa cả hai prefix, bỏ chọn file Ant và các thao tác của association, chọn thư mục đầu ra, Generate.</p></div></details>
+
+  <details class="draw"><summary>Biểu đồ thành phần (G0 ba tầng)</summary><div class="palette">
+    <a class="lbx" href="palette/component.png"><img src="palette/component.png" alt="Palette thành phần, các công cụ đã dùng được đánh số"></a>
+    <ol><li><b>Package</b> cho mỗi tầng, stereotype layer (chuột phải → Stereotypes); chuột phải → Presentation Options → hiển thị tên package trong tab.</li>
+      <li><b>Component</b> cho mỗi package mã nguồn, đặt bên trong tầng của nó: "service (Services: rules and transactions)".</li>
+      <li><b>Dependency</b> từ bên sử dụng tới thành phần được dùng, đặt tên bằng thứ đi qua nó ("one transaction", "SQL over JDBC").</li></ol></div></details>
+</section>
+</main>
+</div>
+
+</body>
+</html>
