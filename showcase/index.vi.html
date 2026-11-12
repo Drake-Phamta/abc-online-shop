@@ -49,7 +49,7 @@
     <div class="card stat"><b>21 / 9</b><span>use case được đặc tả / cài đặt trọn vẹn</span></div>
     <div class="card stat"><b>42</b><span>biểu đồ gốc của Visual Paradigm, trong một dự án, tất cả đều có trong tiểu luận</span></div>
     <div class="card stat"><b>20</b><span>bảng do Visual Paradigm sinh ra từ mô hình vật lý</span></div>
-    <div class="card stat"><b>81 / 81</b><span>lớp thiết kế có trong mã nguồn (73 lớp Java, 8 lớp view ở trình duyệt)</span></div>
+    <div class="card stat"><b>80 / 80</b><span>lớp thiết kế có trong mã nguồn (72 lớp Java, 8 lớp view ở trình duyệt)</span></div>
   </div>
   <div class="grid g2">
     <div class="card">
@@ -325,7 +325,7 @@ same tables, columns, types, NOT NULL, keys, CHECK and UNIQUE as schema.sql: Tru
   <table>
     <tr><th>Thiết kế (VP)</th><th>Bảng</th><th>Ràng buộc toàn vẹn</th><th>Lớp model / DAO</th></tr>
     <tr><td>Category (cây)</td><td>category</td><td>slug UNIQUE, FK tới cha</td><td><a href="../app/src/main/java/vn/ptit/ecom/model/product/Category.java">Category</a> / ProductDAO.categories</td></tr>
-    <tr><td>Product ◆ ProductDetail</td><td>product + book_detail, laptop_detail, phone_detail, apparel_detail</td><td>sku UNIQUE, stock ≥ 0, detail PK = FK</td><td><a href="../app/src/main/java/vn/ptit/ecom/model/product/Product.java">Product</a> / <a href="../app/src/main/java/vn/ptit/ecom/dao/ProductDAOImpl.java">ProductDAOImpl</a></td></tr>
+    <tr><td>Product ◁ BookDetail, LaptopDetail, PhoneDetail, ApparelDetail</td><td>product + book_detail, laptop_detail, phone_detail, apparel_detail</td><td>sku UNIQUE, stock ≥ 0, detail PK = FK</td><td><a href="../app/src/main/java/vn/ptit/ecom/model/product/Product.java">Product</a> / <a href="../app/src/main/java/vn/ptit/ecom/dao/ProductDAOImpl.java">ProductDAOImpl</a></td></tr>
     <tr><td>Cart ◆ CartItem</td><td>cart, cart_item</td><td>cart.customer_id UNIQUE, UNIQUE(cart_id, product_id)</td><td><a href="../app/src/main/java/vn/ptit/ecom/model/cart/Cart.java">Cart</a> / <a href="../app/src/main/java/vn/ptit/ecom/dao/CartDAOImpl.java">CartDAOImpl</a></td></tr>
     <tr><td>Order ◆ OrderItem, OrderEvent</td><td>customer_order, order_item, order_event</td><td>status CHECK, CHECK công thức tổng tiền, UNIQUE(order_id, product_id)</td><td><a href="../app/src/main/java/vn/ptit/ecom/model/order/Order.java">Order</a> / <a href="../app/src/main/java/vn/ptit/ecom/dao/OrderDAOImpl.java">OrderDAOImpl</a></td></tr>
     <tr><td>Payment ← PayCredit, PayCash</td><td>payment, pay_credit, pay_cash</td><td>kiểu con PK = FK; không có cột số thẻ</td><td><a href="../app/src/main/java/vn/ptit/ecom/model/order/Payment.java">Payment</a> / <a href="../app/src/main/java/vn/ptit/ecom/dao/PaymentDAOImpl.java">PaymentDAOImpl</a></td></tr>
@@ -390,7 +390,7 @@ same tables, columns, types, NOT NULL, keys, CHECK and UNIQUE as schema.sql: Tru
     <tr><td>JUnit, tìm kiếm AI</td><td>AT11 đến AT17 trên một file SQLite thật: từ đồng nghĩa, chính tả, lọc giá, phương án dự phòng, giới hạn đầu vào, ảnh</td><td><span class="chip ok">10 đạt</span></td><td><a href="../app/src/test/java/vn/ptit/ecom/SearchTest.java">SearchTest</a></td></tr>
     <tr><td>Smoke test API</td><td>mọi use case đã cài đặt qua HTTP, có kiểm tra cơ sở dữ liệu</td><td><span class="chip ok">36 / 36</span></td><td><a href="../tests/smoke_api.py">smoke_api.py</a></td></tr>
     <tr><td>End-to-end trên Edge</td><td>góc nhìn của người dùng với UC02 đến UC15, dữ liệu được kiểm tra qua API</td><td><span class="chip ok">30 / 30</span></td><td><a href="../docs/evidence/e2e/e2e_result.txt">kết quả</a> · <a href="../tests/e2e/run_e2e.mjs">script</a></td></tr>
-    <tr><td>Thiết kế so với mã</td><td>73 lớp Java, 169 thuộc tính, 134 thao tác; 8 lớp view, 25 thao tác của view; 48 lời gọi trong biểu đồ tuần tự; package ai không import gì khác</td><td><span class="chip ok">khớp</span></td><td><a href="../tests/design_vs_code.py">design_vs_code.py</a></td></tr>
+    <tr><td>Thiết kế so với mã</td><td>72 lớp Java, 169 thuộc tính, 134 thao tác; 8 lớp view, 25 thao tác của view; 48 lời gọi trong biểu đồ tuần tự; package ai không import gì khác</td><td><span class="chip ok">khớp</span></td><td><a href="../tests/design_vs_code.py">design_vs_code.py</a></td></tr>
     <tr><td>Mã do VP sinh so với mã</td><td>81 file do Instant Generator của VP sinh ra: 190 trường, 157 phương thức, tất cả đều có trong mã</td><td><span class="chip ok">khớp</span></td><td><a href="../tests/vpgen_vs_code.py">vpgen_vs_code.py</a> · <a href="../docs/evidence/vp_codegen/">các file được sinh</a></td></tr>
     <tr><td>Chất lượng tìm kiếm AI</td><td>30 truy vấn đã gán nhãn, 84 ảnh</td><td><span class="chip ok">hit@1 0.97 · ảnh top-1 0.93</span></td><td><a href="../docs/evidence/search_eval.txt">search_eval.txt</a></td></tr>
     <tr><td>Cơ sở dữ liệu VP so với schema</td><td>cơ sở dữ liệu VP sinh ra và DDL của mô hình vật lý đều trùng với schema.sql</td><td><span class="chip ok">giống hệt</span></td><td><a href="../db/compare_schema.py">compare_schema.py</a></td></tr>
@@ -441,7 +441,7 @@ same tables, columns, types, NOT NULL, keys, CHECK and UNIQUE as schema.sql: Tru
     <ol><li><b>Package</b> (biểu đồ phân tầng G1): thả một khung cho mỗi tầng, đặt tên service, dao, …</li>
       <li><b>Class</b>: đặt tên; chuột phải → Add → Attribute "-total : long" (Alt+Shift+A) hoặc Operation "+place(…) : Order" (Alt+Shift+O); stereotype interface hoặc enumeration lấy từ chuột phải → Stereotypes.</li>
       <li><b>Association</b> (tam giác nhỏ → <b>Composition</b> cho Order ◆ OrderItem): kéo từ toàn thể tới bộ phận; bấm đúp vào hai đầu để đặt bản số (1, 1..*) và vai trò (items).</li>
-      <li><b>Generalization</b>: kéo từ lớp con PayCredit tới Payment (tam giác nhỏ → <b>Realization</b> cho BookDetail → ProductDetail).</li>
+      <li><b>Generalization</b>: kéo từ lớp con PayCredit tới Payment (tam giác nhỏ), tương tự BookDetail tới Product.</li>
       <li><b>Dependency</b>: từ lớp sử dụng tới lớp hoặc package được dùng; chuột phải → Stereotypes → use.</li></ol></div></details>
 
   <details class="draw"><summary>Biểu đồ luồng dữ liệu (R1 ngữ cảnh, A6 mức 1)</summary><div class="palette">

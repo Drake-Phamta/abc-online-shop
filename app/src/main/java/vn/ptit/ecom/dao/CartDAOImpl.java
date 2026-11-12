@@ -35,7 +35,7 @@ class CartDAOImpl implements CartDAO {
                 + "JOIN category c ON c.category_id = p.category_id WHERE ci.cart_id = ? ORDER BY ci.cart_item_id";
         try (PreparedStatement ps = Jdbc.prepare(connection, sql, cartId); ResultSet rs = ps.executeQuery()) {
             while (rs.next())
-                items.add(new CartItem(ProductDAOImpl.map(rs, null), rs.getInt("quantity"), rs.getLong("cart_price")));
+                items.add(new CartItem(ProductDAOImpl.map(rs), rs.getInt("quantity"), rs.getLong("cart_price")));
         }
         return new Cart(cartId, customerId, items);
     }

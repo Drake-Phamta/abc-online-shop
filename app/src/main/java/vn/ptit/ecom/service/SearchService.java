@@ -22,7 +22,6 @@ import vn.ptit.ecom.dao.Database;
 import vn.ptit.ecom.dao.ProductDAO;
 import vn.ptit.ecom.model.product.Category;
 import vn.ptit.ecom.model.product.Product;
-import vn.ptit.ecom.model.product.ProductDetail;
 
 /**
  * UC04 with the AI search of docs/SPEC.md section 6: text (typed or spoken) and photo queries. The indexes are built
@@ -145,7 +144,7 @@ public class SearchService {
         Integer parent = p.getCategory().parentId();
         String category = p.getCategory().name() + (parent == null ? "" : " " + categoryNames.getOrDefault(parent, ""));
         Map<String, String> details = new LinkedHashMap<>();
-        if (p.getDetail() != null) for (ProductDetail.Spec s : p.getDetail().specs()) details.put(s.label(), s.value());
+        for (Product.Spec s : p.specs()) details.put(s.label(), s.value());
         return new Document(p.getId(), p.getPrice(), p.getName(), p.getBrand(), category, details, p.getDescription());
     }
 

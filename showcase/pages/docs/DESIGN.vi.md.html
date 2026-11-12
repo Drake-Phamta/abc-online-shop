@@ -23,8 +23,8 @@
 <p>Đầu vào: SPEC.md, biểu đồ lớp phân tích (Hình 4.1 của tiểu luận, mười chín lớp của Test 01) và góp ý của giảng viên
 về Product. Đầu ra: <code>db/schema.sql</code> và các package dưới <code>app/src/main/java/vn/ptit/ecom</code>.</p>
 <h2 id="1-conceptual-model-entities-and-relationships">1. Mô hình khái niệm (thực thể và quan hệ)</h2>
-<p>Category (cây) 1 - 0..* Product; Product 1 - 0..1 ProductDetail (một trong Book, Laptop, Phone, Apparel, được chọn theo
-loại chi tiết của danh mục); Customer 1 - 0..* Address; Customer 1 - 0..1 Cart; Cart 1 - 0..* CartItem; CartItem 0..* - 1
+<p>Category (cây) 1 - 0..* Product; BookDetail, LaptopDetail, PhoneDetail, ApparelDetail là lớp con của Product (loại chi
+tiết của danh mục cho biết là lớp nào); Customer 1 - 0..* Address; Customer 1 - 0..1 Cart; Cart 1 - 0..* CartItem; CartItem 0..* - 1
 Product; Customer 1 - 0..* Order; Order 1 - 1..* OrderItem; OrderItem 0..* - 1 Product; Order 1 - 0..* Payment
 (Cash hoặc Credit); Order 1 - 0..1 Shipping; Shipping 0..* - 1 Address; Order 1 - 1..* OrderEvent; Customer có thể là VIP 0..1,
 New 0..1; Staff (Sales hoặc Warehouse).</p>
@@ -117,7 +117,7 @@ bảo vệ bởi một ràng buộc CHECK.</p>
 <h2 id="3-packages-and-classes-three-layers">3. Package và lớp (ba tầng)</h2>
 <p>Các lớp thiết kế trong VP (biểu đồ G1 đến G4b và G8, thư mục &quot;4 Design&quot;) và mã nguồn có cùng package, lớp,
 thuộc tính và thao tác; <code>tests/design_vs_code.py</code> kiểm tra điều này với các lớp đã biên dịch và các view JS
-(81 lớp: 73 lớp Java với 169 thuộc tính và 134 thao tác, 8 lớp view với 25 thao tác, và 48 lời gọi trong
+(80 lớp: 72 lớp Java với 169 thuộc tính và 134 thao tác, 8 lớp view với 25 thao tác, và 48 lời gọi trong
 các biểu đồ tuần tự thiết kế G5, G6, G7 và G9), đồng thời kiểm tra rằng không file nào của package <code>ai</code> import phần khác của ứng dụng.
 <code>tests/vpgen_vs_code.py</code> đi từ phía ngược lại: 81 file mà Instant Generator của VP ghi ra từ cùng mô hình
 (<code>docs/evidence/vp_codegen</code>) đều phải có trong mã nguồn với cùng các field và phương thức (190 field, 157 phương thức).</p>
@@ -152,7 +152,7 @@ các biểu đồ tuần tự thiết kế G5, G6, G7 và G9), đồng thời ki
 <tr>
 <td>Business logic</td>
 <td><code>model.product</code>, <code>model.customer</code>, <code>model.cart</code>, <code>model.order</code>, <code>model</code></td>
-<td>Category, Product, ProductDetail (BookDetail, LaptopDetail, PhoneDetail, ApparelDetail), DetailKind; Customer, CustomerVIP, CustomerNew, FullName, Address, Account, Role; Cart, CartItem, CartIssue; Order, Totals, OrderItem, OrderEvent, OrderStatus, PaymentMethod, Payment, PayCredit, PayCash, Shipping; RuleViolation</td>
+<td>Category, Product và các lớp con BookDetail, LaptopDetail, PhoneDetail, ApparelDetail, DetailKind; Customer, CustomerVIP, CustomerNew, FullName, Address, Account, Role; Cart, CartItem, CartIssue; Order, Totals, OrderItem, OrderEvent, OrderStatus, PaymentMethod, Payment, PayCredit, PayCash, Shipping; RuleViolation</td>
 <td>quy tắc miền: Cart (BR01 đến BR03), Order.place và Totals (BR04), bảng chuyển trạng thái của OrderStatus (BR09)</td>
 </tr>
 <tr>

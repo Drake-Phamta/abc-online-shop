@@ -11,30 +11,33 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import vn.ptit.ecom.model.product.ApparelDetail;
+import vn.ptit.ecom.model.product.BookDetail;
 import vn.ptit.ecom.model.product.Category;
 import vn.ptit.ecom.model.product.DetailKind;
+import vn.ptit.ecom.model.product.LaptopDetail;
+import vn.ptit.ecom.model.product.PhoneDetail;
 import vn.ptit.ecom.model.product.Product;
-import vn.ptit.ecom.model.product.ProductDetail;
 
 class ProductDAOImpl implements ProductDAO {
 
     @FunctionalInterface
     private interface DetailMapper {
-        ProductDetail map(ResultSet rs) throws SQLException;
+        Product map(Product row, ResultSet rs) throws SQLException;
     }
 
-    /** One mapper per detail table: the category's detail kind picks the table, no branching elsewhere. */
+    /** One mapper per subclass (table per subclass): the category's detail kind picks the table and the subclass. */
     private static final Map<DetailKind, DetailMapper> DETAILS = new EnumMap<>(DetailKind.class);
 
     static {
-        DETAILS.put(DetailKind.BOOK, rs -> new ProductDetail.BookDetail(rs.getString("author"), rs.getString("publisher"),
+        DETAILS.put(DetailKind.BOOK, (row, rs) -> new BookDetail(row, rs.getString("author"), rs.getString("publisher"),
                 Jdbc.intOrNull(rs, "pages"), rs.getString("language")));
-        DETAILS.put(DetailKind.LAPTOP, rs -> new ProductDetail.LaptopDetail(rs.getString("cpu"), rs.getInt("ram_gb"),
+        DETAILS.put(DetailKind.LAPTOP, (row, rs) -> new LaptopDetail(row, rs.getString("cpu"), rs.getInt("ram_gb"),
                 rs.getInt("storage_gb"), rs.getDouble("screen_inch"), rs.getInt("warranty_months")));
-        DETAILS.put(DetailKind.PHONE, rs -> new ProductDetail.PhoneDetail(rs.getString("os"), rs.getInt("storage_gb"),
+        DETAILS.put(DetailKind.PHONE, (row, rs) -> new PhoneDetail(row, rs.getString("os"), rs.getInt("storage_gb"),
                 Jdbc.intOrNull(rs, "camera_mp"), rs.getDouble("screen_inch"), Jdbc.intOrNull(rs, "battery_mah"),
                 rs.getInt("warranty_months")));
-        DETAILS.put(DetailKind.APPAREL, rs -> new ProductDetail.ApparelDetail(rs.getString("size_label"),
+        DETAILS.put(DetailKind.APPAREL, (row, rs) -> new ApparelDetail(row, rs.getString("size_label"),
                 rs.getString("color"), rs.getString("material")));
     }
 
@@ -91,29 +94,22 @@ class ProductDAOImpl implements ProductDAO {
         }
         List<Product> rows = new ArrayList<>();
         try (PreparedStatement ps = Jdbc.prepare(connection, sql.toString(), args.toArray()); ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) rows.add(map(rs, null));
+            while (rs.next()) rows.add(map(rs));
         }
         List<Product> out = new ArrayList<>();
-        for (Product p : rows) out.add(withDetail(p));
+        for (Product p : rows) out.add(asSubclass(p));
         return out;
-    }
-
-    /** The product cards show the first values of the detail (catalogue sizes are small, one query per card is fine). */
-    private Product withDetail(Product p) throws SQLException {
-        DetailKind kind = p.getCategory().detailKind();
-        if (kind == null) return p;
-        return new Product(p.getId(), p.getSku(), p.getName(), p.getBrand(), p.getPrice(), p.getStockQuantity(),
-                p.getDescription(), p.getImageFile(), p.getStatus(), p.getCategory(), detail(kind, p.getId()));
     }
 
     @Override
     public Optional<Product> findById(int productId) throws SQLException {
+        Product row;
         try (PreparedStatement ps = Jdbc.prepare(connection, SELECT + "WHERE p.product_id = ?", productId);
              ResultSet rs = ps.executeQuery()) {
             if (!rs.next()) return Optional.empty();
-            DetailKind kind = kind(rs.getString("detail_kind"));
-            return Optional.of(map(rs, kind == null ? null : detail(kind, productId)));
+            row = map(rs);
         }
+        return Optional.of(asSubclass(row));
     }
 
     @Override
@@ -124,7 +120,7 @@ class ProductDAOImpl implements ProductDAO {
         try (PreparedStatement ps = Jdbc.prepare(connection, SELECT + "WHERE p.product_id IN (" + marks + ")", productIds.toArray());
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-                Product p = map(rs, null);
+                Product p = map(rs);
                 out.put(p.getId(), p);
             }
         }
@@ -152,24 +148,28 @@ class ProductDAOImpl implements ProductDAO {
         List<Product> out = new ArrayList<>();
         try (PreparedStatement ps = connection.prepareStatement(SELECT + "ORDER BY p.stock_quantity, p.name");
              ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) out.add(map(rs, null));
+            while (rs.next()) out.add(map(rs));
         }
         return out;
     }
 
-    private ProductDetail detail(DetailKind kind, int productId) throws SQLException {
-        try (PreparedStatement ps = Jdbc.prepare(connection, "SELECT * FROM " + kind.table() + " WHERE product_id = ?", productId);
+    /** The product row joined with the row of its detail table, as an object of its subclass (catalogue sizes are
+     * small, one query per product is fine). Without a detail kind or a detail row it stays a plain Product. */
+    private Product asSubclass(Product row) throws SQLException {
+        DetailKind kind = row.getCategory().detailKind();
+        if (kind == null) return row;
+        try (PreparedStatement ps = Jdbc.prepare(connection, "SELECT * FROM " + kind.table() + " WHERE product_id = ?", row.getId());
              ResultSet rs = ps.executeQuery()) {
-            return rs.next() ? DETAILS.get(kind).map(rs) : null;
+            return rs.next() ? DETAILS.get(kind).map(row, rs) : row;
         }
     }
 
-    static Product map(ResultSet rs, ProductDetail detail) throws SQLException {
+    static Product map(ResultSet rs) throws SQLException {
         Category category = new Category(rs.getInt("category_id"), Jdbc.intOrNull(rs, "parent_id"),
                 rs.getString("category_name"), rs.getString("slug"), kind(rs.getString("detail_kind")));
         return new Product(rs.getInt("product_id"), rs.getString("sku"), rs.getString("name"), rs.getString("brand"),
                 rs.getLong("price"), rs.getInt("stock_quantity"), rs.getString("description"), rs.getString("image_file"),
-                Product.Status.valueOf(rs.getString("status")), category, detail);
+                Product.Status.valueOf(rs.getString("status")), category);
     }
 
     private static DetailKind kind(String s) {

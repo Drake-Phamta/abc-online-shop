@@ -36,7 +36,7 @@ class OrderRulesTest {
     private final Address anHome = new Address(1, 1, "Nguyễn Văn An", "0912", "12", "Trần Phú", "Hà Đông", "Hà Nội", true);
 
     private static Product product(long price, int stock) {
-        return new Product(10, "EL-LAP-001", "ThinkPad", "Lenovo", price, stock, null, null, Product.Status.ACTIVE, LAPTOPS, null);
+        return new Product(10, "EL-LAP-001", "ThinkPad", "Lenovo", price, stock, null, null, Product.Status.ACTIVE, LAPTOPS);
     }
 
     @Test
@@ -52,7 +52,7 @@ class OrderRulesTest {
 
     @Test
     void hiddenProductsCannotBeAdded() {                                  // BR01
-        Product hidden = new Product(11, "X", "Old", null, 100, 5, null, null, Product.Status.HIDDEN, LAPTOPS, null);
+        Product hidden = new Product(11, "X", "Old", null, 100, 5, null, null, Product.Status.HIDDEN, LAPTOPS);
         assertEquals("BR01", assertThrows(RuleViolation.class, () -> new Cart(1, 1, List.of()).addItem(hidden, 1)).getRule());
     }
 

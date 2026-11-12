@@ -13,8 +13,8 @@ import vn.ptit.ecom.model.order.PayCash;
 import vn.ptit.ecom.model.order.PayCredit;
 import vn.ptit.ecom.model.order.Payment;
 import vn.ptit.ecom.model.order.Shipping;
+import vn.ptit.ecom.model.product.BookDetail;
 import vn.ptit.ecom.model.product.Product;
-import vn.ptit.ecom.model.product.ProductDetail;
 
 /** JSON shapes sent to the view classes; the model classes stay free of presentation concerns. */
 final class Views {
@@ -27,19 +27,18 @@ final class Views {
                        String image, String category, String categorySlug, String detailKind, List<String> chips,
                        String byline) {
         static ProductCard of(Product p) {
-            List<String> chips = p.getDetail() == null ? List.of()
-                    : p.getDetail().specs().stream()
+            List<String> chips = p.specs().stream()
                     .filter(s -> !s.label().equals("Warranty") && !s.label().equals("Author") && !s.label().equals("Publisher"))
-                    .limit(3).map(ProductDetail.Spec::value).toList();
+                    .limit(3).map(Product.Spec::value).toList();
             return new ProductCard(p.getId(), p.getSku(), p.getName(), p.getBrand(), p.getPrice(), p.getStockQuantity(),
                     Views.stockState(p), Views.image(p), p.getCategory().name(), p.getCategory().slug(),
                     p.getCategory().detailKind() == null ? null : p.getCategory().detailKind().name(), chips,
                     p.getBrand() != null ? p.getBrand()
-                            : p.getDetail() instanceof ProductDetail.BookDetail b ? b.author() : null);
+                            : p instanceof BookDetail b ? b.getAuthor() : null);
         }
     }
 
-    record ProductPage(ProductCard product, String description, String status, List<ProductDetail.Spec> specs,
+    record ProductPage(ProductCard product, String description, String status, List<Product.Spec> specs,
                        String parentCategory, String parentSlug) { }
 
     record CartLine(int productId, String name, String brand, String image, long cartPrice, long currentPrice,

@@ -5,8 +5,8 @@ feedback on Product. Output: `db/schema.sql` and the packages under `app/src/mai
 
 ## 1. Conceptual model (entities and relationships)
 
-Category (tree) 1 — 0..* Product; Product 1 — 0..1 ProductDetail (one of Book, Laptop, Phone, Apparel, chosen by the
-category's detail kind); Customer 1 — 0..* Address; Customer 1 — 0..1 Cart; Cart 1 — 0..* CartItem; CartItem 0..* — 1
+Category (tree) 1 — 0..* Product; BookDetail, LaptopDetail, PhoneDetail, ApparelDetail are subclasses of Product (the
+category's detail kind says which one); Customer 1 — 0..* Address; Customer 1 — 0..1 Cart; Cart 1 — 0..* CartItem; CartItem 0..* — 1
 Product; Customer 1 — 0..* Order; Order 1 — 1..* OrderItem; OrderItem 0..* — 1 Product; Order 1 — 0..* Payment
 (Cash or Credit); Order 1 — 0..1 Shipping; Shipping 0..* — 1 Address; Order 1 — 1..* OrderEvent; Customer is VIP 0..1,
 New 0..1; Staff (Sales or Warehouse).
@@ -39,7 +39,7 @@ guarded by a CHECK.
 
 The design classes in VP (diagrams G1 to G4b and G8, folder "4 Design") and the code have the same packages, classes,
 attributes and operations; `tests/design_vs_code.py` checks this against the compiled classes and the JS views
-(81 classes: 73 Java classes with 169 attributes and 134 operations, 8 view classes with 25 operations, and 48 calls of
+(80 classes: 72 Java classes with 169 attributes and 134 operations, 8 view classes with 25 operations, and 48 calls of
 the design sequences G5, G6, G7 and G9), and that no file of the `ai` package imports another part of the application.
 `tests/vpgen_vs_code.py` starts from the other side: the 81 files that VP's Instant Generator wrote from the same model
 (`docs/evidence/vp_codegen`) must all exist in the code with the same fields and methods (190 fields, 157 methods).
@@ -49,7 +49,7 @@ the design sequences G5, G6, G7 and G9), and that no file of the `ai` package im
 | Presentation | `view` (browser, ES modules) | CustomerForm, ProductForm, CartForm, OrderForm, PaymentForm, StaffOrderForm, StockForm, SearchForm | one class per screen group; `show…` renders, `submit…` sends the user's input to its controller |
 | Presentation | `controller` | AuthController, ProductController, CartController, OrderController, PaymentController, ShippingController, SearchController, CurrentUser | HTTP only: reads the user from the session (BR08, BR13), parses and checks input, calls one service operation, returns a view record |
 | Business logic | `service` | AuthService, CatalogService, CartService, OrderService, PaymentService, ShippingService, SearchService, NotFound | one operation per use case step; owns the transaction (`Database.inTransaction`) and calls the model's rules and the DAOs |
-| Business logic | `model.product`, `model.customer`, `model.cart`, `model.order`, `model` | Category, Product, ProductDetail (BookDetail, LaptopDetail, PhoneDetail, ApparelDetail), DetailKind; Customer, CustomerVIP, CustomerNew, FullName, Address, Account, Role; Cart, CartItem, CartIssue; Order, Totals, OrderItem, OrderEvent, OrderStatus, PaymentMethod, Payment, PayCredit, PayCash, Shipping; RuleViolation | domain rules: Cart (BR01 to BR03), Order.place and Totals (BR04), OrderStatus transition table (BR09) |
+| Business logic | `model.product`, `model.customer`, `model.cart`, `model.order`, `model` | Category, Product and its subclasses BookDetail, LaptopDetail, PhoneDetail, ApparelDetail, DetailKind; Customer, CustomerVIP, CustomerNew, FullName, Address, Account, Role; Cart, CartItem, CartIssue; Order, Totals, OrderItem, OrderEvent, OrderStatus, PaymentMethod, Payment, PayCredit, PayCash, Shipping; RuleViolation | domain rules: Cart (BR01 to BR03), Order.place and Totals (BR04), OrderStatus transition table (BR09) |
 | Data access | `dao` | Database, Daos, Work, DataAccessError, ProductDAO, CustomerDAO, StaffDAO, CartDAO, OrderDAO, PaymentDAO, ShippingDAO and one `…DAOImpl` each | JDBC on the SQLite file; every `…DAOImpl` holds the unit of work's `connection`; no business rules |
 | Business logic | `ai` (G8) | QueryInterpreter, SearchQuery, ProductIndex, ImageIndex, Document, Hit | the AI search: documents in, ranked hits with reasons out; imports nothing else of the application, so SearchService is the only place that knows products (essay chapter 3, SPEC section 6) |
 | Data access | `integration` | CardProvider, SimulatedCardProvider, CardData, Result | gateway to the payment provider (simulated: cards ending 0002 are declined) |

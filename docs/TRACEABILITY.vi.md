@@ -81,7 +81,7 @@ tầng, [G1](../vp/png/G1.png) các package và các phụ thuộc `<<use>>`.
 | JUnit 5 (quy tắc của model, luồng đặt hàng và tìm kiếm AI trên một file SQLite thật) | `mvn test` trong `app/` | 24 kiểm thử đạt (OrderRulesTest 9, CheckoutFlowTest 5, SearchTest 10) |
 | Kiểm thử nhanh API (smoke) | `python tests/smoke_api.py` (máy chủ đang chạy) | 36/36 phép kiểm tra đạt |
 | Kiểm thử đầu cuối (end-to-end) trên Microsoft Edge | `node tests/e2e/run_e2e.mjs` (cơ sở dữ liệu mới) | 30/30 phép kiểm tra đạt, ảnh chụp màn hình trong [docs/evidence/e2e](evidence/e2e/e2e_result.txt) |
-| Mô hình thiết kế so với mã | `python tests/design_vs_code.py` | khớp: 73 lớp Java, 169 thuộc tính, 134 thao tác, 8 lớp view với 25 thao tác, 48 lời gọi trong biểu đồ tuần tự; 6 file của `ai` không import gì khác của ứng dụng |
+| Mô hình thiết kế so với mã | `python tests/design_vs_code.py` | khớp: 72 lớp Java, 169 thuộc tính, 134 thao tác, 8 lớp view với 25 thao tác, 48 lời gọi trong biểu đồ tuần tự; 6 file của `ai` không import gì khác của ứng dụng |
 | Mã do VP sinh ra so với mã | `python tests/vpgen_vs_code.py` | 81 file của Instant Generator (`docs/evidence/vp_codegen`): 73 lớp, 190 field, 157 phương thức, 8 lớp view đều có đủ |
 | Chất lượng tìm kiếm AI | `python tests/search_eval.py` (máy chủ đang chạy) | 30 truy vấn: hit@1 0.97 (từ khóa 0.23), MRR 0.97, tỷ lệ không có kết quả 0.03; 84 ảnh: top-1 0.93, top-3 1.00 ([search_eval.txt](evidence/search_eval.txt)) |
 | DDL của VP so với lược đồ | `python db/compare_schema.py` | giống hệt nhau |

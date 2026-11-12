@@ -11,7 +11,7 @@ p("This essay followed ABC Online Shop from a list of business complaints to run
   "information system like any other: it has stakeholders, use cases, a context and a data flow diagram, rules, "
   "risks and a measured quality (hit@1 of 0.97 against 0.23 for the keyword search on 30 labelled queries, and 93% "
   "of 84 test photos found first). Design carried the revised analysis model into a database of 20 tables that "
-  "Visual Paradigm generated from the physical model, and into 81 classes in three layers (73 in Java, 8 in the "
+  "Visual Paradigm generated from the physical model, and into 80 classes in three layers (72 in Java, 8 in the "
   "browser) whose skeleton Visual Paradigm also generated; the code implements nine use cases of the purchase chain "
   "and the AI search on that database and passes 24 unit and integration tests, 36 API checks and 30 end-to-end "
   "checks in a browser. All 42 diagrams live in one Visual Paradigm project.")

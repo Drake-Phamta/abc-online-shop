@@ -23,8 +23,8 @@
 <p>Input: SPEC.md, the analysis class diagram (essay Figure 4.1, nineteen classes of Test 01) and the lecturer's
 feedback on Product. Output: <code>db/schema.sql</code> and the packages under <code>app/src/main/java/vn/ptit/ecom</code>.</p>
 <h2 id="1-conceptual-model-entities-and-relationships">1. Conceptual model (entities and relationships)</h2>
-<p>Category (tree) 1 — 0..* Product; Product 1 — 0..1 ProductDetail (one of Book, Laptop, Phone, Apparel, chosen by the
-category's detail kind); Customer 1 — 0..* Address; Customer 1 — 0..1 Cart; Cart 1 — 0..* CartItem; CartItem 0..* — 1
+<p>Category (tree) 1 — 0..* Product; BookDetail, LaptopDetail, PhoneDetail, ApparelDetail are subclasses of Product (the
+category's detail kind says which one); Customer 1 — 0..* Address; Customer 1 — 0..1 Cart; Cart 1 — 0..* CartItem; CartItem 0..* — 1
 Product; Customer 1 — 0..* Order; Order 1 — 1..* OrderItem; OrderItem 0..* — 1 Product; Order 1 — 0..* Payment
 (Cash or Credit); Order 1 — 0..1 Shipping; Shipping 0..* — 1 Address; Order 1 — 1..* OrderEvent; Customer is VIP 0..1,
 New 0..1; Staff (Sales or Warehouse).</p>
@@ -117,7 +117,7 @@ guarded by a CHECK.</p>
 <h2 id="3-packages-and-classes-three-layers">3. Packages and classes (three layers)</h2>
 <p>The design classes in VP (diagrams G1 to G4b and G8, folder &quot;4 Design&quot;) and the code have the same packages, classes,
 attributes and operations; <code>tests/design_vs_code.py</code> checks this against the compiled classes and the JS views
-(81 classes: 73 Java classes with 169 attributes and 134 operations, 8 view classes with 25 operations, and 48 calls of
+(80 classes: 72 Java classes with 169 attributes and 134 operations, 8 view classes with 25 operations, and 48 calls of
 the design sequences G5, G6, G7 and G9), and that no file of the <code>ai</code> package imports another part of the application.
 <code>tests/vpgen_vs_code.py</code> starts from the other side: the 81 files that VP's Instant Generator wrote from the same model
 (<code>docs/evidence/vp_codegen</code>) must all exist in the code with the same fields and methods (190 fields, 157 methods).</p>
@@ -152,7 +152,7 @@ the design sequences G5, G6, G7 and G9), and that no file of the <code>ai</code>
 <tr>
 <td>Business logic</td>
 <td><code>model.product</code>, <code>model.customer</code>, <code>model.cart</code>, <code>model.order</code>, <code>model</code></td>
-<td>Category, Product, ProductDetail (BookDetail, LaptopDetail, PhoneDetail, ApparelDetail), DetailKind; Customer, CustomerVIP, CustomerNew, FullName, Address, Account, Role; Cart, CartItem, CartIssue; Order, Totals, OrderItem, OrderEvent, OrderStatus, PaymentMethod, Payment, PayCredit, PayCash, Shipping; RuleViolation</td>
+<td>Category, Product and its subclasses BookDetail, LaptopDetail, PhoneDetail, ApparelDetail, DetailKind; Customer, CustomerVIP, CustomerNew, FullName, Address, Account, Role; Cart, CartItem, CartIssue; Order, Totals, OrderItem, OrderEvent, OrderStatus, PaymentMethod, Payment, PayCredit, PayCash, Shipping; RuleViolation</td>
 <td>domain rules: Cart (BR01 to BR03), Order.place and Totals (BR04), OrderStatus transition table (BR09)</td>
 </tr>
 <tr>

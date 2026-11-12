@@ -301,9 +301,9 @@ p("The analysis class diagram describes concepts; the data model describes what 
   "the analysis is presented in Section 4.1, where it opens the design. Here I show the step that turns it into a "
   "data model (Figure 2.17). Every class received the <<ORM Persistable>> stereotype, so Visual Paradigm can map it "
   "to a table, and typed attributes. Every relationship received multiplicities (1, 0..1, 0..*, 1..*) and a reading "
-  "label such as places, contains or is paid by. The generalizations of customer and payment were kept, because "
-  "they will become one table per subclass, and the product details are compositions of Product: a detail row lives "
-  "and dies with its product.")
+  "label such as places, contains or is paid by. The generalizations of customer, payment and product were kept, "
+  "because they will become one table per subclass: a book is one row of product and one row of book_detail with "
+  "the same key.")
 landscape()
 figure("vp/png/D1.png", "Data model with ORM Persistable classes, multiplicities and relationship names", width_cm=26.5, max_h_cm=16)
 figure("vp/png/D2.png", "Conceptual data model: entities and named relationships", width_cm=26.5, max_h_cm=15.5)

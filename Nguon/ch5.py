@@ -343,7 +343,7 @@ p("A check that fails is better than names that happen to match. A Visual Paradi
   "classes and the messages of the design sequences as two tab-separated files, and tests/design_vs_code.py "
   "compares them with the javap output of the compiled classes and with the JavaScript view classes. It checks "
   "six things:", keep=True)
-dash("every design class exists in its package (73 classes);")
+dash("every design class exists in its package (72 classes);")
 dash("every attribute exists as a field of the same type (169);")
 dash("every operation exists with the same name, parameter types and return type (134);")
 dash("every view operation exists in the JavaScript class with the same number of parameters (25);")

@@ -62,7 +62,7 @@ public class ProductController {
         Product p = pd.product();
         Category parent = pd.parentCategory();
         return new Views.ProductPage(Views.ProductCard.of(p), p.getDescription(), p.getStatus().name(),
-                p.getDetail() == null ? List.of() : p.getDetail().specs(),
+                p.specs(),
                 parent == null ? null : parent.name(), parent == null ? null : parent.slug());
     }
 

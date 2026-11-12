@@ -25,9 +25,8 @@ vn.ptit.ecom.model.product	Product	attribute	imageFile		String
 vn.ptit.ecom.model.product	Product	attribute	status		Status
 vn.ptit.ecom.model.product	Product	operation	isAvailable	int	boolean	quantity
 vn.ptit.ecom.model.product	Product	operation	updateStock	int	void	quantity
-vn.ptit.ecom.model.product	ProductDetail	class	interface		
-vn.ptit.ecom.model.product	ProductDetail	operation	kind		DetailKind	
-vn.ptit.ecom.model.product	ProductDetail	operation	specs		List<Spec>	
+vn.ptit.ecom.model.product	Product	operation	kind		DetailKind	
+vn.ptit.ecom.model.product	Product	operation	specs		List<Spec>	
 vn.ptit.ecom.model.product	BookDetail	class			
 vn.ptit.ecom.model.product	BookDetail	attribute	author		String
 vn.ptit.ecom.model.product	BookDetail	attribute	publisher		String

@@ -81,7 +81,7 @@ Paths start at `app/src/main/`; `js/view/…` is `resources/static/js/view/…`,
 | JUnit 5 (model rules, checkout flow and AI search on a real SQLite file) | `mvn test` in `app/` | 24 tests pass (OrderRulesTest 9, CheckoutFlowTest 5, SearchTest 10) |
 | API smoke test | `python tests/smoke_api.py` (server running) | 36/36 checks pass |
 | End-to-end in Microsoft Edge | `node tests/e2e/run_e2e.mjs` (fresh database) | 30/30 checks pass, screenshots in [docs/evidence/e2e](evidence/e2e/e2e_result.txt) |
-| Design model against code | `python tests/design_vs_code.py` | 73 Java classes, 169 attributes, 134 operations, 8 view classes with 25 operations, 48 sequence calls agree; the 6 files of `ai` import nothing else of the application |
+| Design model against code | `python tests/design_vs_code.py` | 72 Java classes, 169 attributes, 134 operations, 8 view classes with 25 operations, 48 sequence calls agree; the 6 files of `ai` import nothing else of the application |
 | VP-generated code against the code | `python tests/vpgen_vs_code.py` | the 81 files of the Instant Generator (`docs/evidence/vp_codegen`): 73 classes, 190 fields, 157 methods, 8 view classes all present |
 | AI search quality | `python tests/search_eval.py` (server running) | 30 queries: hit@1 0.97 (keyword 0.23), MRR 0.97, zero results 0.03; 84 photos: top-1 0.93, top-3 1.00 ([search_eval.txt](evidence/search_eval.txt)) |
 | VP DDL against the schema | `python db/compare_schema.py` | identical |

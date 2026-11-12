@@ -5,8 +5,8 @@ về Product. Đầu ra: `db/schema.sql` và các package dưới `app/src/main/
 
 ## 1. Mô hình khái niệm (thực thể và quan hệ)
 
-Category (cây) 1 - 0..* Product; Product 1 - 0..1 ProductDetail (một trong Book, Laptop, Phone, Apparel, được chọn theo
-loại chi tiết của danh mục); Customer 1 - 0..* Address; Customer 1 - 0..1 Cart; Cart 1 - 0..* CartItem; CartItem 0..* - 1
+Category (cây) 1 - 0..* Product; BookDetail, LaptopDetail, PhoneDetail, ApparelDetail là lớp con của Product (loại chi
+tiết của danh mục cho biết là lớp nào); Customer 1 - 0..* Address; Customer 1 - 0..1 Cart; Cart 1 - 0..* CartItem; CartItem 0..* - 1
 Product; Customer 1 - 0..* Order; Order 1 - 1..* OrderItem; OrderItem 0..* - 1 Product; Order 1 - 0..* Payment
 (Cash hoặc Credit); Order 1 - 0..1 Shipping; Shipping 0..* - 1 Address; Order 1 - 1..* OrderEvent; Customer có thể là VIP 0..1,
 New 0..1; Staff (Sales hoặc Warehouse).
@@ -39,7 +39,7 @@ bảo vệ bởi một ràng buộc CHECK.
 
 Các lớp thiết kế trong VP (biểu đồ G1 đến G4b và G8, thư mục "4 Design") và mã nguồn có cùng package, lớp,
 thuộc tính và thao tác; `tests/design_vs_code.py` kiểm tra điều này với các lớp đã biên dịch và các view JS
-(81 lớp: 73 lớp Java với 169 thuộc tính và 134 thao tác, 8 lớp view với 25 thao tác, và 48 lời gọi trong
+(80 lớp: 72 lớp Java với 169 thuộc tính và 134 thao tác, 8 lớp view với 25 thao tác, và 48 lời gọi trong
 các biểu đồ tuần tự thiết kế G5, G6, G7 và G9), đồng thời kiểm tra rằng không file nào của package `ai` import phần khác của ứng dụng.
 `tests/vpgen_vs_code.py` đi từ phía ngược lại: 81 file mà Instant Generator của VP ghi ra từ cùng mô hình
 (`docs/evidence/vp_codegen`) đều phải có trong mã nguồn với cùng các field và phương thức (190 field, 157 phương thức).
@@ -49,7 +49,7 @@ các biểu đồ tuần tự thiết kế G5, G6, G7 và G9), đồng thời ki
 | Presentation (trình bày) | `view` (trình duyệt, ES modules) | CustomerForm, ProductForm, CartForm, OrderForm, PaymentForm, StaffOrderForm, StockForm, SearchForm | mỗi nhóm màn hình một lớp; `show…` hiển thị, `submit…` gửi dữ liệu người dùng nhập tới controller của nó |
 | Presentation | `controller` | AuthController, ProductController, CartController, OrderController, PaymentController, ShippingController, SearchController, CurrentUser | chỉ xử lý HTTP: đọc người dùng từ session (BR08, BR13), phân tích và kiểm tra đầu vào, gọi một thao tác của service, trả về một view record |
 | Business logic (logic nghiệp vụ) | `service` | AuthService, CatalogService, CartService, OrderService, PaymentService, ShippingService, SearchService, NotFound | mỗi bước của use case là một thao tác; sở hữu giao dịch (`Database.inTransaction`) và gọi các quy tắc của model cùng các DAO |
-| Business logic | `model.product`, `model.customer`, `model.cart`, `model.order`, `model` | Category, Product, ProductDetail (BookDetail, LaptopDetail, PhoneDetail, ApparelDetail), DetailKind; Customer, CustomerVIP, CustomerNew, FullName, Address, Account, Role; Cart, CartItem, CartIssue; Order, Totals, OrderItem, OrderEvent, OrderStatus, PaymentMethod, Payment, PayCredit, PayCash, Shipping; RuleViolation | quy tắc miền: Cart (BR01 đến BR03), Order.place và Totals (BR04), bảng chuyển trạng thái của OrderStatus (BR09) |
+| Business logic | `model.product`, `model.customer`, `model.cart`, `model.order`, `model` | Category, Product và các lớp con BookDetail, LaptopDetail, PhoneDetail, ApparelDetail, DetailKind; Customer, CustomerVIP, CustomerNew, FullName, Address, Account, Role; Cart, CartItem, CartIssue; Order, Totals, OrderItem, OrderEvent, OrderStatus, PaymentMethod, Payment, PayCredit, PayCash, Shipping; RuleViolation | quy tắc miền: Cart (BR01 đến BR03), Order.place và Totals (BR04), bảng chuyển trạng thái của OrderStatus (BR09) |
 | Data access (truy cập dữ liệu) | `dao` | Database, Daos, Work, DataAccessError, ProductDAO, CustomerDAO, StaffDAO, CartDAO, OrderDAO, PaymentDAO, ShippingDAO và mỗi lớp một `…DAOImpl` | JDBC trên file SQLite; mỗi `…DAOImpl` giữ `connection` của đơn vị công việc (unit of work); không chứa quy tắc nghiệp vụ |
 | Business logic | `ai` (G8) | QueryInterpreter, SearchQuery, ProductIndex, ImageIndex, Document, Hit | tìm kiếm AI: đưa tài liệu vào, nhận ra các kết quả đã xếp hạng kèm lý do; không import gì khác của ứng dụng, nên SearchService là nơi duy nhất biết đến sản phẩm (tiểu luận chương 3, SPEC mục 6) |
 | Data access | `integration` | CardProvider, SimulatedCardProvider, CardData, Result | cổng kết nối tới nhà cung cấp thanh toán (mô phỏng: thẻ kết thúc bằng 0002 bị từ chối) |

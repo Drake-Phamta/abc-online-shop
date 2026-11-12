@@ -95,16 +95,15 @@ p("What changed since Test 01 deserves its own paragraph, because it shows how a
   "feedback on Product was that the details of different kinds of products should not all be kept in one Product, "
   "and that products should be classified by a category that refers to their details. I followed it in three "
   "moves. Product keeps only the common data, Category names the kind of detail, and each attribute set is one "
-  "detail class, composed in Product because a detail lives and dies with its product. Clothes and Shoes had the same "
+  "detail class, a subclass of Product: a book is a product with an author and a publisher. Clothes and Shoes had the same "
   "attributes except the material, so they became one ApparelDetail. Electronics disappeared as a class: grouping "
   "laptops and smartphones is now data, a parent category, and not structure.")
 p("The effect on the rest of the model is larger than the change itself. A cart line and an order line refer to "
-  "exactly one Product, so the {xor} rule is no longer needed, and the composition between Product and its details "
-  "takes its place in the diagram: a detail is part of its product, as a line is part of its cart. A new category "
-  "with an existing kind of detail needs no new class and, later, no new table. Price and stock are in one class, so "
-  "a question about price or stock does not have to look at six. I considered keeping the six classes and adding "
-  "Category beside them, and rejected it, because it would have left price and stock repeated six times and the "
-  "{xor} in place. The same revision added OrderEvent and Staff, and the amounts of an order that the business rules "
+  "exactly one Product, so the {xor} rule is no longer needed: the four detail classes inherit from Product, and a "
+  "line that refers to a Product can refer to any of them. A new category with an existing kind of detail needs no "
+  "new class and, later, no new table. Price and stock are declared once, in Product, so a question about price or "
+  "stock does not have to look at six classes. I considered keeping the six unrelated classes and adding Category "
+  "beside them, and rejected it, because it would have left price and stock repeated six times and the {xor} in place. The same revision added OrderEvent and Staff, and the amounts of an order that the business rules "
   "of Chapter 2 need. The name of a customer is an attribute again in A10; the design brings back a small FullName "
   "class in Section 4.3.")
 p("Two attributes deserve a comment. CartItem.cartPrice and OrderItem.unitPrice look like duplicates, but they mean "
@@ -131,10 +130,10 @@ T_REL = table("Relationships of the analysis class diagram", [
     ["Product is put in CartItem, is sold in OrderItem", "Association", "1 to 0..*", "Each line refers to exactly one product; a product may be in no line"],
     ["Category classifies Product", "Association", "1 to 0..*", "Every product is in one category; a new category may be empty"],
     ["Category contains Category", "Association", "0..1 to 0..*", "A tree: a category has at most one parent"],
-    ["Product is described by BookDetail, LaptopDetail, PhoneDetail, ApparelDetail", "Composition", "1 to 0..1", "A detail lives and dies with its product; a product has only the detail of the kind of its category"],
     ["Order is shipped by Shipping", "Association", "1 to 0..1", "One shipment per order, which does not exist before dispatch"],
     ["Order is paid by Payment", "Association", "1 to 0..*", "No payment yet for cash on delivery, later one or several, declined ones included"],
     ["Shipping is delivered to Address; Address receives Order", "Association", "1 to 0..* each", "A shipment and an order each go to one address; an old delivery keeps its address"],
+    ["BookDetail, LaptopDetail, PhoneDetail, ApparelDetail to Product", "Generalization", "-", "Each kind of product inherits the common attributes and adds its own; the category of a product says which kind it is"],
     ["CustomerVIP, CustomerNew to Customer; PayCash, PayCredit to Payment", "Generalization", "-", "Each subclass is a kind of its parent and adds its own attributes"],
 ], [4.8, 2.5, 2.3, 6.4], size=9.5)
 landscape()
@@ -346,7 +345,7 @@ p(f"Table {nt()} lists the updates since the analysis diagram A10. Most of them 
   "Section 4.2 or from the rules of Chapter 2 that the classes have to carry.", keep=True)
 T_UPD = table("Updates of the design classes since the analysis diagram", [
     ["Element", "Analysis (A10)", "Design", "Reason"],
-    ["Product details", "Four detail classes composed in Product", "Interface ProductDetail, realized by BookDetail, LaptopDetail, PhoneDetail and ApparelDetail; Product holds one detail (0..1)", "One type for any detail; kind() and specs() give a screen the labelled values without knowing the kind"],
+    ["Product details", "Four detail classes that inherit from Product", "The same generalization; Product declares kind() and specs(), and BookDetail, LaptopDetail, PhoneDetail and ApparelDetail override them", "Polymorphism: kind() and specs() give a screen the labelled values without knowing the subclass"],
     ["Kind of detail", "Attribute detailKind of Category", "Enumeration DetailKind (BOOK, LAPTOP, PHONE, APPAREL) with table(); Product refers to its Category (role category)", "A value from a fixed set is an enumeration"],
     ["Links between aggregates", "Associations between classes", "Cart, Order, Address and Shipping hold the id of what they refer to (customerId, addressId); CartItem holds its Product", "Objects are loaded one aggregate at a time; a service coordinates several"],
     ["Order lines", "OrderItem linked to Product", "OrderItem keeps productId, productName and unitPrice", "A line is history; Product never needs to know about orders"],
@@ -384,8 +383,8 @@ p("The model classes keep the attributes of the analysis, now private and typed,
 table("Operations of the model classes", [
     ["Class", "Operations of the class itself", "Operations linked to another class"],
     ["Category", "isLeaf()", "-"],
-    ["Product", "isAvailable(quantity), updateStock(quantity)", "-"],
-    ["ProductDetail, BookDetail, LaptopDetail, PhoneDetail, ApparelDetail", "kind(), specs()", "-"],
+    ["Product", "isAvailable(quantity), updateStock(quantity), kind(), specs()", "-"],
+    ["BookDetail, LaptopDetail, PhoneDetail, ApparelDetail", "kind(), specs(), overriding those of Product", "-"],
     ["DetailKind", "table()", "-"],
     ["FullName", "display()", "-"],
     ["Customer, CustomerVIP, CustomerNew", "discountRate(), kindLabel(); CustomerVIP overrides discountRate()", "-"],
@@ -410,10 +409,11 @@ p("Four placements are worth explaining. calcTotal() is in Cart while subTotal()
   "declared in Customer, which gives zero, and overridden in CustomerVIP, so no code asks whether a customer is a "
   "VIP: the generalization of the analysis is used as polymorphism.")
 p("In Design 01 I wrote that an abstract Product class with the common attributes would be my next step. The "
-  "lecturer's feedback made me take it, in a form that I had not considered: Product is a concrete class with the "
-  "common attributes, and the differences are not subclasses but a composed ProductDetail. I rejected Book, Laptop "
-  "and the others as subclasses of Product because the kind is decided by the category, which is data: a new "
-  "category with an existing set of attributes, shoes next to clothes, must not need a new class.")
+  "lecturer's feedback made me take it with one difference: Product is a concrete class with the common attributes, "
+  "and BookDetail, LaptopDetail, PhoneDetail and ApparelDetail are its subclasses, one per set of attributes and not "
+  "one per category. The category decides which subclass a product is, which is data: a new category with an "
+  "existing set of attributes, shoes next to clothes, needs no new class. Product stays concrete so that a product "
+  "of a category without its own attributes is still possible.")
 p(f"Figures {nf(1)} to {nf(3)} show the design classes. Like the ERD, the model is split for legibility: the "
   f"catalogue and the cart (Figure {nf(1)}), customers and accounts (Figure {nf(2)}), and the order with its lines, "
   f"events, payments and shipping (Figure {nf(3)}). Each figure is complete for its classes, and no line leaves a "
@@ -429,10 +429,9 @@ p(f"Table {nt()} explains every relationship of the design classes and shows how
   f"together with Table {T_REL}, it shows what happened to each analysis relationship.", keep=True)
 T_RELD = table("Relationships of the design classes and their form in code", [
     ["Relationship", "Kind and multiplicity", "Role", "Form in the code"],
-    ["Product and ProductDetail", "Composition, 1 to 0..1", "detail", "Field ProductDetail detail in Product"],
     ["Product to Category", "Association, 0..* to 1", "category", "Field Category category in Product"],
     ["Category uses DetailKind", "<<use>>", "-", "Component DetailKind detailKind of Category"],
-    ["BookDetail, LaptopDetail, PhoneDetail, ApparelDetail realize ProductDetail", "Realization", "-", "implements ProductDetail"],
+    ["BookDetail, LaptopDetail, PhoneDetail, ApparelDetail to Product", "Generalization", "-", "extends Product; ProductDAOImpl builds the subclass that the category's detail kind names"],
     ["Cart and CartItem", "Composition, 1 to 0..*", "items", "Field List<CartItem> items in Cart"],
     ["CartItem to Product", "Association, 0..* to 1", "product", "Field Product product in CartItem"],
     ["Cart, Order, Address, Shipping to what they refer to", "By id", "customerId, addressId", "Field int customerId, int addressId (the value of the foreign key)"],
@@ -569,7 +568,7 @@ p(f"A package diagram shows the layers but not the classes that talk to each oth
 table("The classes each view works with", [
     ["View", "Controller", "Service", "DAO interfaces used", "Model classes"],
     ["CustomerForm", "AuthController", "AuthService", "CustomerDAO, StaffDAO, CartDAO", "Account, Customer"],
-    ["ProductForm", "ProductController", "CatalogService", "ProductDAO", "Category, Product, ProductDetail"],
+    ["ProductForm", "ProductController", "CatalogService", "ProductDAO", "Category, Product and its subclasses"],
     ["CartForm", "CartController", "CartService", "ProductDAO, CartDAO", "Cart, CartItem, Product"],
     ["OrderForm", "OrderController", "OrderService", "CustomerDAO, CartDAO, ProductDAO, OrderDAO, PaymentDAO", "Order, Cart, Customer, Address"],
     ["PaymentForm", "PaymentController", "PaymentService (and CardProvider)", "OrderDAO, PaymentDAO", "Order, PayCredit"],
@@ -743,10 +742,10 @@ p(f"Table {nt()} lists the mapping rules. They are kept simple, so that anyone c
 table("Mapping rules from the design model to code", [
     ["Model element", "Code"],
     ["Package (controller, service, dao, model.cart, ...)", "Java package vn.ptit.ecom.controller, vn.ptit.ecom.model.cart, ...; one folder each. The view package is the folder js/view with one ES module per class"],
-    ["Class, abstract class, interface", "public class, public abstract class (Payment), public interface; ProductDetail is a sealed interface whose four kinds are nested records"],
+    ["Class, abstract class, interface", "public class, public abstract class (Payment), public interface"],
     ["Enumeration with operations", "enum with the operations as methods (OrderStatus with canMoveTo and next, DetailKind, Role, PaymentMethod)"],
     ["Class that only holds values", "record (Category, Address, Account, CartIssue, the nested Totals)"],
-    ["Generalization from Payment to PayCredit", "class PayCredit extends Payment; CustomerVIP extends Customer"],
+    ["Generalization from Payment to PayCredit", "class PayCredit extends Payment; CustomerVIP extends Customer; BookDetail extends Product"],
     ["Realization", "implements: ProductDAOImpl implements ProductDAO, SimulatedCardProvider implements CardProvider"],
     ["Attribute -name : Type", "private field Type name, final when it never changes"],
     ["Composition with role and multiplicity", "private field named after the role, List<T> when many (the generator writes a public Vector<T>); changed only through the whole (Order.items)"],
@@ -759,7 +758,7 @@ table("Mapping rules from the design model to code", [
 
 h3("4.5.3. Packages")
 p("The application has the packages of Section 4.4.1. The tree below lists them with their classes; a few classes "
-  "are nested in another one, as in the design (the four detail classes in ProductDetail, Totals in Order, Daos and Work "
+  "are nested in another one, as in the design (Spec and Status in Product, Totals in Order, Daos and Work "
   "in Database, Result in CardProvider), and the code has helper classes that the diagrams do not draw (ApiErrors and Views in controller, "
   "PasswordHasher in service, Jdbc in dao). Chapter 5 shows the same structure from the side of the repository.",
   keep=True)
@@ -773,7 +772,8 @@ code('''src/main/java/vn/ptit/ecom
                 ProductDAO, ShippingDAO, StaffDAO and one ...DAOImpl class for each of the seven
   integration/  CardProvider, SimulatedCardProvider, CardData
   model/            RuleViolation
-  model/product/    Category, DetailKind, Product, ProductDetail
+  model/product/    Category, DetailKind, Product, BookDetail, LaptopDetail, PhoneDetail,
+                    ApparelDetail
   model/customer/   Account, Address, Customer, CustomerNew, CustomerVIP, FullName, Role
   model/cart/       Cart, CartIssue, CartItem
   model/order/      Order, OrderEvent, OrderItem, OrderStatus, PayCash, PayCredit, Payment,
@@ -813,10 +813,10 @@ code('''public class Cart {
     // ...
     public List<CartItem> getItems() { return Collections.unmodifiableList(items); }
 }''', size=8.5)
-p("Generalization and realization look like this. Payment is abstract, because a payment is always cash or card; "
-  "PayCredit extends it and has the attributes of Figure " + F_G2C + " and no card number. ProductDetail is a "
-  "sealed interface with the two operations of Figure " + F_G2A + ", and each kind of detail is a record that "
-  "implements it:", keep=True)
+p("Generalization looks like this. Payment is abstract, because a payment is always cash or card; "
+  "PayCredit extends it and has the attributes of Figure " + F_G2C + " and no card number. Product is concrete and "
+  "declares the two operations of Figure " + F_G2A + "; each detail class extends it, adds its attributes and "
+  "overrides them:", keep=True)
 code('''public abstract class Payment {
     // ...
     public abstract String method();
@@ -834,13 +834,15 @@ public class PayCredit extends Payment {
     public String method() { return "CARD"; }
 }
 
-public sealed interface ProductDetail
-        permits ProductDetail.BookDetail, ProductDetail.LaptopDetail,
-                ProductDetail.PhoneDetail, ProductDetail.ApparelDetail {
-    DetailKind kind();
-    List<Spec> specs();
+public class BookDetail extends Product {
+    private final String author;
+    private final String publisher;
+    private final Integer pages;
+    private final String language;
     // ...
-    record BookDetail(String author, String publisher, Integer pages, String language) implements ProductDetail {''', size=7.5, indent=0)
+    @Override
+    public DetailKind kind() { return DetailKind.BOOK; }
+}''', size=7.5, indent=0)
 
 h3("4.5.5. How the code is checked against the model")
 p("Names that match are not enough to keep a model and its code together, so I wrote a check that fails. A script of "
@@ -848,7 +850,7 @@ p("Names that match are not enough to keep a model and its code together, so I w
   "the messages of the design sequence diagrams as two tab-separated files. tests/design_vs_code.py reads them, runs "
   "javap on the compiled classes and reads the JavaScript view classes with regular expressions. It checks six "
   "things:", keep=True)
-dash("every design class exists in its package (73 classes, the Java ones);")
+dash("every design class exists in its package (72 classes, the Java ones);")
 dash("every attribute exists as a field of the same type (169 attributes);")
 dash("every operation exists with the same name, parameter types and return type (134 operations);")
 dash("every operation of a view class exists in the JavaScript class with the same number of parameters (25 "
@@ -856,7 +858,7 @@ dash("every operation of a view class exists in the JavaScript class with the sa
 dash("every call in the design sequences of UC04, UC06, UC07 and UC08 names an operation of the receiver's class, in "
      "the design and in the code (48 calls).")
 dash("no class of the AI package imports another part of the application (6 files).")
-code('''checked 73 classes, 169 attributes, 134 operations, 25 view operations, 48 sequence calls,
+code('''checked 72 classes, 169 attributes, 134 operations, 25 view operations, 48 sequence calls,
 6 ai files without application imports
 design and code agree''', size=9)
 p("A second script, tests/vpgen_vs_code.py, starts from the files that Visual Paradigm generated (Section 4.5.1): "
