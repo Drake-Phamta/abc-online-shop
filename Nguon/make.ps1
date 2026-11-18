@@ -13,7 +13,7 @@ $pdf = Join-Path $out "$name.pdf"
 $started = Get-Date
 python (Join-Path $Root "Nguon\build_tieuluan.py") $Root $docx
 if ($LASTEXITCODE -ne 0) { "BUILD FAILED"; exit 1 }
-# text that is new or changed since the version presented on 12/11 (V4) is printed in red, like the reference essay
+# text that is new or changed since the version presented on 12/11 (V4) gets a blue bar in the left margin
 $previous = Join-Path $Root "Luu_tru\bai_nop_cu\tieuluan_V4_04_10_phamtuananh_018.docx"
 if (Test-Path -LiteralPath $previous) {
     python -P (Join-Path $Root "Nguon\mark_changes.py") $docx $previous

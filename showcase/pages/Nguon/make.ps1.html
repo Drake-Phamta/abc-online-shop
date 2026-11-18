@@ -19,7 +19,7 @@
     <a class="vbtn" data-github="Nguon/make.ps1" hidden data-i18n="github">View on GitHub</a>
   </span>
 </header>
-<div class="codewrap"><p class="codeinfo"><span data-num="49" data-i18n="lines">49 lines</span> · 2,812 bytes · PowerShell</p><div class="code">
+<div class="codewrap"><p class="codeinfo"><span data-num="49" data-i18n="lines">49 lines</span> · 2,803 bytes · PowerShell</p><div class="code">
 <div class="ln" id="L1"><a href="#L1">1</a><span><span class="c"># usage: make.ps1 [-Root &lt;07_Tieu_luan folder&gt;] [-Name &lt;file name without extension&gt;]</span></span></div>
 <div class="ln" id="L2"><a href="#L2">2</a><span><span class="c"># build docx -&gt; Word (in a background job: Word COM hangs when driven from this host directly):</span></span></div>
 <div class="ln" id="L3"><a href="#L3">3</a><span><span class="c"># update TOC, save docx, export PDF -&gt; page sheet + free space per page. Word works in C:\a3cap\tieuluan_out</span></span></div>
@@ -35,7 +35,7 @@
 <div class="ln" id="L13"><a href="#L13">13</a><span><span class="nv">$started</span> <span class="p">=</span> <span class="nb">Get-Date</span></span></div>
 <div class="ln" id="L14"><a href="#L14">14</a><span><span class="n">python</span> <span class="p">(</span><span class="nb">Join-Path</span> <span class="nv">$Root</span> <span class="s2">&quot;Nguon\build_tieuluan.py&quot;</span><span class="p">)</span> <span class="nv">$Root</span> <span class="nv">$docx</span></span></div>
 <div class="ln" id="L15"><a href="#L15">15</a><span><span class="k">if</span> <span class="p">(</span><span class="nv">$LASTEXITCODE</span> <span class="o">-ne</span> <span class="n">0</span><span class="p">)</span> <span class="p">{</span> <span class="s2">&quot;BUILD FAILED&quot;</span><span class="p">;</span> <span class="n">exit</span> <span class="n">1</span> <span class="p">}</span></span></div>
-<div class="ln" id="L16"><a href="#L16">16</a><span><span class="c"># text that is new or changed since the version presented on 12/11 (V4) is printed in red, like the reference essay</span></span></div>
+<div class="ln" id="L16"><a href="#L16">16</a><span><span class="c"># text that is new or changed since the version presented on 12/11 (V4) gets a blue bar in the left margin</span></span></div>
 <div class="ln" id="L17"><a href="#L17">17</a><span><span class="nv">$previous</span> <span class="p">=</span> <span class="nb">Join-Path</span> <span class="nv">$Root</span> <span class="s2">&quot;Luu_tru\bai_nop_cu\tieuluan_V4_04_10_phamtuananh_018.docx&quot;</span></span></div>
 <div class="ln" id="L18"><a href="#L18">18</a><span><span class="k">if</span> <span class="p">(</span><span class="nb">Test-Path</span> <span class="n">-LiteralPath</span> <span class="nv">$previous</span><span class="p">)</span> <span class="p">{</span></span></div>
 <div class="ln" id="L19"><a href="#L19">19</a><span>    <span class="n">python</span> <span class="n">-P</span> <span class="p">(</span><span class="nb">Join-Path</span> <span class="nv">$Root</span> <span class="s2">&quot;Nguon\mark_changes.py&quot;</span><span class="p">)</span> <span class="nv">$docx</span> <span class="nv">$previous</span></span></div>

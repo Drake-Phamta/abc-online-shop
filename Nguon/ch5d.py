@@ -391,6 +391,12 @@ p(f"UC08 Make Payment (Figure {nf(3)}) is the one place where I deliberately bro
   "between them (messages 11 and 12), so that no database lock is held while the provider answers. The result is "
   "recorded in the second transaction, where Order.recordCardPayment makes the order PAID only for an approved "
   "result (BR07). Section 6.6 explains the reason and the gap that this leaves.")
+p(f"The AI search by text of UC04 (Figure {nf(4)}) is designed in the same way: the messages are the real methods of "
+  "the classes, as in the other design sequences. The "
+  "critical fragment is the transaction that reads the ACTIVE products with their fresh prices and stock; the opt "
+  "fragment rebuilds the index when the catalogue changed; QueryInterpreter.interpret and ProductIndex.rank are the "
+  "two steps of the AI; the alt fragment is the fallback. tests/design_vs_code.py checks these calls like those of "
+  "the other sequences.")
 p(f"Table {nt()} reads Figure {nf(1)} as a list of steps, for one customer who adds a laptop to the cart.", keep=True)
 table("One request through the layers: add a laptop to the cart", [
     ["Step", "Layer and class", "What happens"],
@@ -406,14 +412,7 @@ landscape()
 F_G5 = figure("vp/png/G5.png", "Design sequence diagram of UC06 Manage Shopping Cart, adding an item: one use case step is one service operation and one transaction (diagram G5)", width_cm=26.5, max_h_cm=16)
 F_G6 = figure("vp/png/G6.png", "Design sequence diagram of UC07 Place Order / Checkout (diagram G6)", width_cm=23.5, max_h_cm=16)
 F_G7 = figure("vp/png/G7.png", "Design sequence diagram of UC08 Make Payment: two transactions with the payment provider between them (diagram G7)", width_cm=23.5, max_h_cm=16)
-portrait()
-p("In the sequence diagram the messages are the real methods of the classes, as in the other design sequences. The "
-  "critical fragment is the transaction that reads the ACTIVE products with their fresh prices and stock; the opt "
-  "fragment rebuilds the index when the catalogue changed; QueryInterpreter.interpret and ProductIndex.rank are the "
-  "two steps of the AI; the alt fragment is the fallback. tests/design_vs_code.py checks these calls like those of "
-  "the other sequences.")
-landscape()
-F_G9 = figure("vp/png/G9.png", "Design sequence diagram of UC04 Browse / Search Products, AI search by text: read the catalogue, rebuild the index if needed, interpret, rank, fall back (diagram G9)", width_cm=21, max_h_cm=17.5)
+F_G9 = figure("vp/png/G9.png", "Design sequence diagram of UC04 Browse / Search Products, AI search by text: read the catalogue, rebuild the index if needed, interpret, rank, fall back (diagram G9)", width_cm=21, max_h_cm=16)
 portrait()
 
 h2("5.5. Code Generated")

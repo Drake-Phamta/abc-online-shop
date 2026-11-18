@@ -110,7 +110,7 @@ T_REL = table("Relationships of the analysis class diagram", [
     ["CustomerVIP, CustomerNew to Customer; PayCash, PayCredit to Payment", "Generalization", "-", "Each subclass is a kind of its parent and adds its own attributes"],
 ], [4.8, 2.5, 2.3, 6.4], size=9.5)
 def mark_notes(fig, notes):
-    """The meaning of the numbered red marks of a figure, printed small under it (on the same page)."""
+    """The meaning of the numbered marks of a figure, printed small under it (on the same page)."""
     p(f"The numbers in Figure {fig} mean:", size=10.5, after=1, keep=True, align=L)
     for n, text in enumerate(notes, 1):
         para = p(f"{n}  {text}", size=10.5, after=0, align=L)

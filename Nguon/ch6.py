@@ -362,7 +362,7 @@ num(2, "kind() returns BOOK or LAPTOP, the kind that the category stores in Deta
 num(3, "specs() is overridden in each subclass and returns its own attributes as labelled rows: author, publisher, "
        "pages and language for a book; processor, memory, storage, screen and warranty for a laptop.")
 p(f"In Figure {next_fig()} (UC07) a VIP customer has three laptops in the cart: 3 × 9,490,000 = 28,470,000 VND, "
-  "minus 5 % (1,423,500), free delivery because the amount after the discount is above 500,000, total 27,046,500, as "
+  "minus 5 % (1,423,500), free delivery because the amount after the discount is at least 500,000, total 27,046,500, as "
   "BR04 says.", keep=True)
 F_CHECKOUT = figure("docs/evidence/code_screen/cs_checkout.png", "Code and screen of the checkout (UC07, UC21): the totals of the page are those of Order.Totals.of", width_cm=16, max_h_cm=6)
 p(f"The numbers in Figure {F_CHECKOUT} mean:", keep=True)
