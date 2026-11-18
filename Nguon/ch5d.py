@@ -19,11 +19,14 @@ p("This chapter is the Design file, vp/3_Design.vpp. It continues from the Data 
 
 
 h2("5.1. Class Design")
-p("The design class diagram describes the classes that will be written as code: every attribute has a type and a "
-  "visibility, every operation has typed parameters and a return type, and every relationship says which class knows "
-  "which. My starting point was the Design 01 model, built in four steps from the analysis classes. For this "
-  "chapter I rebuilt it in one Visual Paradigm model with packages, for the revised analysis and for the layers of "
-  "Section 5.2, and I check it against the code in Section 5.5. The updates are listed below.")
+p("The class design takes the analysis classes, as the data model of Chapter 4 completed them with types and "
+  "identifiers, and adds the methods: every operation of a class, with the name and the type of each parameter and "
+  "the type of the result, and a visibility for every attribute and operation. Product keeps its four subclasses, "
+  "and each subclass overrides the methods that depend on its kind. Figures 5.1 to 5.3 are the design class diagrams "
+  "G2a, G2b and G2c of the Design file (vp/3_Design.vpp, folder 5 Design). My starting point was the Design 01 model "
+  "of the course, built in four steps from the analysis classes; for this chapter I rebuilt it in one Visual Paradigm "
+  "model with packages for the layers of Section 5.2, and Section 5.5 checks it against the code. The updates are "
+  "listed below.")
 
 h3("5.1.1. What I updated")
 p(f"Table {nt()} lists the updates since the analysis diagram A10. Most of them come from the revised data model of "
@@ -140,7 +143,8 @@ p(f"Every stored link of Table {T_RELD} has a foreign key in Table {T_KEYS}. For
 
 # ======================================================================= 5.2
 h2("5.2. Layer")
-p("Web-based e-commerce systems are usually built in layers, and the appendix recommends three layers in the MVC "
+p("This section places every class of Section 5.1 in a layer and draws the dependencies between the layers; Section "
+  "5.5 then generates the code from these layered packages. Web-based e-commerce systems are usually built in layers, and the appendix recommends three layers in the MVC "
   "style. I compared this with two alternatives in Design 01. A single-layer design, in which each screen reads and "
   "writes the database itself, is quick to start but repeats the root cause of the shop's problems: data handled in "
   "many places in many ways. A microservice design would fit a large shop with several teams, but for ABC Online "

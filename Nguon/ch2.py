@@ -17,7 +17,10 @@ p("The use cases of Section 1.20 supply the business concepts. This section name
   "no foreign keys and no types, and the diagram contains no controller, service or data access class. I first built "
   "the diagram in Test 01 from a given list of nineteen classes and corrected it after the lecturer's feedback on "
   f"Product. Figure {nf()}, on the landscape page after Table {nt(2)}, is the result: twenty classes, every association "
-  "with its multiplicities and a name that reads as a sentence, such as Customer places Order.")
+  "with its multiplicities and a name that reads as a sentence, such as Customer places Order. The diagram uses "
+  "inheritance where one concept has several kinds: BookDetail, LaptopDetail, PhoneDetail and ApparelDetail are "
+  "subclasses of Product (generalization), each with the attributes of its own kind, and Customer and Payment have "
+  "two subclasses each.")
 
 h3("2.1.1. Classes, Attributes and Responsibilities")
 p("The twenty classes fall into four groups. The **customer group** describes who buys and who works in the shop. "
@@ -106,8 +109,24 @@ T_REL = table("Relationships of the analysis class diagram", [
     ["BookDetail, LaptopDetail, PhoneDetail, ApparelDetail to Product", "Generalization", "-", "Each kind of product is a Product and adds the attributes of its kind; the category of a product says which kind it is"],
     ["CustomerVIP, CustomerNew to Customer; PayCash, PayCredit to Payment", "Generalization", "-", "Each subclass is a kind of its parent and adds its own attributes"],
 ], [4.8, 2.5, 2.3, 6.4], size=9.5)
+def mark_notes(fig, notes):
+    """The meaning of the numbered red marks of a figure, printed small under it (on the same page)."""
+    p(f"The numbers in Figure {fig} mean:", size=10.5, after=1, keep=True, align=L)
+    for n, text in enumerate(notes, 1):
+        para = p(f"{n}  {text}", size=10.5, after=0, align=L)
+        para.paragraph_format.left_indent = Cm(0.6)
+        para.paragraph_format.first_line_indent = Cm(-0.4)
+
+
 landscape()
-F_A10 = figure("vp/png/A10.png", "Analysis class diagram of ABC Online Shop: business concepts with their attributes, operations, multiplicities and relationship names (diagram A10, twenty classes)", width_cm=26.5, max_h_cm=16)
+F_A10 = figure("docs/evidence/marked/A10_marked.png", "Analysis class diagram of ABC Online Shop: business concepts with their attributes, operations, multiplicities and relationship names (diagram A10, twenty classes)", width_cm=25.5, max_h_cm=12)
+mark_notes(F_A10, [
+    "BookDetail, LaptopDetail, PhoneDetail and ApparelDetail are subclasses of Product (generalization): each keeps only the attributes of its kind.",
+    "Product keeps what every kind shares; as an analysis class it has no types and no identifier.",
+    "Category is a class of its own and a tree (is parent of); its detailKind says which subclass its products have.",
+    "CustomerNew and CustomerVIP are the two kinds of Customer; only a VIP has a discount rate (BR04).",
+    "Payment is abstract (italic name): a payment is always PayCash or PayCredit, and PayCredit keeps the last four digits and a token, never the card number (BR07).",
+])
 portrait()
 
 h3("2.1.3. Design Decisions Visible in the Model")

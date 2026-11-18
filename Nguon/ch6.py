@@ -348,25 +348,49 @@ p(f"tests/e2e/run_e2e.mjs drives the running application in Microsoft Edge and s
   f"figures below are not mock-ups. Figure {next_fig()} is the catalogue (UC04): the small boxes under a title are the "
   "first values of the detail row of the category, and \"Only 3 left\" comes from the stock quantity.", keep=True)
 figure("docs/evidence/e2e/02_catalogue.png", "Catalogue for a guest (UC04): detail values as small boxes, stock state as a badge", width_cm=10.5)
-p(f"The product page (UC05) shows the inheritance of Chapter 4 at work. Figure {next_fig()} is the same page for one "
-  "product of each kind: a book, a laptop, a phone and a polo shirt. The name, the price, the stock state and the "
-  "description come from Product; the table under them comes from the subclass that the DetailKind of the category "
-  "selects, BookDetail with author, publisher, pages and language, LaptopDetail with processor, memory, storage, "
-  "screen and warranty, and so on. ProductDAOImpl.asSubclass reads the matching detail table, each subclass overrides "
-  "specs() with its own rows, and the page only prints the rows it receives, so a fifth kind would need a new "
-  "subclass but no new page. tests/e2e/shot_product_kinds.mjs takes "
-  "these screenshots from the running shop.", keep=True)
-figure("docs/evidence/e2e/fig_product_kinds.png", "Product page of a BookDetail, a LaptopDetail (top), a PhoneDetail and an ApparelDetail (bottom): the attributes of Product followed by those of the subclass", width_cm=13, max_h_cm=17)
-p(f"In Figure {next_fig()} (UC07) a VIP customer has three laptops in the cart: 3 x 18,990,000 = 56,970,000 VND, "
-  "minus 5 % (2,848,500), free delivery, total 54,121,500, as BR04 says.", keep=True)
-figure("docs/evidence/e2e/08_checkout.png", "Checkout (UC07, UC21): the totals are those of Order.Totals.of", width_cm=10.5)
+p(f"The product page (UC05) shows the inheritance of Chapter 4 at work. Figure {next_fig()} puts the code of two "
+  "subclasses next to the page each one produces, a book and a laptop. ProductDAOImpl.asSubclass reads the DetailKind "
+  "of the category and builds the matching subclass from its detail table; the page prints the rows that the object "
+  "returns, so a fifth kind would need a new subclass but no new page. The phone and the polo shirt pages work in the "
+  "same way; tests/e2e/shot_product_kinds.mjs takes the four pages from the running shop.", keep=True)
+F_KINDS = figure("docs/evidence/code_screen/cs_product_kinds.png", "Code and screen of the product page: BookDetail and LaptopDetail extend Product and override kind() and specs()", width_cm=16, max_h_cm=18.5)
+p(f"The numbers in Figure {F_KINDS} mean:", keep=True)
+num(1, "Each class extends Product, so the name, the author or brand line, the stock state and the price on the "
+       "page are attributes of Product.")
+num(2, "kind() returns BOOK or LAPTOP, the kind that the category stores in DetailKind and that asSubclass used to "
+       "build this object; the page takes its heading from it.")
+num(3, "specs() is overridden in each subclass and returns its own attributes as labelled rows: author, publisher, "
+       "pages and language for a book; processor, memory, storage, screen and warranty for a laptop.")
+p(f"In Figure {next_fig()} (UC07) a VIP customer has three laptops in the cart: 3 × 9,490,000 = 28,470,000 VND, "
+  "minus 5 % (1,423,500), free delivery because the amount after the discount is above 500,000, total 27,046,500, as "
+  "BR04 says.", keep=True)
+F_CHECKOUT = figure("docs/evidence/code_screen/cs_checkout.png", "Code and screen of the checkout (UC07, UC21): the totals of the page are those of Order.Totals.of", width_cm=16, max_h_cm=6)
+p(f"The numbers in Figure {F_CHECKOUT} mean:", keep=True)
+num(1, "Order.place passes the total of the cart lines and the discount rate of the customer to Totals.of.")
+num(2, "The VIP discount is the subtotal times the rate (5 % for level 2), rounded to whole VND.")
+num(3, "Delivery is free because the amount after the discount is at least FREE_SHIPPING_FROM (500,000 VND).")
+num(4, "The total is the amount after the discount plus the fee; a CHECK in Orders guards the same equation.")
+num(5, "Place order with Card selected creates the order in PENDING_PAYMENT; cash on delivery would start in PLACED.")
 p(f"Placing the order created ORD-000005 as PENDING_PAYMENT with the stock reserved. In Figure {next_fig()} the card "
   "ending in 0002 was declined and the order is kept (UC08 A1); a second card, ending in 4242, was approved and the "
   "order became PAID.", keep=True)
-figure("docs/evidence/e2e/10_payment_declined.png", "Card payment (UC08): a declined card keeps the order and its stock", width_cm=10.5)
+F_PAY = figure("docs/evidence/code_screen/cs_payment.png", "Code and screen of the card payment (UC08): a declined card keeps the order and its stock", width_cm=15, max_h_cm=12)
+p(f"The numbers in Figure {F_PAY} mean:", keep=True)
+num(1, "Only a card order that waits for its payment accepts a result; the page shows that order and its total.")
+num(2, "A declined result adds an event and leaves the status PENDING_PAYMENT, so the order and its stock are kept "
+       "and the customer may try another card.")
+num(3, "Only the last four digits of the card are used and stored (BR07), as the note on the page says.")
+num(4, "An approved result moves the order to PAID through changeStatus, the only way the status changes (BR09); "
+       "the tracking page below shows it.")
 p(f"Figure {next_fig()} is the order board of UC14: Paid and Placed orders offer Start processing and Cancel, the "
   "shipped order only Mark delivered, as the server's BR09 table allows.", keep=True)
-figure("docs/evidence/e2e/13_order_board.png", "Order board of the sales staff (UC14): one column per stage of the lifecycle", width_cm=10.5)
+F_BOARD = figure("docs/evidence/code_screen/cs_order_board.png", "Code and screen of the order board (UC14): one column per stage, one button per allowed transition", width_cm=15, max_h_cm=12.5)
+p(f"The numbers in Figure {F_BOARD} mean:", keep=True)
+num(1, "The columns group the states of OrderStatus by stage: to process, processing, on the way, closed.")
+num(2, "A paid order offers Start processing and Cancel, the two transitions from PAID that the sales staff may make.")
+num(3, "A shipped order offers only Mark delivered: the table allows nothing else from SHIPPED.")
+num(4, "The buttons of every card come from next(actor), so the board and the server share one table; a button "
+       "that the table does not allow cannot appear.")
 p(f"After processing, shipping and delivery, the customer opened the order (UC09). Figure {next_fig()} shows the page "
   "with the design lens on: the history is the six OrderEvent rows, both card attempts appear, and only the last "
   "four digits are stored (BR07). The labels name the view method, endpoint, controller, service, DAO and tables.",
@@ -375,7 +399,11 @@ figure("docs/evidence/e2e/17_trace_lens.png", "Order tracking (UC09) with the de
 p(f"In Figure {next_fig()} a warehouse staff member typed -5 as stock (UC15). Product.updateStock refused it with "
   "BR12 and a 409, and the run found the stored stock unchanged; the CHECK of Section 6.3 stands behind it.",
   keep=True)
-figure("docs/evidence/e2e/19_stock_refused.png", "Inventory (UC15): a negative quantity is refused by rule BR12 and nothing is saved", width_cm=10.5)
+F_STOCK = figure("docs/evidence/code_screen/cs_stock.png", "Code and screen of the inventory (UC15): a negative quantity is refused by rule BR12 and nothing is saved", width_cm=15, max_h_cm=5)
+p(f"The numbers in Figure {F_STOCK} mean:", keep=True)
+num(1, "The quantity typed in the row is the parameter of updateStock.")
+num(2, "A negative quantity raises RuleViolation BR12; the message on the page is the message of the rule, and "
+       "nothing is saved.")
 
 # ------------------------------------------------------------------------------------------------ 6.9
 h2("6.9. Keeping Code and Design Consistent")

@@ -48,12 +48,14 @@ table("Use case catalogue", [
     ["UC20", "Apply Promotion", "Customer", "Apply an eligible promotion at checkout"],
     ["UC21", "Validate Cart", "(included by UC07)", "Check the cart against current data"],
 ], [1.4, 4.8, 3.4, 6.4], size=10, center_cols=(0,))
-p(f"Figure {nf(1)} is the complete use case diagram, drawn in the Analysis file of Visual Paradigm "
-  "(vp/1_Analysis.vpp). Customer use cases are on the left, the staff and management use cases on the right, and each "
-  "external system is connected only to the use cases that exchange information with it.")
+h3("1.20.1. General Use Case Diagram")
+p(f"Figure {nf(1)} is the general use case diagram, drawn in the Analysis file of Visual Paradigm "
+  "(vp/1_Analysis.vpp). It shows all twenty-one use cases of Table 1.20 and the actors that use them. Customer use "
+  "cases are on the left, the staff and management use cases on the right, and each external system is connected "
+  "only to the use cases that exchange information with it. Sales Staff and Warehouse Staff are specializations of "
+  "Staff, which logs in through UC02.")
 landscape()
-F_R2 = figure("vp/png/R2.png", "Use case diagram of ABC Online Shop: twenty-one use cases, include and extend relationships with named extension points", width_cm=19.4, max_h_cm=16)
-F_R3 = figure("vp/png/R3.png", "Use cases implemented in the prototype and their actors", width_cm=21, max_h_cm=16)
+F_R2 = figure("vp/png/R2.png", "General use case diagram of ABC Online Shop: twenty-one use cases and their actors, with the include and extend relationships of UC07", width_cm=19.4, max_h_cm=16)
 portrait()
 p("The include and extend relationships needed the most care, and one of them changed after the design of Chapter 5. "
   "UC07 Place Order includes UC21 Validate Cart, because the cart is always checked before confirmation (FR09). UC20 "
@@ -63,17 +65,17 @@ p("The include and extend relationships needed the most care, and one of them ch
   "behaviour, it is an include; if the base use case is complete and the other behaviour is added only under a "
   "condition, it is an extend. Cash on delivery showed that the old choice failed this test: an order paid on "
   "delivery is complete when it is placed, and the payment only runs when the customer chooses a card. UC08 therefore "
-  f"extends UC07 at the extension point \"card payment chosen\" with the condition payment method = CARD. Figure {F_R3} "
-  "shows the part of the model that the prototype of Chapter 6 implements, with its actors.")
+  f"extends UC07 at the extension point \"card payment chosen\" with the condition payment method = CARD.")
 
-p("The overview has 21 use cases on one page, which shows the whole system but is too dense to read the actors "
+h3("1.20.2. Detailed Use Case Diagrams")
+p("The general diagram has 21 use cases on one page, which shows the whole system but is too dense to read the actors "
   f"of one area. Figures {nf(1)} to {nf(5)} are the detailed use case diagrams, one for each functional area of the shop: "
   "customer accounts, catalogue and inventory, shopping and payment, order fulfilment, and reviews, promotions and "
   "reports. Each repeats the use cases of its area with their actors and relationships, so a reader can check one "
-  f"area at a time, and together they contain all 21 use cases and every association of Figure {F_R2}. Figure {nf(1)} adds "
-  "one thing the overview leaves out to keep its lines readable: the sales staff and the warehouse staff also log in "
-  f"through UC02, as Figure {F_R3} shows for the prototype. UC04 of the catalogue area is refined once more for the AI "
-  "search in Chapter 3.", keep=True)
+  f"area at a time, and together they contain all 21 use cases and every association of Figure {F_R2}. In Figure "
+  f"{nf(1)} the sales staff and the warehouse staff are linked to UC02 directly, where the general diagram links them "
+  "through the actor Staff. UC04 of the catalogue area is refined once more for the AI search in Chapter 3. The nine "
+  "use cases that the prototype implements are listed in Section 6.1.", keep=True)
 figure("vp/png/R4.png", "Detailed use case diagram: customer accounts (diagram R4)", width_cm=13.5, max_h_cm=9)
 figure("vp/png/R5.png", "Detailed use case diagram: catalogue and inventory (diagram R5)", width_cm=14.5, max_h_cm=13.5)
 figure("vp/png/R6.png", "Detailed use case diagram: shopping and payment, with the include and extend relationships of UC07 (diagram R6)", width_cm=16, max_h_cm=7.5)

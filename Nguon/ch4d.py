@@ -31,7 +31,13 @@ dash("**Table per subclass.** The three generalizations, Product with its four k
      "Class Detail of the specification of the superclass). VP's default, Table per class hierarchy, would put a "
      "whole hierarchy into one table.")
 landscape()
-F_D1 = figure("vp/png/D1.png", "Class diagram with multiplicity, role names and ORM: the twenty classes of Chapter 2 with types, identifiers and the stereotype «ORM Persistable» (diagram D1)", width_cm=26.5, max_h_cm=16)
+F_D1 = figure("docs/evidence/marked/D1_marked.png", "Class diagram with multiplicity, role names and ORM: the twenty classes of Chapter 2 with types, identifiers and the stereotype «ORM Persistable» (diagram D1)", width_cm=24.5, max_h_cm=11.5)
+mark_notes(F_D1, [
+    "Every attribute has a type and the class has an identifier (productId) and the stereotype «ORM Persistable»: VP makes a table of it.",
+    "The subclasses keep the generalization; Product has the strategy Table per subclass (Figure 4.2), so each kind is a table keyed by ProductId.",
+    "Every association end has a multiplicity and a role name (customer, orders, addresses); the table on the many side gets the foreign key CustomerId.",
+    "All amounts of Order are Integer, whole VND; OrderItem, OrderEvent and Payment reach it through the role order and get the foreign key OrderId.",
+])
 portrait()
 p(f"Table {nt()} lists the fourteen associations of Figure {F_D1}, with the role name and the multiplicity at each "
   "end. The six generalizations from a superclass to its subclasses have no label and no role names.", keep=True)
@@ -162,7 +168,7 @@ p("The search has no table. The text of a query, a photo, a spoken query (the br
   "the lines, and they are stored only in Orders, when the customer places the order.")
 
 # ======================================================================= 4.3
-h2("4.3. Database")
+h2("4.3. Data Model → DB")
 p("The data model becomes the database with VP's Generate Database. With the Data Model file open, choose Tools, "
   f"DB, Generate Database. The dialog Database Generation of Figure {nf()} (left) opens. Generate Database is set to "
   "Create Database and Schema to <All>. Generate DDL is ticked and Export to database is not, so VP writes a DDL "
@@ -171,6 +177,19 @@ p("The data model becomes the database with VP's Generate Database. With the Dat
   "the folder that receives the file. After OK, VP shows the progress dialog (bottom right) and writes one file with "
   "the extension .ddl, which I keep in the project as db/vp/vp_ddl.sql.")
 F_GENDB = figure("docs/evidence/vp_generation_v5/fig_generate_database.png", "Generate Database: the options of the dialog (left), the SQLite choice of Database Options (top right) and the finished run (bottom right)", width_cm=15.5, max_h_cm=11)
+p(f"Table {nt()} states what Generate Database writes for each element of the data model. Everything in the right "
+  "column comes from the model; nothing in the DDL was typed by hand.", keep=True)
+table("From the data model to the SQLite DDL that VP writes", [
+    ["Data model element (D1, D2)", "What Generate Database writes", "Example in db/vp/vp_ddl.sql"],
+    ["Class with «ORM Persistable», table of D2", "one CREATE TABLE with the name of the table", "CREATE TABLE Product (...)"],
+    ["Identifier attribute of a class that is not a subclass", "INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT", "ProductId, OrderId"],
+    ["Subclass with Table per subclass", "the key of the superclass, both PRIMARY KEY and FOREIGN KEY", "BookDetail: PRIMARY KEY (ProductId), FOREIGN KEY(ProductId) REFERENCES Product(ProductId)"],
+    ["Attribute type Integer, String, Date, Double, Boolean", "integer(10), varchar(255), date, double(10), integer(1) (bit in the ERD)", "Price integer(10); IsDefault integer(1)"],
+    ["Attribute multiplicity 1 or 0..1", "NOT NULL, or no constraint", "Name varchar(255) NOT NULL; Brand varchar(255)"],
+    ["Association end of multiplicity 1 or 0..1 on the other side", "a foreign key column, NOT NULL or nullable, and one FOREIGN KEY clause", "Product.CategoryId NOT NULL; Category.ParentId nullable"],
+    ["Role names, association names, operations", "nothing: they stay in the model", ""],
+    ["Business rules (a positive price, one cart per customer)", "nothing: the model cannot hold them; Section 5.3 adds them", ""],
+], [4.6, 5.6, 5.8], size=10)
 p("The file holds twenty CREATE TABLE statements, one for each table of the data model. The two tables of a "
   "purchase, copied from the file, show what VP writes: the key with AUTOINCREMENT, a type for every column, NOT NULL "
   "where the multiplicity is 1, and one FOREIGN KEY clause for each relationship. A foreign key column is NOT NULL "

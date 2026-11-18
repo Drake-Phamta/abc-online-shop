@@ -15,6 +15,7 @@ window.ABC_PAGES = {
   "Nguon/ch6.py": "f",
   "Nguon/front.py": "f",
   "Nguon/make.ps1": "f",
+  "Nguon/mark_changes.py": "f",
   "Nguon/uc_model.py": "f",
   "Nguon/uc_specs.py": "f",
   "README.md": "f",
