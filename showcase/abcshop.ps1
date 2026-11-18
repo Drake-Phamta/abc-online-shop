@@ -2,6 +2,7 @@
 #   abcshop:start             run CHAY_DEMO.bat (the demo server) in its own window
 #   abcshop:reveal?p=<path>   show a file or folder of this project in File Explorer
 #   abcshop:open?p=<path>     open a Visual Paradigm project (.vpp) of this project
+#   abcshop:db                build db/vp/vp_ddl.db from the DDL that VP generated and open it in DB Browser for SQLite
 # <path> is relative to the project folder. Anything outside the project folder, or any other action, is refused.
 # CHAY_DEMO.bat registers the handler for the current Windows user on every run (abcshop.ps1 -Register), so it always
 # points to this copy of the project. To remove it: reg delete "HKCU\Software\Classes\abcshop" /f
@@ -30,11 +31,19 @@ function Run($file, $arguments) {
     if ($arguments) { Start-Process -FilePath $file -ArgumentList $arguments } else { Start-Process -FilePath $file -WorkingDirectory $root }
 }
 
-if ($Url -notmatch '^abcshop:(?://)?(start|reveal|open)/?(?:\?p=([^&]*))?$') { Refuse "unknown link" }
+if ($Url -notmatch '^abcshop:(?://)?(start|reveal|open|db)/?(?:\?p=([^&]*))?$') { Refuse "unknown link" }
 $action = $Matches[1]
 $rel = if ($Matches[2]) { [Uri]::UnescapeDataString($Matches[2]) } else { "" }
 
 if ($action -eq "start") { Run (Join-Path $root "CHAY_DEMO.bat") $null; exit 0 }
+if ($action -eq "db") {
+    $py = Get-Command python -ErrorAction SilentlyContinue
+    if (-not $py) { Refuse "python not found" }
+    $script = Join-Path $root "db\vp\make_vp_db.py"
+    if ($DryRun) { "run: $($py.Source) -P `"$script`" --open"; exit 0 }
+    Start-Process -FilePath $py.Source -ArgumentList @("-P", "`"$script`"", "--open") -WorkingDirectory $root -WindowStyle Hidden
+    exit 0
+}
 
 # reveal and open: the path must stay inside the project folder and exist
 $rel = $rel.Replace("/", "\").TrimStart("\")
