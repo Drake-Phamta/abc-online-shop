@@ -2,7 +2,7 @@
 # CHAPTER 3. AI IN E-COMMERCE (V4): the AI search of ABC Online Shop, analysed with the lecturer's notes
 # "Integrating AI into E-Commerce Systems" (business problem -> requirements -> AI and data requirements -> AI
 # component -> integration), designed in Chapter 5 (G1, G8, G9) and built in Chapter 6. Specification:
-# docs/SPEC.md section 6. Diagrams AI1 to AI4 of vp/ABC_Online_Shop_V4.vpp.
+# docs/SPEC.md section 6. Diagrams AI1 and AI4 of vp/1_Analysis.vpp.
 
 chapter("AI in E-commerce")
 p("The lecturer's notes on AI in e-commerce start from one sentence that I used as the plan of this chapter: the "
