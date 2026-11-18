@@ -21,8 +21,9 @@
 <main class="doc">
 <h1 id="traceability-requirement--use-case--analysis--design--database--code--test">TRACEABILITY: yêu cầu → use case → phân tích → thiết kế → cơ sở dữ liệu → mã → kiểm thử</h1>
 <p>Mọi liên kết bên dưới đều mở ra đúng tài liệu (ảnh biểu đồ, mục đặc tả, dòng mã nguồn hoặc kiểm thử). Mã biểu đồ là
-tên của các biểu đồ trong dự án VP <code>vp/ABC_Online_Shop_V4.vpp</code>; các ảnh trong <code>vp/png/</code> được chụp từ
-canvas của VP. Số dòng là của commit hiện tại; <code>tests/design_vs_code.py</code> kiểm tra rằng các lớp thiết kế
+tên của các biểu đồ trong ba file VP <code>vp/1_Analysis.vpp</code>, <code>vp/2_DataModel.vpp</code> và <code>vp/3_Design.vpp</code> (file sau thêm vào
+file trước); các ảnh trong <code>vp/png/</code> được chụp từ canvas của VP. Tên bảng là tên trong mô hình dữ liệu D2 do VP sinh
+bằng Synchronize. Số dòng là của commit hiện tại; <code>tests/design_vs_code.py</code> kiểm tra rằng các lớp thiết kế
 và các lời gọi trong biểu đồ tuần tự thiết kế đều có trong mã nguồn, nên phần giữa của mỗi chuỗi không thể bị lệch đi.</p>
 <h2 id="1-chain-per-implemented-use-case">1. Chuỗi truy vết cho từng use case đã cài đặt</h2>
 <div class="tablewrap"><table>
@@ -32,7 +33,7 @@ và các lời gọi trong biểu đồ tuần tự thiết kế đều có tron
 <th>Đặc tả</th>
 <th>Phân tích</th>
 <th>Thiết kế</th>
-<th>Bảng (D4)</th>
+<th>Bảng (D2)</th>
 <th>Kiểm thử</th>
 </tr>
 </thead>
@@ -42,7 +43,7 @@ và các lời gọi trong biểu đồ tuần tự thiết kế đều có tron
 <td><a href="SPEC.vi.md.html#uc02-login">SPEC 4 UC02</a></td>
 <td>R3</td>
 <td><a href="../../../vp/png/G2b.png">G2b</a>, <a href="../../../vp/png/G4.png">G4</a></td>
-<td>customer, staff</td>
+<td>Customer, Staff</td>
 <td>smoke &quot;UC02 …&quot;; e2e &quot;UC02 customer logged in&quot;</td>
 </tr>
 <tr>
@@ -50,31 +51,31 @@ và các lời gọi trong biểu đồ tuần tự thiết kế đều có tron
 <td><a href="SPEC.vi.md.html#uc04-browse--search-products-uc05-view-product">SPEC 4 UC04/UC05</a></td>
 <td><a href="../../../vp/png/A10.png">A10</a></td>
 <td><a href="../../../vp/png/G2a.png">G2a</a>, <a href="../../../vp/png/G3.png">G3</a>, <a href="../../../vp/png/G4.png">G4</a></td>
-<td>category, product, book_detail, laptop_detail, phone_detail, apparel_detail</td>
-<td>smoke &quot;UC04 …&quot;, &quot;UC05 product page with laptop_detail specs&quot;; e2e &quot;UC04 …&quot;, &quot;UC05 …&quot;</td>
+<td>Category, Product, BookDetail, LaptopDetail, PhoneDetail, ApparelDetail</td>
+<td>smoke &quot;UC04 …&quot;, &quot;UC05 product page with LaptopDetail specs&quot;; e2e &quot;UC04 …&quot;, &quot;UC05 …&quot;</td>
 </tr>
 <tr>
 <td>UC06 Manage Shopping Cart (FR07, FR08)</td>
 <td><a href="SPEC.vi.md.html#uc06-manage-shopping-cart">SPEC 4 UC06</a></td>
-<td><a href="../../../vp/png/A1.png">A1</a> hoạt động, <a href="../../../vp/png/A7.png">A7</a> tuần tự, <a href="../../../vp/png/A10.png">A10</a></td>
+<td><a href="../../../vp/png/A1.png">A1</a> hoạt động, <a href="../../../vp/png/A10.png">A10</a></td>
 <td><a href="../../../vp/png/G5.png">G5</a> tuần tự, <a href="../../../vp/png/G2a.png">G2a</a>, <a href="../../../vp/png/G4b.png">G4b</a></td>
-<td>cart, cart_item</td>
+<td>Cart, CartItem</td>
 <td><code>addingTheSameProductMergesLinesAndRespectsStock</code>, <code>hiddenProductsCannotBeAdded</code>; smoke &quot;UC06 …&quot;, &quot;BR02 …&quot;; e2e &quot;UC06 …&quot;</td>
 </tr>
 <tr>
 <td>UC07 Place Order + UC21 Validate Cart (FR09, FR10, FR11, FR15, FR16, NFR10)</td>
 <td><a href="SPEC.vi.md.html#uc07-place-order--checkout-uc21-validate-cart">SPEC 4 UC07</a>, <a href="SPEC.vi.md.html#3-order-state-machine-br09">máy trạng thái</a></td>
-<td><a href="../../../vp/png/A2.png">A2</a>, <a href="../../../vp/png/A8.png">A8</a>, <a href="../../../vp/png/A6.png">A6</a> tiến trình 4 của DFD</td>
+<td><a href="../../../vp/png/A2.png">A2</a> hoạt động, <a href="../../../vp/png/A10.png">A10</a></td>
 <td><a href="../../../vp/png/G6.png">G6</a>, <a href="../../../vp/png/G2c.png">G2c</a>, <a href="../../../vp/png/G4b.png">G4b</a></td>
-<td>customer_order, order_item, order_event, address, product</td>
+<td>Orders, OrderItem, OrderEvent, Address, Product</td>
 <td><code>validationTakesOverChangedPrices</code>, <code>totalsApplyVipDiscountAndFreeDelivery</code>, <code>placingNeedsAnOwnAddressAndEnoughStock</code>, <code>lastUnitCanBeSoldOnlyOnce</code>, <code>aFailedOrderWriteRollsBackTheStockReservation</code>; e2e &quot;UC07 …&quot;</td>
 </tr>
 <tr>
 <td>UC08 Make Payment (FR14)</td>
 <td><a href="SPEC.vi.md.html#uc08-make-payment">SPEC 4 UC08</a></td>
-<td><a href="../../../vp/png/A3.png">A3</a>, <a href="../../../vp/png/A9.png">A9</a></td>
+<td><a href="../../../vp/png/A3.png">A3</a> hoạt động</td>
 <td><a href="../../../vp/png/G7.png">G7</a>, <a href="../../../vp/png/G2c.png">G2c</a></td>
-<td>payment, pay_credit</td>
+<td>Payment, PayCredit</td>
 <td><code>cardOrderBecomesPaidOnlyAfterApproval</code>; smoke &quot;UC08 …&quot;, &quot;BR07 only last four digits and token stored&quot;; e2e &quot;UC08 …&quot;</td>
 </tr>
 <tr>
@@ -82,7 +83,7 @@ và các lời gọi trong biểu đồ tuần tự thiết kế đều có tron
 <td><a href="SPEC.vi.md.html#uc09-track-order">SPEC 4 UC09</a></td>
 <td><a href="../../../vp/png/A4.png">A4</a></td>
 <td><a href="../../../vp/png/G2c.png">G2c</a>, <a href="../../../vp/png/G4.png">G4</a></td>
-<td>customer_order, order_event, shipping</td>
+<td>Orders, OrderEvent, Shipping</td>
 <td><code>ordersOfOtherCustomersAreNotFound</code>; smoke &quot;UC09 …&quot;, &quot;BR08 another customer gets 404&quot;; e2e &quot;UC09 …&quot;</td>
 </tr>
 <tr>
@@ -90,7 +91,7 @@ và các lời gọi trong biểu đồ tuần tự thiết kế đều có tron
 <td><a href="SPEC.vi.md.html#uc14-process-orders">SPEC 4 UC14</a></td>
 <td><a href="../../../vp/png/A5.png">A5</a></td>
 <td><a href="../../../vp/png/G2c.png">G2c</a> (OrderStatus), <a href="../../../vp/png/G4b.png">G4b</a></td>
-<td>customer_order, order_event, shipping, payment, pay_cash</td>
+<td>Orders, OrderEvent, Shipping, Payment, PayCash</td>
 <td><code>lifecycleFollowsTheTransitionTable</code>, <code>customersCannotCancelOncePackingStarted</code>, <code>cancellingAPaidOrderRefundsTheCard</code>, <code>staffFunctionsNeedTheStaffRole</code>; smoke &quot;UC14 …&quot;, &quot;BR09 …&quot;; e2e &quot;UC14 …&quot;</td>
 </tr>
 <tr>
@@ -98,26 +99,27 @@ và các lời gọi trong biểu đồ tuần tự thiết kế đều có tron
 <td><a href="SPEC.vi.md.html#uc15-manage-inventory">SPEC 4 UC15</a></td>
 <td>R3</td>
 <td><a href="../../../vp/png/G2a.png">G2a</a>, <a href="../../../vp/png/G3.png">G3</a></td>
-<td>product</td>
+<td>Product</td>
 <td><code>theDatabaseItselfRefusesNegativeStock</code>; smoke &quot;UC15 …&quot;, &quot;BR12 …&quot;; e2e &quot;UC15 …&quot;, &quot;BR12 …&quot;</td>
 </tr>
 <tr>
 <td>UC04 tìm kiếm AI: văn bản, giọng nói, ảnh (FR-S1 đến FR-S7, AI01 đến AI07)</td>
 <td><a href="SPEC.vi.md.html#6-ai-search-chapter-3-specification-of-the-ai-component">SPEC 6</a></td>
-<td><a href="../../../vp/png/AI1.png">AI1</a> use case, <a href="../../../vp/png/AI2.png">AI2</a> ngữ cảnh, <a href="../../../vp/png/AI3.png">AI3</a> luồng dữ liệu, <a href="../../../vp/png/AI4.png">AI4</a> thành phần</td>
+<td><a href="../../../vp/png/AI1.png">AI1</a> use case, <a href="../../../vp/png/AI4.png">AI4</a> thành phần</td>
 <td><a href="../../../vp/png/G8.png">G8</a> lớp, <a href="../../../vp/png/G9.png">G9</a> tuần tự</td>
 <td>product, category và bốn bảng chi tiết (chỉ đọc; không lưu thêm gì mới)</td>
 <td><code>SearchTest</code> (10 kiểm thử, AT11 đến AT17); smoke &quot;AT13 …&quot;, &quot;AT16 …&quot;, &quot;AI06 …&quot;; e2e &quot;AT11 …&quot;, &quot;AT12 …&quot;, &quot;AT15 …&quot;; <code>tests/search_eval.py</code></td>
 </tr>
 </tbody>
 </table></div>
-<p>Mức nghiệp vụ: quy trình <a href="../../../vp/png/B1.png">B1</a> (BPMN), bản đồ bên liên quan <a href="../../../vp/png/B2.png">B2</a> và cây vấn đề <a href="../../../vp/png/B3.png">B3</a>
-(ArchiMate). Mức yêu cầu: biểu đồ ngữ cảnh <a href="../../../vp/png/R1.png">R1</a>, tổng quan use case <a href="../../../vp/png/R2.png">R2</a> (21 use case),
-phạm vi đã cài đặt <a href="../../../vp/png/R3.png">R3</a>, các use case chi tiết theo từng mảng <a href="../../../vp/png/R4.png">R4</a> đến <a href="../../../vp/png/R8.png">R8</a>. Mô hình dữ liệu: <a href="../../../vp/png/D1.png">D1</a> (biểu đồ
-lớp với ORM), <a href="../../../vp/png/D2.png">D2</a> khái niệm, <a href="../../../vp/png/D3.png">D3</a> logic, <a href="../../../vp/png/D4.png">D4</a> vật lý,
-DDL <code>db/schema.sql</code> = bản xuất <code>db/vp/vp_ddl.sql</code> của VP và có cùng các bảng, cột, ràng buộc CHECK và UNIQUE với
-cơ sở dữ liệu mà Generate Database của VP đã ghi ra, <code>db/vp/abc_shop_vp.db</code> (<code>db/compare_schema.py</code>). Kiến trúc: <a href="../../../vp/png/G0.png">G0</a> ba
-tầng, <a href="../../../vp/png/G1.png">G1</a> các package và các phụ thuộc <code>&lt;&lt;use&gt;&gt;</code>.</p>
+<p>Mức yêu cầu: biểu đồ ngữ cảnh <a href="../../../vp/png/R1.png">R1</a>, tổng quan use case <a href="../../../vp/png/R2.png">R2</a> (21 use case),
+phạm vi đã cài đặt <a href="../../../vp/png/R3.png">R3</a>, các use case chi tiết theo từng mảng <a href="../../../vp/png/R4.png">R4</a> đến <a href="../../../vp/png/R8.png">R8</a>; luật nghiệp vụ BR01 đến BR13
+và các trạng thái của đơn hàng ở mục 1.10 của tiểu luận. Phân tích: sơ đồ lớp <a href="../../../vp/png/A10.png">A10</a> (không kiểu, không id;
+Product, Customer và Payment có lớp con), hoạt động <a href="../../../vp/png/A1.png">A1</a> đến <a href="../../../vp/png/A5.png">A5</a>. Mô hình dữ liệu: <a href="../../../vp/png/D1.png">D1</a> (sơ đồ lớp có
+multiplicity, role name, ORM và Table per subclass) và <a href="../../../vp/png/D2.png">D2</a> (ERD sinh từ D1 bằng Synchronize to Entity
+Relationship Diagram); <code>db/vp/vp_ddl.sql</code> do Generate Database ghi ra; <code>db/schema.sql</code> = DDL đó cộng các luật nghiệp
+vụ (<code>db/make_schema.py</code>), được kiểm tra bằng <code>db/compare_schema.py</code>. Kiến trúc: <a href="../../../vp/png/G1.png">G1</a> ba tầng, các package
+và các phụ thuộc <code>&lt;&lt;use&gt;&gt;</code>.</p>
 <h2 id="2-code-of-each-use-case-view--controller--service--model--dao">2. Mã nguồn của từng use case (view → controller → service → model / DAO)</h2>
 <p>Đường dẫn bắt đầu từ <code>app/src/main/</code>; <code>js/view/…</code> là <code>resources/static/js/view/…</code>, các file Java nằm dưới <code>java/vn/ptit/ecom/</code>.</p>
 <div class="tablewrap"><table>
@@ -146,7 +148,7 @@ tầng, <a href="../../../vp/png/G1.png">G1</a> các package và các phụ thu�
 <td><a href="../app/src/main/java/vn/ptit/ecom/controller/ProductController.java.html#L52">ProductController.search</a></td>
 <td><a href="../app/src/main/java/vn/ptit/ecom/service/CatalogService.java.html#L27">CatalogService.search</a></td>
 <td></td>
-<td><a href="../app/src/main/java/vn/ptit/ecom/dao/ProductDAOImpl.java.html#L63">ProductDAOImpl.search</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/dao/ProductDAOImpl.java.html#L66">ProductDAOImpl.search</a></td>
 </tr>
 <tr>
 <td>UC05</td>
@@ -154,7 +156,7 @@ tầng, <a href="../../../vp/png/G1.png">G1</a> các package và các phụ thu�
 <td><a href="../app/src/main/java/vn/ptit/ecom/controller/ProductController.java.html#L59">ProductController.product</a></td>
 <td><a href="../app/src/main/java/vn/ptit/ecom/service/CatalogService.java.html#L32">CatalogService.product</a></td>
 <td>DetailKind (danh mục → bảng chi tiết)</td>
-<td><a href="../app/src/main/java/vn/ptit/ecom/dao/ProductDAOImpl.java.html#L110">ProductDAOImpl.findById</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/dao/ProductDAOImpl.java.html#L105">ProductDAOImpl.findById</a></td>
 </tr>
 <tr>
 <td>UC06</td>
@@ -170,7 +172,7 @@ tầng, <a href="../../../vp/png/G1.png">G1</a> các package và các phụ thu�
 <td><a href="../app/src/main/java/vn/ptit/ecom/controller/OrderController.java.html#L46">OrderController.placeOrder</a></td>
 <td><a href="../app/src/main/java/vn/ptit/ecom/service/OrderService.java.html#L56">OrderService.placeOrder</a></td>
 <td><a href="../app/src/main/java/vn/ptit/ecom/model/cart/Cart.java.html#L57">Cart.validate</a> (BR03), <a href="../app/src/main/java/vn/ptit/ecom/model/order/Order.java.html#L69">Order.place</a>, <a href="../app/src/main/java/vn/ptit/ecom/model/order/Order.java.html#L57">Totals.of</a> (BR04)</td>
-<td><a href="../app/src/main/java/vn/ptit/ecom/dao/ProductDAOImpl.java.html#L135">ProductDAOImpl.reserveStock</a> (BR05), <a href="../app/src/main/java/vn/ptit/ecom/dao/OrderDAOImpl.java.html#L28">OrderDAOImpl.insert</a>, <a href="../app/src/main/java/vn/ptit/ecom/dao/CartDAOImpl.java.html#L53">CartDAOImpl.clear</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/dao/ProductDAOImpl.java.html#L131">ProductDAOImpl.reserveStock</a> (BR05), <a href="../app/src/main/java/vn/ptit/ecom/dao/OrderDAOImpl.java.html#L28">OrderDAOImpl.insert</a>, <a href="../app/src/main/java/vn/ptit/ecom/dao/CartDAOImpl.java.html#L53">CartDAOImpl.clear</a></td>
 </tr>
 <tr>
 <td>UC08</td>
@@ -201,16 +203,16 @@ tầng, <a href="../../../vp/png/G1.png">G1</a> các package và các phụ thu�
 <td><a href="../app/src/main/resources/static/js/view/StockForm.js.html#L36">StockForm.submitStock</a></td>
 <td><a href="../app/src/main/java/vn/ptit/ecom/controller/ProductController.java.html#L75">ProductController.updateStock</a></td>
 <td><a href="../app/src/main/java/vn/ptit/ecom/service/CatalogService.java.html#L49">CatalogService.updateStock</a></td>
-<td><a href="../app/src/main/java/vn/ptit/ecom/model/product/Product.java.html#L42">Product.updateStock</a> (BR12)</td>
-<td><a href="../app/src/main/java/vn/ptit/ecom/dao/ProductDAOImpl.java.html#L146">ProductDAOImpl.updateStock</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/model/product/Product.java.html#L54">Product.updateStock</a> (BR12)</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/dao/ProductDAOImpl.java.html#L142">ProductDAOImpl.updateStock</a></td>
 </tr>
 <tr>
 <td>UC04 tìm kiếm AI</td>
 <td><a href="../app/src/main/resources/static/js/view/SearchForm.js.html#L53">SearchForm.showResults</a>, <a href="../app/src/main/resources/static/js/view/SearchForm.js.html#L79">startVoice</a>, <a href="../app/src/main/resources/static/js/view/SearchForm.js.html#L130">submitPhoto</a></td>
 <td><a href="../app/src/main/java/vn/ptit/ecom/controller/SearchController.java.html#L46">SearchController.search</a>, <a href="../app/src/main/java/vn/ptit/ecom/controller/SearchController.java.html#L51">searchByPhoto</a></td>
-<td><a href="../app/src/main/java/vn/ptit/ecom/service/SearchService.java.html#L63">SearchService.search</a>, <a href="../app/src/main/java/vn/ptit/ecom/service/SearchService.java.html#L78">searchByPhoto</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/service/SearchService.java.html#L62">SearchService.search</a>, <a href="../app/src/main/java/vn/ptit/ecom/service/SearchService.java.html#L77">searchByPhoto</a></td>
 <td>package ai: <a href="../app/src/main/java/vn/ptit/ecom/ai/QueryInterpreter.java.html#L88">QueryInterpreter.interpret</a>, <a href="../app/src/main/java/vn/ptit/ecom/ai/ProductIndex.java.html#L91">ProductIndex.rank</a>, <a href="../app/src/main/java/vn/ptit/ecom/ai/ImageIndex.java.html#L44">ImageIndex.rank</a></td>
-<td><a href="../app/src/main/java/vn/ptit/ecom/dao/ProductDAOImpl.java.html#L63">ProductDAOImpl.search</a> (danh mục sản phẩm để lập chỉ mục; dự phòng tìm theo từ khóa)</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/dao/ProductDAOImpl.java.html#L66">ProductDAOImpl.search</a> (danh mục sản phẩm để lập chỉ mục; dự phòng tìm theo từ khóa)</td>
 </tr>
 </tbody>
 </table></div>
@@ -231,7 +233,7 @@ tầng, <a href="../../../vp/png/G1.png">G1</a> các package và các phụ thu�
 </tr>
 <tr>
 <td>BR02 mỗi sản phẩm một dòng, số lượng không vượt tồn kho</td>
-<td><a href="../app/src/main/java/vn/ptit/ecom/model/cart/Cart.java.html#L23">Cart.addItem</a>; UNIQUE(cart_id, product_id) trong <code>db/schema.sql</code></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/model/cart/Cart.java.html#L23">Cart.addItem</a>; UNIQUE(CartId, ProductId) trong <code>db/schema.sql</code></td>
 <td><code>addingTheSameProductMergesLinesAndRespectsStock</code>; smoke &quot;BR02 …&quot;</td>
 </tr>
 <tr>
@@ -241,12 +243,12 @@ tầng, <a href="../../../vp/png/G1.png">G1</a> các package và các phụ thu�
 </tr>
 <tr>
 <td>BR04 các tổng tiền</td>
-<td><a href="../app/src/main/java/vn/ptit/ecom/model/order/Order.java.html#L57">Totals.of</a>; CHECK trên <code>customer_order</code></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/model/order/Order.java.html#L57">Totals.of</a>; CHECK trên <code>Orders</code></td>
 <td><code>totalsApplyVipDiscountAndFreeDelivery</code>; smoke &quot;BR04 …&quot;</td>
 </tr>
 <tr>
 <td>BR05 tồn kho được giữ, không bao giờ âm</td>
-<td><a href="../app/src/main/java/vn/ptit/ecom/dao/ProductDAOImpl.java.html#L135">ProductDAOImpl.reserveStock</a>; CHECK stock_quantity ≥ 0</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/dao/ProductDAOImpl.java.html#L131">ProductDAOImpl.reserveStock</a>; CHECK StockQuantity ≥ 0</td>
 <td><code>lastUnitCanBeSoldOnlyOnce</code>, <code>theDatabaseItselfRefusesNegativeStock</code>, <code>aFailedOrderWriteRollsBackTheStockReservation</code></td>
 </tr>
 <tr>
@@ -256,7 +258,7 @@ tầng, <a href="../../../vp/png/G1.png">G1</a> các package và các phụ thu�
 </tr>
 <tr>
 <td>BR07 chỉ PAID sau khi được chấp nhận, không lưu đầy đủ số thẻ</td>
-<td><a href="../app/src/main/java/vn/ptit/ecom/model/order/Order.java.html#L96">Order.recordCardPayment</a>, <code>pay_credit</code> chỉ có bốn số cuối + token</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/model/order/Order.java.html#L96">Order.recordCardPayment</a>, <code>PayCredit</code> chỉ có bốn số cuối + token</td>
 <td><code>cardOrderBecomesPaidOnlyAfterApproval</code>; smoke &quot;BR07 …&quot;</td>
 </tr>
 <tr>
@@ -271,7 +273,7 @@ tầng, <a href="../../../vp/png/G1.png">G1</a> các package và các phụ thu�
 </tr>
 <tr>
 <td>BR10 mỗi đơn hàng một lô vận chuyển</td>
-<td><a href="../app/src/main/java/vn/ptit/ecom/model/order/Order.java.html#L116">Order.ship</a>; UNIQUE(order_id) trên <code>shipping</code></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/model/order/Order.java.html#L116">Order.ship</a>; UNIQUE(OrderId) trên <code>Shipping</code></td>
 <td><code>lifecycleFollowsTheTransitionTable</code>; smoke &quot;UC14 ship creates the shipment (BR10)&quot;</td>
 </tr>
 <tr>
@@ -281,7 +283,7 @@ tầng, <a href="../../../vp/png/G1.png">G1</a> các package và các phụ thu�
 </tr>
 <tr>
 <td>BR12 tồn kho ≥ 0</td>
-<td><a href="../app/src/main/java/vn/ptit/ecom/model/product/Product.java.html#L42">Product.updateStock</a>, được gọi bởi <a href="../app/src/main/java/vn/ptit/ecom/service/CatalogService.java.html#L49">CatalogService.updateStock</a>; CHECK trong bảng</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/model/product/Product.java.html#L54">Product.updateStock</a>, được gọi bởi <a href="../app/src/main/java/vn/ptit/ecom/service/CatalogService.java.html#L49">CatalogService.updateStock</a>; CHECK trong bảng</td>
 <td><code>theDatabaseItselfRefusesNegativeStock</code>; smoke và e2e &quot;BR12 …&quot;</td>
 </tr>
 <tr>
@@ -303,7 +305,7 @@ tầng, <a href="../../../vp/png/G1.png">G1</a> các package và các phụ thu�
 <tbody>
 <tr>
 <td>AI01 chỉ sản phẩm ACTIVE</td>
-<td>chỉ mục được dựng từ <a href="../app/src/main/java/vn/ptit/ecom/service/SearchService.java.html#L97">activeProducts</a>; một sản phẩm bị ẩn kể từ đó sẽ bị bỏ qua trong <a href="../app/src/main/java/vn/ptit/ecom/service/SearchService.java.html#L104">items</a></td>
+<td>chỉ mục được dựng từ <a href="../app/src/main/java/vn/ptit/ecom/service/SearchService.java.html#L96">activeProducts</a>; một sản phẩm bị ẩn kể từ đó sẽ bị bỏ qua trong <a href="../app/src/main/java/vn/ptit/ecom/service/SearchService.java.html#L108">items</a></td>
 <td>không có kiểm thử riêng: chỉ mục chỉ được dựng từ các sản phẩm ACTIVE (rà soát mã)</td>
 </tr>
 <tr>
@@ -318,22 +320,22 @@ tầng, <a href="../../../vp/png/G1.png">G1</a> các package và các phụ thu�
 </tr>
 <tr>
 <td>AI04 dự phòng tìm theo từ khóa, nói rõ trên trang</td>
-<td><a href="../app/src/main/java/vn/ptit/ecom/service/SearchService.java.html#L63">SearchService.search</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/service/SearchService.java.html#L62">SearchService.search</a></td>
 <td><code>nothingFoundFallsBackToKeywordSearch</code>; smoke &quot;AT16 …&quot;</td>
 </tr>
 <tr>
 <td>AI05 ảnh và giọng nói không bao giờ được lưu</td>
-<td><a href="../app/src/main/java/vn/ptit/ecom/service/SearchService.java.html#L78">SearchService.searchByPhoto</a> giải mã trong bộ nhớ; chuyển giọng nói thành văn bản ngay trong trình duyệt</td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/service/SearchService.java.html#L77">SearchService.searchByPhoto</a> giải mã trong bộ nhớ; chuyển giọng nói thành văn bản ngay trong trình duyệt</td>
 <td>không có kiểm thử riêng: SearchService không ghi file nào và không ghi bảng nào (rà soát mã)</td>
 </tr>
 <tr>
 <td>AI06 giới hạn đầu vào (200 ký tự, 5 MB, JPEG hoặc PNG)</td>
-<td><a href="../app/src/main/java/vn/ptit/ecom/ai/QueryInterpreter.java.html#L88">QueryInterpreter.interpret</a>, <a href="../app/src/main/java/vn/ptit/ecom/service/SearchService.java.html#L81">SearchService.searchByPhoto</a>, <a href="../app/src/main/java/vn/ptit/ecom/controller/ApiErrors.java.html#L39">ApiErrors</a></td>
+<td><a href="../app/src/main/java/vn/ptit/ecom/ai/QueryInterpreter.java.html#L88">QueryInterpreter.interpret</a>, <a href="../app/src/main/java/vn/ptit/ecom/service/SearchService.java.html#L80">SearchService.searchByPhoto</a>, <a href="../app/src/main/java/vn/ptit/ecom/controller/ApiErrors.java.html#L39">ApiErrors</a></td>
 <td><code>tooLongQueryIsRefused</code>, <code>aTextFileIsNotAPhoto</code>; smoke &quot;AI06 …&quot;</td>
 </tr>
 <tr>
 <td>AI07 hết hàng thì xếp thấp hơn 20 % trong tìm bằng văn bản</td>
-<td><code>OUT_OF_STOCK_FACTOR</code> trong <a href="../app/src/main/java/vn/ptit/ecom/service/SearchService.java.html#L102">SearchService</a></td>
+<td><code>OUT_OF_STOCK_FACTOR</code> trong <a href="../app/src/main/java/vn/ptit/ecom/service/SearchService.java.html#L101">SearchService</a></td>
 <td><code>outOfStockProductRanksLower</code></td>
 </tr>
 </tbody>
@@ -344,7 +346,7 @@ tầng, <a href="../../../vp/png/G1.png">G1</a> các package và các phụ thu�
 <tr>
 <th>Bộ kiểm thử</th>
 <th>Lệnh</th>
-<th>Kết quả (11/11/2026)</th>
+<th>Kết quả (18/11/2026)</th>
 </tr>
 </thead>
 <tbody>
@@ -371,17 +373,17 @@ tầng, <a href="../../../vp/png/G1.png">G1</a> các package và các phụ thu�
 <tr>
 <td>Mã do VP sinh ra so với mã</td>
 <td><code>python tests/vpgen_vs_code.py</code></td>
-<td>81 file của Instant Generator (<code>docs/evidence/vp_codegen</code>): 73 lớp, 190 field, 157 phương thức, 8 lớp view đều có đủ</td>
+<td>80 file của Instant Generator (<code>docs/evidence/vp_codegen_v5</code>): 72 lớp, 173 field, 157 phương thức, 8 lớp view với 25 thao tác đều có đủ</td>
 </tr>
 <tr>
 <td>Chất lượng tìm kiếm AI</td>
 <td><code>python tests/search_eval.py</code> (máy chủ đang chạy)</td>
-<td>30 truy vấn: hit@1 0.97 (từ khóa 0.23), MRR 0.97, tỷ lệ không có kết quả 0.03; 84 ảnh: top-1 0.93, top-3 1.00 (<a href="evidence/search_eval.txt.html">search_eval.txt</a>)</td>
+<td>30 truy vấn: hit@1 0.97 (từ khóa 0.23), MRR 0.97, tỷ lệ không có kết quả 0.03; 84 ảnh: top-1 0.93, top-3 1.00 (<a href="evidence/search_eval.txt.html">search_eval.txt</a>, lần chạy 11/11; lần chạy 18/11 cho cùng các giá trị, chỉ thời gian lệch khoảng một mili giây)</td>
 </tr>
 <tr>
 <td>DDL của VP so với lược đồ</td>
 <td><code>python db/compare_schema.py</code></td>
-<td>giống hệt nhau</td>
+<td>cùng 20 bảng, 122 cột và 22 khoá ngoại với DDL do VP sinh; thêm tay: 34 CHECK, 9 UNIQUE, 5 ON DELETE CASCADE</td>
 </tr>
 </tbody>
 </table></div>

@@ -2,7 +2,7 @@
 # build docx -> Word (in a background job: Word COM hangs when driven from this host directly):
 # update TOC, save docx, export PDF -> page sheet + free space per page. Word works in C:\a3cap\tieuluan_out
 # (plain ASCII path); a successful build is then copied to <Root>\Bai_nop.
-param([string]$Root = (Split-Path $PSScriptRoot -Parent), [string]$Name = "tieuluan_V4_04_10_phamtuananh_018")
+param([string]$Root = (Split-Path $PSScriptRoot -Parent), [string]$Name = "tieuluan_V5_04_10_phamtuananh_018")
 $env:PYTHONUTF8 = "1"
 $env:PYTHONIOENCODING = "utf-8"
 $out = "C:\a3cap\tieuluan_out"

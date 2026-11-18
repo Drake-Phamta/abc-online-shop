@@ -116,7 +116,7 @@ số thẻ (BR07).</p>
 <tr>
 <td>BR02</td>
 <td>Một giỏ hàng chỉ có tối đa một dòng cho mỗi sản phẩm; thêm lại sản phẩm đó thì tăng số lượng. Số lượng của một dòng nằm giữa 1 và tồn kho hiện tại.</td>
-<td>model + DB UNIQUE(cart_id, product_id), CHECK</td>
+<td>model + DB UNIQUE(CartId, ProductId), CHECK</td>
 </tr>
 <tr>
 <td>BR03</td>
@@ -156,7 +156,7 @@ số thẻ (BR07).</p>
 <tr>
 <td>BR10</td>
 <td>Mỗi đơn hàng có một lô vận chuyển, được tạo khi đơn hàng được giao đi (đơn vị vận chuyển, mã vận đơn, phí).</td>
-<td>DB UNIQUE(order_id)</td>
+<td>DB UNIQUE(Shipping.OrderId)</td>
 </tr>
 <tr>
 <td>BR11</td>
@@ -202,7 +202,7 @@ số thẻ (BR07).</p>
 <td>PENDING_PAYMENT</td>
 <td>PAID</td>
 <td>Nhà cung cấp chấp nhận thanh toán bằng thẻ (UC08)</td>
-<td>thanh toán APPROVED + một dòng pay_credit</td>
+<td>thanh toán APPROVED + một dòng PayCredit</td>
 </tr>
 <tr>
 <td>PENDING_PAYMENT</td>
@@ -244,7 +244,7 @@ số thẻ (BR07).</p>
 <td>SHIPPED</td>
 <td>DELIVERED</td>
 <td>Nhân viên bán hàng (đơn vị vận chuyển xác nhận)</td>
-<td>vận chuyển DELIVERED; COD: thanh toán COMPLETED + một dòng pay_cash</td>
+<td>vận chuyển DELIVERED; COD: thanh toán COMPLETED + một dòng PayCash</td>
 </tr>
 </tbody>
 </table></div>
@@ -477,7 +477,7 @@ dữ liệu, rồi đến thành phần, các tương tác, lỗi, rủi ro và 
 </tr>
 <tr>
 <td>Nguồn dữ liệu</td>
-<td>product (tên, thương hiệu, mô tả, giá, trạng thái), category (tên và danh mục cha), book_detail, laptop_detail, phone_detail, apparel_detail (mọi giá trị), ảnh sản phẩm trong thư mục ảnh của cửa hàng; không lưu thêm gì mới</td>
+<td>Product (tên, thương hiệu, mô tả, giá, trạng thái), Category (tên và danh mục cha), BookDetail, LaptopDetail, PhoneDetail, ApparelDetail (mọi giá trị), ảnh sản phẩm trong thư mục ảnh của cửa hàng; không lưu thêm gì mới</td>
 </tr>
 <tr>
 <td>Vị trí</td>

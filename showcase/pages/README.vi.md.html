@@ -36,7 +36,7 @@ dùng khi bảo vệ.</p>
 <tbody>
 <tr>
 <td>Tiểu luận (báo cáo chính thức)</td>
-<td><a href="../../Bai_nop/tieuluan_V4_04_10_phamtuananh_018.pdf">Bai_nop/tieuluan_V4_04_10_phamtuananh_018.pdf</a> và <code>.docx</code>; mã nguồn ở <a href="Nguon/index.html">Nguon</a> (<code>Nguon/make.ps1</code> dựng lại cả hai vào <code>Bai_nop</code>); tiểu luận lấy hình từ <code>vp/png</code> và <code>docs/evidence</code></td>
+<td><a href="../../Bai_nop/tieuluan_V5_04_10_phamtuananh_018.pdf">Bai_nop/tieuluan_V5_04_10_phamtuananh_018.pdf</a> và <code>.docx</code>; mã nguồn ở <a href="Nguon/index.html">Nguon</a> (<code>Nguon/make.ps1</code> dựng lại cả hai vào <code>Bai_nop</code>); tiểu luận lấy hình từ <code>vp/png</code> và <code>docs/evidence</code></td>
 </tr>
 <tr>
 <td>Đề bài của giảng viên và tài liệu môn học</td>
@@ -48,15 +48,15 @@ dùng khi bảo vệ.</p>
 </tr>
 <tr>
 <td>Biểu đồ theo từng giai đoạn</td>
-<td>Dự án Visual Paradigm <a href="../../vp/ABC_Online_Shop_V4.vpp">vp/ABC_Online_Shop_V4.vpp</a> với 42 biểu đồ, hình ảnh trong <a href="vp/png/index.html">vp/png</a> (B = nghiệp vụ, R = yêu cầu, A = phân tích, AI = tìm kiếm AI, D = dữ liệu, G = thiết kế); mọi hình đều có trong tiểu luận</td>
+<td>ba file Visual Paradigm, file sau thêm vào file trước: <a href="../../vp/1_Analysis.vpp">vp/1_Analysis.vpp</a> (context R1, use case R2 đến R8, activity A1 đến A5, sơ đồ lớp phân tích A10, AI1, AI4), <a href="../../vp/2_DataModel.vpp">vp/2_DataModel.vpp</a> (thêm D1 và ERD sinh ra D2), <a href="../../vp/3_Design.vpp">vp/3_Design.vpp</a> (thêm các sơ đồ thiết kế G1 đến G9, 29 biểu đồ; A10 chỉ có ở file 1 vì đã trở thành D1), tổng cộng 30 biểu đồ khác nhau; hình ảnh trong <a href="vp/png/index.html">vp/png</a> (R = yêu cầu, A = phân tích, AI = tìm kiếm AI, D = mô hình dữ liệu, G = thiết kế)</td>
 </tr>
 <tr>
 <td>Mô hình dữ liệu và lược đồ</td>
-<td>D1 đến D4 trong VP; <a href="db/schema.sql.html">db/schema.sql</a> = DDL xuất từ mô hình vật lý của VP (<a href="db/vp/vp_ddl.sql.html">db/vp/vp_ddl.sql</a>); cơ sở dữ liệu do Generate Database của VP ghi ra là <a href="../../db/vp/abc_shop_vp.db">db/vp/abc_shop_vp.db</a> cùng DDL của nó <a href="db/vp/vp_generated.ddl.html">db/vp/vp_generated.ddl</a>; <a href="db/compare_schema.py.html">db/compare_schema.py</a> đối chiếu cả ba</td>
+<td>D1 (sơ đồ lớp có kiểu, multiplicity, role name, ORM, Table per subclass) và D2 (ERD sinh từ D1 bằng Synchronize to Entity Relationship Diagram); <a href="db/vp/vp_ddl.sql.html">db/vp/vp_ddl.sql</a> = DDL do Generate Database của VP ghi ra; <a href="db/schema.sql.html">db/schema.sql</a> = DDL đó cộng các luật nghiệp vụ thêm tay, dựng bởi <a href="db/make_schema.py.html">db/make_schema.py</a>; <a href="db/compare_schema.py.html">db/compare_schema.py</a> kiểm tra hai bên có cùng bảng, cột, khoá và khoá ngoại</td>
 </tr>
 <tr>
 <td>Do Visual Paradigm sinh ra</td>
-<td>ảnh chụp màn hình Generate Database và Instant Generator trong <a href="docs/evidence/vp_generation/index.html">docs/evidence/vp_generation</a>, bộ khung Java do VP sinh ra trong <a href="docs/evidence/vp_codegen/index.html">docs/evidence/vp_codegen</a>, được đối chiếu với mã bằng <a href="tests/vpgen_vs_code.py.html">tests/vpgen_vs_code.py</a></td>
+<td>ảnh chụp Synchronize, Generate Database và Instant Generator trong <a href="docs/evidence/vp_generation_v5/index.html">docs/evidence/vp_generation_v5</a>, bộ khung Java do VP sinh ra trong <a href="docs/evidence/vp_codegen_v5/index.html">docs/evidence/vp_codegen_v5</a>, được đối chiếu với mã bằng <a href="tests/vpgen_vs_code.py.html">tests/vpgen_vs_code.py</a>; các bước làm lại trong VP: <a href="docs/VP_DEMO.vi.md.html">docs/VP_DEMO.vi.md</a> (trên trang công khai chỉ có bản được bảo vệ bằng mật khẩu)</td>
 </tr>
 <tr>
 <td>Tìm kiếm AI (chương 3 của tiểu luận)</td>

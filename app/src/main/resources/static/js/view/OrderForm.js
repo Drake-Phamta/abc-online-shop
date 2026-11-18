@@ -13,7 +13,7 @@ export function statusSteps(order) {
   const flow = FLOW[order.paymentMethod];
   if (order.status === "CANCELLED") return html`<div class="notice danger"><b>This order was cancelled.</b>Reserved stock was returned${order.payments.some((p) => p.status === "REFUNDED") ? " and the card payment was refunded" : ""}.</div>`;
   const at = flow.indexOf(order.status);
-  return html`<div class="steps" style="grid-template-columns:repeat(${flow.length},1fr)" data-trace="OrderStatus transition table (BR09) · order_event">
+  return html`<div class="steps" style="grid-template-columns:repeat(${flow.length},1fr)" data-trace="OrderStatus transition table (BR09) · OrderEvent">
     ${flow.map((s, i) => html`<div class="step ${i < at ? "done" : ""} ${i === at ? "done now" : ""}">${STATUS[s].label}</div>`)}</div>`;
 }
 
@@ -26,7 +26,7 @@ export function orderBody(o) {
           <div class="meta"><a href="#/p/${l.productId}">${l.name}</a><span class="small">${l.quantity} × ${vnd(l.unitPrice)} (price at checkout)</span></div>
           <div class="right"><span class="money">${vnd(l.subTotal)}</span></div></div>`)}</section>
         <h3 style="margin:28px 0 8px">History</h3>
-        <ul class="timeline" data-trace="Order.getEvents · OrderDAO.findById · order_event">
+        <ul class="timeline" data-trace="Order.getEvents · OrderDAO.findById · OrderEvent">
           ${o.events.slice().reverse().map((e) => html`<li><time>${when(e.at)}</time><div>${statusBadge(e.status)} <b>${e.note || ""}</b><br><span class="small">by ${e.actor}</span></div></li>`)}
         </ul>
       </div>
@@ -38,11 +38,11 @@ export function orderBody(o) {
         <div class="sum-row total"><span>Total</span><b>${vnd(o.total)}</b></div>
         <h3 style="margin-top:22px">Delivery</h3>
         ${o.address ? html`<p class="small"><b style="color:var(--ink)">${o.address.recipient}</b>, ${o.address.phone}<br>${o.address.line}</p>` : ""}
-        ${o.shipping ? html`<p class="small" data-trace="Shipping · shipping (UNIQUE order_id, BR10)">Carrier <b style="color:var(--ink)">${o.shipping.carrier}</b>, tracking <span class="code">${o.shipping.trackingNumber}</span><br>
+        ${o.shipping ? html`<p class="small" data-trace="Shipping · Shipping (UNIQUE OrderId, BR10)">Carrier <b style="color:var(--ink)">${o.shipping.carrier}</b>, tracking <span class="code">${o.shipping.trackingNumber}</span><br>
           Shipped ${when(o.shipping.shipped)}${o.shipping.delivered ? html`, delivered ${when(o.shipping.delivered)}` : ""}</p>` : html`<p class="small">Not shipped yet.</p>`}
         <h3 style="margin-top:22px">Payment</h3>
         <p class="small">${o.paymentMethod === "CARD" ? "Card through the payment provider" : "Cash on delivery"}</p>
-        ${o.payments.map((p) => html`<div class="sum-row" data-trace="Payment (${p.method === "CARD" ? "PayCredit · pay_credit" : "PayCash · pay_cash"})"><span>${p.detail}</span><span class="badge ${PAYMENT_TONE[p.status]}">${p.status.toLowerCase()}</span></div>`)}
+        ${o.payments.map((p) => html`<div class="sum-row" data-trace="Payment (${p.method === "CARD" ? "PayCredit · PayCredit" : "PayCash · PayCash"})"><span>${p.detail}</span><span class="badge ${PAYMENT_TONE[p.status]}">${p.status.toLowerCase()}</span></div>`)}
       </aside>
     </div>`;
 }
@@ -68,7 +68,7 @@ export class OrderForm {
     mount(this.app.view, html`
       <div class="page-head"><div><p class="eyebrow">Checkout</p><h1>Review and place your order</h1></div></div>
       ${blocking.length ? html`<div class="notice danger" data-trace="Cart.validate (UC21, BR03) · blocking issues stop UC07 (A1)"><b>Some products cannot be ordered as they are.</b><ul>${blocking.map((i) => html`<li>${i.message}</li>`)}</ul><a href="#/cart">Change your cart</a></div>` : ""}
-      ${changed.length ? html`<div class="notice warn" data-trace="Cart.validate (UC21, BR03) · price changed, cart_item.cart_price updated"><b>Prices changed since you added these products.</b><ul>${changed.map((i) => html`<li>${i.message}</li>`)}</ul>The totals below already use the new prices.</div>` : ""}
+      ${changed.length ? html`<div class="notice warn" data-trace="Cart.validate (UC21, BR03) · price changed, CartItem.CartPrice updated"><b>Prices changed since you added these products.</b><ul>${changed.map((i) => html`<li>${i.message}</li>`)}</ul>The totals below already use the new prices.</div>` : ""}
       <div class="two-col">
         <form id="checkout" data-trace="OrderForm.showCheckout ← GET /api/checkout · OrderController.checkout · OrderService.checkout · Cart.validate, Order.Totals (BR04)">
           <h3>Deliver to</h3>
@@ -92,7 +92,7 @@ export class OrderForm {
           <div class="sum-row"><span>Delivery</span><b>${t.shippingFee ? vnd(t.shippingFee) : "Free"}</b></div>
           <div class="sum-row total"><span>Total</span><b>${vnd(t.total)}</b></div>
           <button class="btn accent wide" id="place" ${blocking.length ? "disabled" : ""} style="margin-top:16px"
-            data-trace="OrderForm.submitOrder → POST /api/orders · OrderController.placeOrder · OrderService.placeOrder · Order.place, ProductDAO.reserveStock (BR05), OrderDAO.insert · customer_order, order_item">Place order</button>
+            data-trace="OrderForm.submitOrder → POST /api/orders · OrderController.placeOrder · OrderService.placeOrder · Order.place, ProductDAO.reserveStock (BR05), OrderDAO.insert · Orders, OrderItem">Place order</button>
           <p class="small" style="margin-top:12px">Stock is reserved when you place the order and released if it is cancelled.</p>
         </aside>
       </div>`);
@@ -148,7 +148,7 @@ export class OrderForm {
     const canCancel = o.next.includes("CANCELLED");
     mount(this.app.view, html`
       <p class="crumbs"><a href="#/orders">My orders</a> / <span class="code">${o.code}</span></p>
-      <div class="page-head" data-trace="OrderForm.showOrder ← GET /api/orders/${o.id} · OrderController.order · OrderService.details · OrderDAO.findById · customer_order, order_item, order_event, payment, shipping">
+      <div class="page-head" data-trace="OrderForm.showOrder ← GET /api/orders/${o.id} · OrderController.order · OrderService.details · OrderDAO.findById · Orders, OrderItem, OrderEvent, Payment, Shipping">
         <div><p class="eyebrow">Placed ${when(o.orderDate)}</p><h1>Order <span class="code" style="font-size:.8em">${o.code}</span></h1></div>
         <div style="display:flex;gap:10px">
           ${o.status === "PENDING_PAYMENT" ? html`<a class="btn accent" href="#/pay/${o.id}">Pay now</a>` : ""}

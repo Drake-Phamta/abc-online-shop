@@ -24,7 +24,7 @@ export class CustomerForm {
           <h1 class="two-tone">Welcome back. <span class="muted">Your cart and orders are waiting.</span></h1>
           <p class="lead">Customers see their own cart and orders only; staff accounts open the order board or the inventory.</p>
         </div>
-        <form class="panel" id="login-form" data-trace="CustomerForm.submitLogin → POST /api/auth/login · AuthController.login · AuthService.login · CustomerDAO/StaffDAO.findAccount · customer, staff">
+        <form class="panel" id="login-form" data-trace="CustomerForm.submitLogin → POST /api/auth/login · AuthController.login · AuthService.login · CustomerDAO/StaffDAO.findAccount · Customer, Staff">
           <h3>Log in</h3>
           <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="username" required></div>
           <div class="field"><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" required></div>

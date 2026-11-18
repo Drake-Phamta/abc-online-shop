@@ -1,4 +1,4 @@
-E2E run 2026-11-11T03:43:31.573Z on http://localhost:8080, Microsoft Edge (Playwright)
+E2E run 2026-11-18T07:01:51.581Z on http://localhost:8082, Microsoft Edge (Playwright)
 PASS UC04 home page lists departments and products
 PASS UC04 catalogue shows products  (28 cards)
 PASS UC04 search 'laptop' returns matches  (4 results)

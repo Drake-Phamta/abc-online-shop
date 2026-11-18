@@ -53,7 +53,7 @@ class CheckoutFlowTest {
     private void setStock(int productId, int quantity) throws SQLException {
         try (Connection c = DriverManager.getConnection("jdbc:sqlite:" + db.getFile().toAbsolutePath());
              Statement s = c.createStatement()) {
-            s.executeUpdate("UPDATE product SET stock_quantity = " + quantity + " WHERE product_id = " + productId);
+            s.executeUpdate("UPDATE Product SET StockQuantity = " + quantity + " WHERE ProductId = " + productId);
         }
     }
 
@@ -131,7 +131,7 @@ class CheckoutFlowTest {
                 .content("{\"productId\":" + pid + ",\"quantity\":2}")).andExpect(status().isOk());
         int stockBefore = stockOf(pid), ordersBefore = read(minh, "/api/orders").size();
         JsonNode co = read(minh, "/api/checkout");
-        exec("CREATE TRIGGER test_fail_order BEFORE INSERT ON customer_order BEGIN SELECT RAISE(ABORT, 'simulated failure'); END");
+        exec("CREATE TRIGGER test_fail_order BEFORE INSERT ON Orders BEGIN SELECT RAISE(ABORT, 'simulated failure'); END");
         try {
             mvc.perform(post("/api/orders").session(minh).contentType(MediaType.APPLICATION_JSON)
                     .content("{\"addressId\":" + co.get("addresses").get(0).get("id").asInt() + ",\"paymentMethod\":\"COD\"}"))

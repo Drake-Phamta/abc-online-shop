@@ -3,7 +3,7 @@ import { api, ApiError } from "../api.js";
 import { html, mount, vnd, stockBadge, loading, failure, toast } from "../ui.js";
 
 const TRACE_TEXT = "SearchForm.showResults → GET /api/search · SearchController.search · SearchService.search · "
-  + "QueryInterpreter.interpret · ProductIndex.rank · product ⋈ category + *_detail";
+  + "QueryInterpreter.interpret · ProductIndex.rank · Product ⋈ Category + *Detail";
 const TRACE_PHOTO = "SearchForm.submitPhoto → POST /api/search/photo · SearchController.searchByPhoto · "
   + "SearchService.searchByPhoto · ImageIndex.rank · product image files";
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # CHAPTER 3. AI IN E-COMMERCE (V4): the AI search of ABC Online Shop, analysed with the lecturer's notes
 # "Integrating AI into E-Commerce Systems" (business problem -> requirements -> AI and data requirements -> AI
-# component -> integration), designed in Chapter 4 (G0, G1, G8, G9) and built in Chapter 5. Specification:
+# component -> integration), designed in Chapter 5 (G1, G8, G9) and built in Chapter 6. Specification:
 # docs/SPEC.md section 6. Diagrams AI1 to AI4 of vp/ABC_Online_Shop_V4.vpp.
 
 chapter("AI in E-commerce")
@@ -10,7 +10,7 @@ p("The lecturer's notes on AI in e-commerce start from one sentence that I used 
   "system, what data it needs and how it works with the rest of the information system. The notes give the chain "
   "business problem, business requirement, functional requirement, AI requirement, data requirement, AI component "
   "and system integration, and a list of fourteen results for a student analysis. This chapter follows that chain "
-  "for ABC Online Shop. It ends with an AI component that Chapter 4 designs and Chapter 5 builds into the same shop, "
+  "for ABC Online Shop. It ends with an AI component that Chapter 5 designs and Chapter 6 builds into the same shop, "
   "so the AI part goes through the same path from requirement to tested code as the rest of the system.")
 p("Earlier in the semester I built two separate AI prototypes in Python: a product recommender in Assignment 02 "
   "and a multimodal search service in Assignment 06. They taught me the techniques, but they worked on their own "
@@ -23,7 +23,7 @@ p("The notes list the usual places for AI in an e-commerce system: search, recom
   "fraud prevention, demand forecasting, segmentation, review analysis and pricing. For each of them I asked three "
   "questions. Which business activity of Chapter 1 does it serve? Could a business rule do the same job? Does the "
   "shop already have the data the component would learn from? The last question decided most of the answers, "
-  "because the analysis class model of Chapter 4 (Figure 4.1) and the demo database tell exactly what data exists: "
+  "because the analysis class model of Section 2.1 (Figure 2.1) and the demo database tell exactly what data exists: "
   "28 products in 10 categories with their detail attributes, descriptions and pictures, three customers, four "
   "orders and no reviews.", keep=True)
 table("AI candidates for ABC Online Shop, checked against the shop's data", [
@@ -89,10 +89,10 @@ p("The AI requirement states the behaviour expected from the component, not its 
   "product, as in the vector space model of information retrieval [8]; for a photo it compares two pictures.", keep=True)
 eq([r("s(q, p) = "), frac(r("q · p"), r("‖q‖ ‖p‖")), r(",   result = top-k products by s(q, p)")], "3.1")
 p(f"The notes separate what the analysis must fix from what belongs to the implementation. Table {next_tab()} applies that "
-  "separation to the search. The right column was decided only in Chapter 5, and could change without touching "
+  "separation to the search. The right column was decided only in Chapter 6, and could change without touching "
   "any requirement on the left.", keep=True)
 table("AI requirements of the analysis and the implementation choices made later", [
-    ["Analysis phase (this chapter)", "Implementation phase (Chapter 5)"],
+    ["Analysis phase (this chapter)", "Implementation phase (Chapter 6)"],
     ["Objective: rank products by relevance to the customer's query", "Vector space model with TF-IDF weights learned from the catalogue; cosine score"],
     ["Inputs: text up to 200 characters, a spoken query, a photo up to 5 MB", "Speech to text by the browser; JPEG or PNG decoded in memory"],
     ["Output: up to 12 products, each with a score and its reasons", "Reasons built from the words that contributed most to the score"],
@@ -107,7 +107,7 @@ p(f"The data requirement follows from the AI requirement. The notes ask eight qu
 table("Data requirements of the AI search", [
     ["Question", "Answer for ABC Online Shop"],
     ["What data is required?", "Product name, brand, category and its parent, the detail values of the product's kind (author, processor, colour, material...), description, price, status; the product picture"],
-    ["Where does it come from?", "Tables product, category, book_detail, laptop_detail, phone_detail, apparel_detail (Chapter 4); the image folder of the shop"],
+    ["Where does it come from?", "Tables Product, Category, BookDetail, LaptopDetail, PhoneDetail, ApparelDetail (Chapter 4); the image folder of the shop"],
     ["Is it available?", "Yes, for all 28 products of the demo data"],
     ["Is it reliable?", "Kept by staff in the catalogue (UC11); the same data the product page shows"],
     ["How often is it updated?", "When the catalogue changes; the index follows at the next search (FR-S7)"],
@@ -118,7 +118,7 @@ table("Data requirements of the AI search", [
 
 # ------------------------------------------------------------------------------------------------ 3.5
 h2("3.5. Use Cases of the AI Search")
-p(f"Figure {next_fig()} refines UC04 Browse / Search Products of Chapter 2 for the AI search. Searching by text, by "
+p(f"Figure {next_fig()} refines UC04 Browse / Search Products of Section 1.20 for the AI search. Searching by text, by "
   "voice and by photo are three kinds of the same goal, finding a product, so they specialize UC04 through a "
   "generalization, and UC04 Search Products is abstract (its name is in italics): every search is one of the three. "
   "I first drew voice and photo as extends of UC04 and changed it when I checked the diagram against the code. An "
@@ -141,24 +141,26 @@ p("The main flow and the alternative flows are those of UC04 in docs/SPEC.md: th
   f"exactly what the generalization of Figure {F_AI1} says.")
 
 # ------------------------------------------------------------------------------------------------ 3.6
-h2("3.6. Context and Data Flow")
-p("The notes show the context of an AI-enabled shop with the AI services inside the system boundary, and add that "
-  f"AI should be decomposed inside the system rather than treated as an external process. Figure {next_fig()} follows this. "
-  "Compared with the context diagram of Chapter 1, two external entities have new flows: the Speech Recognition "
-  "Service, which turns a spoken query into text, and the Sales Staff, who send lexicon changes and labelled "
-  "queries and receive the search evaluation. The search itself is not an entity of its own.", keep=True)
-landscape()
-F_AI2 = figure("vp/png/AI2.png", "Context diagram of the AI-enabled shop (diagram AI2)", width_cm=24, max_h_cm=6)
-F_AI3 = figure("vp/png/AI3.png", "Data flow of the AI search: processes 2.1 to 2.5 and their data stores (diagram AI3)", width_cm=24, max_h_cm=8.4)
-portrait()
-p(f"Figure {F_AI3} opens the search, which is process 2 \"Browse and search the catalogue\" of the level 1 DFD in "
-  "Chapter 2. Process 2.1 takes the query, sends a spoken query to the speech service and interprets the text with "
-  "the related words of store D9. Process 2.2 ranks the products by text with the word weights of store D8 and "
-  "returns them with their reasons; process 2.3 does the same for a photo with the image features. Process 2.4 "
-  "builds both indexes from the catalogue (D2) and the product images (D7), and process 2.5 lets the sales staff "
-  "maintain the lexicon. The data flow is the one of the notes' recommendation example, data, features, model, "
-  "ranked products, applied to search: the indexes are the features, and they are computed from the catalogue, "
-  "not from customer behaviour.")
+h2("3.6. Search Data Flow")
+p("The notes show the AI services inside the system boundary, and add that AI should be decomposed inside the "
+  "system rather than treated as an external process. The search is therefore not an external entity of the context "
+  "diagram of Section 2.3; two entities only gain new flows: the Speech Recognition Service, which turns a spoken "
+  "query into text, and the Sales Staff, who send lexicon changes and labelled queries and receive the search "
+  "evaluation. Inside the system the search uses five processes. The first three handle one query, and the last two "
+  "prepare the data before any query arrives.", keep=True)
+num(1, "Capture and Interpret Query takes the typed text, the confirmed transcript of a spoken query or a photo, and "
+       "reads a category, a price limit and the remaining keywords from the text with the related words of the "
+       "lexicon.")
+num(2, "Rank by Text ranks the ACTIVE products by the meaning of the keywords with the word weights of the text "
+       "index and returns each product with the reason it matched.")
+num(3, "Rank by Photo does the same for a photo with the image features of the product pictures; the photo itself is "
+       "never stored.")
+num(4, "Build Indexes computes the text index from the catalogue and the image index from the product pictures, when "
+       "the shop starts and after the catalogue changes.")
+num(5, "Maintain Lexicon lets the sales staff add related words, so that a word the customers use finds the products "
+       "that are described with another one.")
+p("This is the data flow of the notes' recommendation example, data, features, model, ranked products, applied to "
+  "search: the indexes are the features, and they are computed from the catalogue, not from customer behaviour.")
 
 # ------------------------------------------------------------------------------------------------ 3.7
 h2("3.7. The AI Component in the Shop")
@@ -306,12 +308,12 @@ p(f"The notes end the analysis with a traceability table from business goal to m
   "the design and the tests of the following chapters, so that the AI search can be followed like any other "
   "requirement of the shop.", keep=True)
 table("Traceability of the AI search from business goal to test", [
-    ["Business goal", "Requirement", "Analysis", "Design (Chapter 4)", "Code and test (Chapter 5)", "Metric"],
-    ["Find products in one search", "FR-S1, FR-S2, FR-S3", "AI1, AI3 (2.1, 2.2)", "G8 QueryInterpreter, ProductIndex; G9", "SearchService.search; SearchTest AT11 to AT14", "MRR, recall@5"],
+    ["Business goal", "Requirement", "Analysis", "Design (Chapter 5)", "Code and test (Chapter 6)", "Metric"],
+    ["Find products in one search", "FR-S1, FR-S2, FR-S3", "AI1; data flow processes 1, 2", "G8 QueryInterpreter, ProductIndex; G9", "SearchService.search; SearchTest AT11 to AT14", "MRR, recall@5"],
     ["Search without typing", "FR-S4", "AI1 Search by Voice", "G8 SearchForm.startVoice", "SearchForm.js; end-to-end voice check", "Searches by voice"],
-    ["Search with a photo", "FR-S5", "AI1, AI3 (2.3)", "G8 ImageIndex", "SearchService.searchByPhoto; SearchTest AT15", "Photo top-1, top-3"],
+    ["Search with a photo", "FR-S5", "AI1; data flow process 3", "G8 ImageIndex", "SearchService.searchByPhoto; SearchTest AT15", "Photo top-1, top-3"],
     ["Never a dead end", "FR-S6, AI04", "AI1 Fall Back", "G9 alt fragment", "SearchTest AT16", "Zero-result rate"],
-    ["Current results", "FR-S7", "AI3 (2.4)", "G9 opt fragment", "SearchService.indexes", "Index age"],
+    ["Current results", "FR-S7", "Data flow process 4", "G9 opt fragment", "SearchService.indexes", "Index age"],
 ], [2.6, 2.2, 2.4, 3.2, 3.6, 2.0], size=9)
 
 # ------------------------------------------------------------------------------------------------ 3.14
@@ -323,5 +325,5 @@ p("Following the lecturer's chain from business problem to AI component, I chose
   "the non-functional requirements, the failures with their fallbacks and the risks. The evaluation shows the AI "
   "search finding the right product first in 29 of 30 queries where the keyword search managed 7, and the right "
   "product among the first three for every one of 84 photos, with the limits of a small catalogue and of test data "
-  "written by the developer. Chapter 4 designs the component inside the three layers, and Chapter 5 shows the code "
+  "written by the developer. Chapter 5 designs the component inside the three layers, and Chapter 6 shows the code "
   "and the tests.")

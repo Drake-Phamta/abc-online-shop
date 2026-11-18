@@ -116,11 +116,11 @@ number (BR07).</p>
 <tr>
 <td>BR02</td>
 <td>A cart holds at most one line per product; adding the product again increases the quantity. A line quantity is between 1 and the current stock.</td>
-<td>model + DB UNIQUE(cart_id, product_id), CHECK</td>
+<td>model + DB UNIQUE(CartId, ProductId), CHECK</td>
 </tr>
 <tr>
 <td>BR03</td>
-<td>A cart line keeps the price shown when it was added (cart price). At checkout every line is validated against the current price, status and stock (UC21). If a price changed, the line takes the current price and the customer must confirm again.</td>
+<td>A cart line keeps the price shown when it was added (cart price). At checkout every line is validated against the current price, status and stock (UC21). If a price changed, the line takes the current price and the customer must confirm again. The order line then keeps the name and the unit price of the purchase, so a later change in the catalogue does not alter a past order.</td>
 <td>Cart validation</td>
 </tr>
 <tr>
@@ -156,7 +156,7 @@ number (BR07).</p>
 <tr>
 <td>BR10</td>
 <td>One shipment per order, created when the order is shipped (carrier, tracking number, fee).</td>
-<td>DB UNIQUE(order_id)</td>
+<td>DB UNIQUE(Shipping.OrderId)</td>
 </tr>
 <tr>
 <td>BR11</td>
@@ -202,7 +202,7 @@ number (BR07).</p>
 <td>PENDING_PAYMENT</td>
 <td>PAID</td>
 <td>Provider approves the card payment (UC08)</td>
-<td>payment APPROVED + pay_credit row</td>
+<td>payment APPROVED + PayCredit row</td>
 </tr>
 <tr>
 <td>PENDING_PAYMENT</td>
@@ -244,7 +244,7 @@ number (BR07).</p>
 <td>SHIPPED</td>
 <td>DELIVERED</td>
 <td>Sales Staff (carrier confirmation)</td>
-<td>shipping DELIVERED; COD: payment COMPLETED + pay_cash row</td>
+<td>shipping DELIVERED; COD: payment COMPLETED + PayCash row</td>
 </tr>
 </tbody>
 </table></div>
@@ -477,7 +477,7 @@ data requirements, then the component, its interactions, failures, risks and eva
 </tr>
 <tr>
 <td>Data source</td>
-<td>product (name, brand, description, price, status), category (name and parent), book_detail, laptop_detail, phone_detail, apparel_detail (all values), product images in the shop's image folder; nothing new is stored</td>
+<td>Product (name, brand, description, price, status), Category (name and parent), BookDetail, LaptopDetail, PhoneDetail, ApparelDetail (all values), product images in the shop's image folder; nothing new is stored</td>
 </tr>
 <tr>
 <td>Location</td>

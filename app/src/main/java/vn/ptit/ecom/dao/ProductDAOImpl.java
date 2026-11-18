@@ -30,19 +30,19 @@ class ProductDAOImpl implements ProductDAO {
     private static final Map<DetailKind, DetailMapper> DETAILS = new EnumMap<>(DetailKind.class);
 
     static {
-        DETAILS.put(DetailKind.BOOK, (row, rs) -> new BookDetail(row, rs.getString("author"), rs.getString("publisher"),
-                Jdbc.intOrNull(rs, "pages"), rs.getString("language")));
-        DETAILS.put(DetailKind.LAPTOP, (row, rs) -> new LaptopDetail(row, rs.getString("cpu"), rs.getInt("ram_gb"),
-                rs.getInt("storage_gb"), rs.getDouble("screen_inch"), rs.getInt("warranty_months")));
-        DETAILS.put(DetailKind.PHONE, (row, rs) -> new PhoneDetail(row, rs.getString("os"), rs.getInt("storage_gb"),
-                Jdbc.intOrNull(rs, "camera_mp"), rs.getDouble("screen_inch"), Jdbc.intOrNull(rs, "battery_mah"),
-                rs.getInt("warranty_months")));
-        DETAILS.put(DetailKind.APPAREL, (row, rs) -> new ApparelDetail(row, rs.getString("size_label"),
-                rs.getString("color"), rs.getString("material")));
+        DETAILS.put(DetailKind.BOOK, (row, rs) -> new BookDetail(row, rs.getString("Author"), rs.getString("Publisher"),
+                Jdbc.intOrNull(rs, "Pages"), rs.getString("Language")));
+        DETAILS.put(DetailKind.LAPTOP, (row, rs) -> new LaptopDetail(row, rs.getString("Cpu"), rs.getInt("RamGb"),
+                rs.getInt("StorageGb"), rs.getDouble("ScreenInch"), rs.getInt("WarrantyMonths")));
+        DETAILS.put(DetailKind.PHONE, (row, rs) -> new PhoneDetail(row, rs.getString("Os"), rs.getInt("StorageGb"),
+                Jdbc.intOrNull(rs, "CameraMp"), rs.getDouble("ScreenInch"), Jdbc.intOrNull(rs, "BatteryMah"),
+                rs.getInt("WarrantyMonths")));
+        DETAILS.put(DetailKind.APPAREL, (row, rs) -> new ApparelDetail(row, rs.getString("SizeLabel"),
+                rs.getString("Color"), rs.getString("Material")));
     }
 
-    private static final String SELECT = "SELECT p.*, c.parent_id, c.name AS category_name, c.slug, c.detail_kind "
-            + "FROM product p JOIN category c ON c.category_id = p.category_id ";
+    private static final String SELECT = "SELECT p.*, c.ParentId, c.Name AS category_name, c.Slug, c.DetailKind "
+            + "FROM Product p JOIN Category c ON c.CategoryId = p.CategoryId ";
 
     private final Connection connection;
 
@@ -53,42 +53,42 @@ class ProductDAOImpl implements ProductDAO {
     @Override
     public List<Category> categories() throws SQLException {
         List<Category> out = new ArrayList<>();
-        try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM category ORDER BY category_id");
+        try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM Category ORDER BY CategoryId");
              ResultSet rs = ps.executeQuery()) {
             while (rs.next())
-                out.add(new Category(rs.getInt("category_id"), Jdbc.intOrNull(rs, "parent_id"), rs.getString("name"),
-                        rs.getString("slug"), kind(rs.getString("detail_kind"))));
+                out.add(new Category(rs.getInt("CategoryId"), Jdbc.intOrNull(rs, "ParentId"), rs.getString("Name"),
+                        rs.getString("Slug"), kind(rs.getString("DetailKind"))));
         }
         return out;
     }
 
     @Override
     public List<Product> search(String keyword, String categorySlug, Sort sort) throws SQLException {
-        StringBuilder sql = new StringBuilder(SELECT).append("WHERE p.status = 'ACTIVE' ");
+        StringBuilder sql = new StringBuilder(SELECT).append("WHERE p.Status = 'ACTIVE' ");
         List<Object> args = new ArrayList<>();
         if (categorySlug != null && !categorySlug.isBlank()) {
-            sql.append("AND (c.slug = ? OR c.parent_id = (SELECT category_id FROM category WHERE slug = ?)) ");
+            sql.append("AND (c.Slug = ? OR c.ParentId = (SELECT CategoryId FROM Category WHERE Slug = ?)) ");
             args.add(categorySlug);
             args.add(categorySlug);
         }
         String like = null;
         if (keyword != null && !keyword.isBlank()) {
             like = "%" + keyword.trim().toLowerCase() + "%";
-            sql.append("AND (lower(p.name) LIKE ? OR lower(coalesce(p.brand, '')) LIKE ? OR lower(c.name) LIKE ?) ");
+            sql.append("AND (lower(p.Name) LIKE ? OR lower(coalesce(p.Brand, '')) LIKE ? OR lower(c.Name) LIKE ?) ");
             args.add(like);
             args.add(like);
             args.add(like);
         }
         switch (sort == null ? Sort.RELEVANCE : sort) {
-            case PRICE_ASC -> sql.append("ORDER BY p.price ASC");
-            case PRICE_DESC -> sql.append("ORDER BY p.price DESC");
-            case NEWEST -> sql.append("ORDER BY p.created_at DESC, p.product_id DESC");
+            case PRICE_ASC -> sql.append("ORDER BY p.Price ASC");
+            case PRICE_DESC -> sql.append("ORDER BY p.Price DESC");
+            case NEWEST -> sql.append("ORDER BY p.CreatedAt DESC, p.ProductId DESC");
             default -> {
                 if (like != null) {
-                    sql.append("ORDER BY CASE WHEN lower(p.name) LIKE ? THEN 0 ELSE 1 END, p.name");
+                    sql.append("ORDER BY CASE WHEN lower(p.Name) LIKE ? THEN 0 ELSE 1 END, p.Name");
                     args.add(like);
                 } else {
-                    sql.append("ORDER BY c.category_id, p.product_id");
+                    sql.append("ORDER BY c.CategoryId, p.ProductId");
                 }
             }
         }
@@ -104,7 +104,7 @@ class ProductDAOImpl implements ProductDAO {
     @Override
     public Optional<Product> findById(int productId) throws SQLException {
         Product row;
-        try (PreparedStatement ps = Jdbc.prepare(connection, SELECT + "WHERE p.product_id = ?", productId);
+        try (PreparedStatement ps = Jdbc.prepare(connection, SELECT + "WHERE p.ProductId = ?", productId);
              ResultSet rs = ps.executeQuery()) {
             if (!rs.next()) return Optional.empty();
             row = map(rs);
@@ -117,7 +117,7 @@ class ProductDAOImpl implements ProductDAO {
         Map<Integer, Product> out = new LinkedHashMap<>();
         if (productIds.isEmpty()) return out;
         String marks = String.join(",", java.util.Collections.nCopies(productIds.size(), "?"));
-        try (PreparedStatement ps = Jdbc.prepare(connection, SELECT + "WHERE p.product_id IN (" + marks + ")", productIds.toArray());
+        try (PreparedStatement ps = Jdbc.prepare(connection, SELECT + "WHERE p.ProductId IN (" + marks + ")", productIds.toArray());
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Product p = map(rs);
@@ -129,24 +129,24 @@ class ProductDAOImpl implements ProductDAO {
 
     @Override
     public boolean reserveStock(int productId, int quantity) throws SQLException {
-        return Jdbc.update(connection, "UPDATE product SET stock_quantity = stock_quantity - ? "
-                + "WHERE product_id = ? AND status = 'ACTIVE' AND stock_quantity >= ?", quantity, productId, quantity) == 1;
+        return Jdbc.update(connection, "UPDATE Product SET StockQuantity = StockQuantity - ? "
+                + "WHERE ProductId = ? AND Status = 'ACTIVE' AND StockQuantity >= ?", quantity, productId, quantity) == 1;
     }
 
     @Override
     public void releaseStock(int productId, int quantity) throws SQLException {
-        Jdbc.update(connection, "UPDATE product SET stock_quantity = stock_quantity + ? WHERE product_id = ?", quantity, productId);
+        Jdbc.update(connection, "UPDATE Product SET StockQuantity = StockQuantity + ? WHERE ProductId = ?", quantity, productId);
     }
 
     @Override
     public void updateStock(int productId, int quantity) throws SQLException {
-        Jdbc.update(connection, "UPDATE product SET stock_quantity = ? WHERE product_id = ?", quantity, productId);
+        Jdbc.update(connection, "UPDATE Product SET StockQuantity = ? WHERE ProductId = ?", quantity, productId);
     }
 
     @Override
     public List<Product> listForStock() throws SQLException {
         List<Product> out = new ArrayList<>();
-        try (PreparedStatement ps = connection.prepareStatement(SELECT + "ORDER BY p.stock_quantity, p.name");
+        try (PreparedStatement ps = connection.prepareStatement(SELECT + "ORDER BY p.StockQuantity, p.Name");
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) out.add(map(rs));
         }
@@ -158,18 +158,18 @@ class ProductDAOImpl implements ProductDAO {
     private Product asSubclass(Product row) throws SQLException {
         DetailKind kind = row.getCategory().detailKind();
         if (kind == null) return row;
-        try (PreparedStatement ps = Jdbc.prepare(connection, "SELECT * FROM " + kind.table() + " WHERE product_id = ?", row.getId());
+        try (PreparedStatement ps = Jdbc.prepare(connection, "SELECT * FROM " + kind.table() + " WHERE ProductId = ?", row.getId());
              ResultSet rs = ps.executeQuery()) {
             return rs.next() ? DETAILS.get(kind).map(row, rs) : row;
         }
     }
 
     static Product map(ResultSet rs) throws SQLException {
-        Category category = new Category(rs.getInt("category_id"), Jdbc.intOrNull(rs, "parent_id"),
-                rs.getString("category_name"), rs.getString("slug"), kind(rs.getString("detail_kind")));
-        return new Product(rs.getInt("product_id"), rs.getString("sku"), rs.getString("name"), rs.getString("brand"),
-                rs.getLong("price"), rs.getInt("stock_quantity"), rs.getString("description"), rs.getString("image_file"),
-                Product.Status.valueOf(rs.getString("status")), category);
+        Category category = new Category(rs.getInt("CategoryId"), Jdbc.intOrNull(rs, "ParentId"),
+                rs.getString("category_name"), rs.getString("Slug"), kind(rs.getString("DetailKind")));
+        return new Product(rs.getInt("ProductId"), rs.getString("Sku"), rs.getString("Name"), rs.getString("Brand"),
+                rs.getLong("Price"), rs.getInt("StockQuantity"), rs.getString("Description"), rs.getString("ImageFile"),
+                Product.Status.valueOf(rs.getString("Status")), category);
     }
 
     private static DetailKind kind(String s) {

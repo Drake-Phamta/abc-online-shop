@@ -2,7 +2,7 @@ package vn.ptit.ecom.model.product;
 
 import java.util.List;
 
-/** A laptop: a product with the attributes of the laptop_detail table. */
+/** A laptop: a product with the attributes of the LaptopDetail table. */
 public class LaptopDetail extends Product {
     private final String cpu;
     private final int ramGb;

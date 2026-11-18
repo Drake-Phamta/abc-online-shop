@@ -1,93 +1,72 @@
 # -*- coding: utf-8 -*-
-"""Checks that the DDL exported from the Visual Paradigm physical ERD (db/vp/vp_ddl.sql) defines exactly the database
-of db/schema.sql: same statements after removing comments, and the same structure when both are run in SQLite
-(columns, types, NOT NULL, defaults, primary keys, foreign keys with ON DELETE, unique indexes, CHECK clauses).
+"""Checks that the shop's schema (db/schema.sql) is the database Visual Paradigm generated from the data model.
 
-Usage: python db/compare_schema.py [vp_ddl.sql] [schema.sql]      exit code 0 = identical
+db/vp/vp_ddl.sql is written by VP (Tools > DB > Generate Database, SQLite) from the ERD that Synchronize to Entity
+Relationship Diagram generated from the class diagram of vp/2_DataModel.vpp. Both scripts are run in an in-memory
+SQLite database and compared table by table:
+  same tables; same columns with the same declared type, NOT NULL and primary key; same foreign keys.
+The constraints that exist only in schema.sql (UNIQUE, CHECK, ON DELETE CASCADE) are listed: they are the business
+rules added by hand. Finally the seed data (db/seed.sql) is loaded into both, which proves the generated tables
+hold the shop's data. Exit code = number of differences.
 """
 import re
 import sqlite3
 import sys
 from pathlib import Path
 
-HERE = Path(__file__).resolve().parent
-VP = Path(sys.argv[1]) if len(sys.argv) > 1 else HERE / "vp" / "vp_ddl.sql"
-REF = Path(sys.argv[2]) if len(sys.argv) > 2 else HERE / "schema.sql"
+ROOT = Path(__file__).resolve().parent
+VP_DDL = ROOT / "vp" / "vp_ddl.sql"
+SCHEMA = ROOT / "schema.sql"
+SEED = ROOT / "seed.sql"
 
 
-def statements(path):
-    text = "\n".join(l for l in path.read_text(encoding="utf-8").splitlines() if not l.strip().startswith("--"))
-    return [re.sub(r"\s+", " ", s).strip() for s in text.split(";") if s.strip()]
-
-
-def structure(path):
+def load(script):
     con = sqlite3.connect(":memory:")
-    con.executescript(path.read_text(encoding="utf-8"))
+    con.execute("PRAGMA foreign_keys = ON")
+    con.executescript(script)
+    return con
+
+
+def describe(con):
     out = {}
-    for (name, sql) in con.execute("SELECT name, sql FROM sqlite_master WHERE type = 'table' ORDER BY name"):
-        checks = sorted(re.findall(r"CHECK \((.*?)\)(?:,|\n|$)", sql))
-        out[name] = {
-            "columns": con.execute(f"PRAGMA table_info({name})").fetchall(),
-            "foreign_keys": sorted(con.execute(f"PRAGMA foreign_key_list({name})").fetchall(), key=lambda r: r[3]),
-            "unique": sorted(tuple(c[2] for c in con.execute(f"PRAGMA index_info({ix[1]})"))
-                             for ix in con.execute(f"PRAGMA index_list({name})") if ix[2]),
-            "checks": checks,
-        }
+    for (t,) in con.execute("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'"):
+        cols = [(r[1], r[2].lower(), bool(r[3]), r[5] > 0) for r in con.execute(f"PRAGMA table_info({t})")]
+        fks = sorted((r[3], r[2], r[4]) for r in con.execute(f"PRAGMA foreign_key_list({t})"))
+        out[t] = (sorted(cols), fks)
     return out
 
 
-a, b = statements(VP), statements(REF)
-print(f"{VP.name}: {len(a)} statements, {REF.name}: {len(b)} statements")
-text_same = a == b
-if not text_same:
-    for i, (x, y) in enumerate(zip(a, b)):
-        if x != y:
-            print(f"first textual difference in statement {i + 1}:\n  VP : {x[:300]}\n  REF: {y[:300]}")
-            break
-sa, sb = structure(VP), structure(REF)
-diffs = [t for t in sorted(set(sa) | set(sb)) if sa.get(t) != sb.get(t)]
-for t in diffs:
-    print(f"structure differs in table {t}")
-    for k in ("columns", "foreign_keys", "unique", "checks"):
-        if sa.get(t, {}).get(k) != sb.get(t, {}).get(k):
-            print(f"  {k}:\n    VP : {sa.get(t, {}).get(k)}\n    REF: {sb.get(t, {}).get(k)}")
-fk = sum(len(v["foreign_keys"]) for v in sa.values())
-print(f"tables {len(sa)}, foreign keys {fk}, textually identical: {text_same}, structurally identical: {not diffs}")
+def main():
+    vp_sql, app_sql = VP_DDL.read_text(encoding="utf-8"), SCHEMA.read_text(encoding="utf-8")
+    vp, app = describe(load(vp_sql)), describe(load(app_sql))
+    problems = 0
+    if sorted(vp) != sorted(app):
+        problems += 1
+        print("DIFFERENT TABLES: only VP", sorted(set(vp) - set(app)), "only schema.sql", sorted(set(app) - set(vp)))
+    for t in sorted(set(vp) & set(app)):
+        if vp[t][0] != app[t][0]:
+            problems += 1
+            print(f"{t}: columns differ: {sorted(set(vp[t][0]) ^ set(app[t][0]))}")
+        if vp[t][1] != app[t][1]:
+            problems += 1
+            print(f"{t}: foreign keys differ: VP {vp[t][1]} schema.sql {app[t][1]}")
+    rules = [l.split("  -- ")[0].strip().rstrip(",") for l in app_sql.splitlines() if l.rstrip().endswith("-- rule")]
+    n_cols = sum(len(v[0]) for v in vp.values())
+    n_fk = sum(len(v[1]) for v in vp.values())
+    print(f"generated by Visual Paradigm: {len(vp)} tables, {n_cols} columns, {n_fk} foreign keys")
+    print(f"schema.sql: same tables, columns, types, NOT NULL, primary and foreign keys: {problems == 0}")
+    print(f"added by hand in schema.sql: {sum(len(re.findall(r'CHECK \(', r)) for r in rules)} CHECK, "
+          f"{sum(r.count('UNIQUE') for r in rules)} UNIQUE, {sum(r.count('ON DELETE CASCADE') for r in rules)} ON DELETE CASCADE")
+    seed = SEED.read_text(encoding="utf-8")
+    for name, script in (("VP DDL", vp_sql), ("schema.sql", app_sql)):
+        con = load(script)
+        con.executescript(seed)
+        rows = sum(con.execute(f"SELECT COUNT(*) FROM {t}").fetchone()[0] for t in vp)
+        bad = con.execute("PRAGMA foreign_key_check").fetchall()
+        print(f"seed data in the {name} database: {rows} rows, foreign key violations: {len(bad)}")
+        problems += len(bad)
+    sys.exit(problems)
 
-# The database that Visual Paradigm itself generated (Tools > DB > Generate Database, SQLite, db/vp/abc_shop_vp.db,
-# DDL in db/vp/vp_generated.ddl): same tables and columns as schema.sql? VP's SQLite generator writes no foreign keys
-# (SQLite accepts them only inside CREATE TABLE), so they are counted, not compared.
-GEN = HERE / "vp" / "abc_shop_vp.db"
-gen_ok = True
-if GEN.exists():
-    con = sqlite3.connect(f"file:{GEN.as_posix()}?mode=ro", uri=True)
-    ref = sqlite3.connect(":memory:")
-    ref.executescript(REF.read_text(encoding="utf-8"))
 
-    def cols(c, t):   # name, declared type, not null, primary key; INTEGER(10) and INTEGER are the same type in SQLite
-        return [(r[1], re.sub(r"\(.*", "", r[2]).upper() if r[2].upper().startswith("INTEGER") else r[2].upper().replace(" ", ""),
-                 r[3] or r[5] > 0, r[5] > 0) for r in c.execute(f"PRAGMA table_info('{t}')")]
-
-    def checks(c, t):
-        sql = c.execute("SELECT sql FROM sqlite_master WHERE name = ?", (t,)).fetchone()[0]
-        return sorted(re.sub(r"\s+", "", x).lower() for x in re.findall(r"CHECK\s*\((.*?)\)\s*[,)]", sql, re.S))
-
-    def uniques(c, t):   # without the index SQLite adds for a PRIMARY KEY clause (origin "pk"): the key is compared above
-        return sorted(tuple(x[2] for x in c.execute(f"PRAGMA index_info('{ix[1]}')")) for ix in c.execute(f"PRAGMA index_list('{t}')")
-                      if ix[2] and ix[3] != "pk")
-
-    tables = [r[0] for r in con.execute("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' ORDER BY name")]
-    ref_tables = [r[0] for r in ref.execute("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' ORDER BY name")]
-    gen_ok = tables == ref_tables
-    n_cols = n_chk = n_uq = gen_fk = 0
-    for t in tables:
-        for kind, f in (("columns", cols), ("checks", checks), ("unique keys", uniques)):
-            x, y = f(con, t), f(ref, t)
-            if x != y:
-                gen_ok = False
-                print(f"VP database differs in {t} {kind}:\n    VP : {x}\n    REF: {y}")
-        n_cols += len(cols(con, t)); n_chk += len(checks(con, t)); n_uq += len(uniques(con, t))
-        gen_fk += len(con.execute(f"PRAGMA foreign_key_list('{t}')").fetchall())
-    print(f"database generated by Visual Paradigm: tables {len(tables)}, columns {n_cols}, CHECK {n_chk}, unique keys {n_uq}, "
-          f"foreign keys {gen_fk}; same tables, columns, types, NOT NULL, keys, CHECK and UNIQUE as schema.sql: {gen_ok}")
-sys.exit(0 if text_same and not diffs and gen_ok else 1)
+if __name__ == "__main__":
+    main()

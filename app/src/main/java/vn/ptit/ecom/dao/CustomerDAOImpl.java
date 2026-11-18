@@ -24,30 +24,30 @@ class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public Optional<Account> findAccount(String email) throws SQLException {
-        try (PreparedStatement ps = Jdbc.prepare(connection, "SELECT * FROM customer WHERE lower(email) = lower(?)", email);
+        try (PreparedStatement ps = Jdbc.prepare(connection, "SELECT * FROM Customer WHERE lower(Email) = lower(?)", email);
              ResultSet rs = ps.executeQuery()) {
             if (!rs.next()) return Optional.empty();
-            return Optional.of(new Account(Role.CUSTOMER, rs.getInt("customer_id"), name(rs).display(),
-                    rs.getString("password_hash")));
+            return Optional.of(new Account(Role.CUSTOMER, rs.getInt("CustomerId"), name(rs).display(),
+                    rs.getString("PasswordHash")));
         }
     }
 
     @Override
     public Optional<Customer> findById(int customerId) throws SQLException {
-        String sql = "SELECT c.*, v.vip_level, v.discount_rate, v.reward_points, n.registered_date, n.welcome_voucher "
-                + "FROM customer c LEFT JOIN customer_vip v ON v.customer_id = c.customer_id "
-                + "LEFT JOIN customer_new n ON n.customer_id = c.customer_id WHERE c.customer_id = ?";
+        String sql = "SELECT c.*, v.VipLevel, v.DiscountRate, v.RewardPoints, n.RegisteredDate, n.WelcomeVoucher "
+                + "FROM Customer c LEFT JOIN CustomerVIP v ON v.CustomerId = c.CustomerId "
+                + "LEFT JOIN CustomerNew n ON n.CustomerId = c.CustomerId WHERE c.CustomerId = ?";
         try (PreparedStatement ps = Jdbc.prepare(connection, sql, customerId); ResultSet rs = ps.executeQuery()) {
             if (!rs.next()) return Optional.empty();
-            int id = rs.getInt("customer_id");
+            int id = rs.getInt("CustomerId");
             FullName name = name(rs);
-            String email = rs.getString("email"), phone = rs.getString("phone");
-            if (Jdbc.intOrNull(rs, "vip_level") != null)
-                return Optional.of(new CustomerVIP(id, name, email, phone, rs.getInt("vip_level"),
-                        rs.getBigDecimal("discount_rate"), rs.getInt("reward_points")));
-            if (rs.getString("registered_date") != null)
+            String email = rs.getString("Email"), phone = rs.getString("Phone");
+            if (Jdbc.intOrNull(rs, "VipLevel") != null)
+                return Optional.of(new CustomerVIP(id, name, email, phone, rs.getInt("VipLevel"),
+                        rs.getBigDecimal("DiscountRate"), rs.getInt("RewardPoints")));
+            if (rs.getString("RegisteredDate") != null)
                 return Optional.of(new CustomerNew(id, name, email, phone,
-                        java.time.LocalDate.parse(rs.getString("registered_date")), rs.getString("welcome_voucher")));
+                        java.time.LocalDate.parse(rs.getString("RegisteredDate")), rs.getString("WelcomeVoucher")));
             return Optional.of(new Customer(id, name, email, phone));
         }
     }
@@ -56,7 +56,7 @@ class CustomerDAOImpl implements CustomerDAO {
     public List<Address> addresses(int customerId) throws SQLException {
         List<Address> out = new ArrayList<>();
         try (PreparedStatement ps = Jdbc.prepare(connection,
-                "SELECT * FROM address WHERE customer_id = ? ORDER BY is_default DESC, address_id", customerId);
+                "SELECT * FROM Address WHERE CustomerId = ? ORDER BY IsDefault DESC, AddressId", customerId);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) out.add(address(rs));
         }
@@ -65,19 +65,19 @@ class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public Optional<Address> address(int addressId) throws SQLException {
-        try (PreparedStatement ps = Jdbc.prepare(connection, "SELECT * FROM address WHERE address_id = ?", addressId);
+        try (PreparedStatement ps = Jdbc.prepare(connection, "SELECT * FROM Address WHERE AddressId = ?", addressId);
              ResultSet rs = ps.executeQuery()) {
             return rs.next() ? Optional.of(address(rs)) : Optional.empty();
         }
     }
 
     private static FullName name(ResultSet rs) throws SQLException {
-        return new FullName(rs.getString("first_name"), rs.getString("middle_name"), rs.getString("last_name"));
+        return new FullName(rs.getString("FirstName"), rs.getString("MiddleName"), rs.getString("LastName"));
     }
 
     private static Address address(ResultSet rs) throws SQLException {
-        return new Address(rs.getInt("address_id"), rs.getInt("customer_id"), rs.getString("recipient_name"),
-                rs.getString("phone"), rs.getString("house_number"), rs.getString("street"), rs.getString("district"),
-                rs.getString("city"), rs.getInt("is_default") == 1);
+        return new Address(rs.getInt("AddressId"), rs.getInt("CustomerId"), rs.getString("RecipientName"),
+                rs.getString("Phone"), rs.getString("HouseNumber"), rs.getString("Street"), rs.getString("District"),
+                rs.getString("City"), rs.getInt("IsDefault") == 1);
     }
 }

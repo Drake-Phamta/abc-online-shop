@@ -48,7 +48,8 @@ public class Database {
         }
     }
 
-    /** Creates the database from the DDL generated from the physical model (db/schema.sql) and the seed data. */
+    /** Creates the database from db/schema.sql (the DDL that VP generated from the data model, with the business rules
+     *  added) and the seed data. */
     public void create(boolean replaceExisting) {
         try {
             if (Files.exists(file) && !replaceExisting) return;

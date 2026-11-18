@@ -2,7 +2,7 @@ package vn.ptit.ecom.model.product;
 
 import java.util.List;
 
-/** An apparel item (clothes, shoes): a product with the attributes of the apparel_detail table. */
+/** An apparel item (clothes, shoes): a product with the attributes of the ApparelDetail table. */
 public class ApparelDetail extends Product {
     private final String sizeLabel;
     private final String color;

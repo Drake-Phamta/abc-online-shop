@@ -28,7 +28,8 @@ TEXT = {".md", ".java", ".js", ".mjs", ".py", ".sql", ".ddl", ".txt", ".css", ".
         ".ps1", ".bat", ".properties", ".xml", ".yml", ".yaml", ".config", ".gitignore"}
 SKIP_DIRS = {"node_modules", "target", "__pycache__", ".git"}
 # not project sources (lecturer's material, archive, built essay, run-time data): links to them stay plain links
-SKIP_TREES = ("De_bai", "Luu_tru", "Bai_nop", "app/data", "showcase/pages")
+# showcase/compare is local only and published password-protected by publish_pages.ps1: never a readable source page
+SKIP_TREES = ("De_bai", "Luu_tru", "Bai_nop", "app/data", "showcase/pages", "showcase/compare")
 MAX_TEXT = 1_000_000
 
 md = MarkdownIt("commonmark", {"html": True}).enable("table").enable("strikethrough")
@@ -134,7 +135,7 @@ def frame(rel, k, body, extra_css=""):
     lang = "vi" if is_vi(rel) else "en"
     switch = ""
     en, vi = english_of(rel), vietnamese_of(english_of(rel))
-    if vi:   # a document in two languages
+    if vi and en in pages:   # a document in two languages
         cur = ' aria-current="page"'
         switch = (f'<span class="lang vlang" aria-label="Language"><a href="{url(me, page_of(en, "f"))}" lang="en"'
                   f'{cur if lang == "en" else ""}>EN</a><a href="{url(me, page_of(vi, "f"))}" lang="vi"'
@@ -196,7 +197,7 @@ def heading_ids(rel):
 def markdown_page(rel):
     tokens = md.parse((ROOT / rel).read_text(encoding="utf-8"))
     ids = heading_ids(rel)
-    if is_vi(rel):
+    if is_vi(rel) and (ROOT / english_of(rel)).exists():   # a Vietnamese-only document keeps its own anchors
         english = heading_ids(english_of(rel))
         if len(english) == len(ids):
             ids = english

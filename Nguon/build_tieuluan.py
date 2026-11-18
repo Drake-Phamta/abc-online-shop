@@ -280,6 +280,15 @@ def next_fig():
     return f"{CH[0]}.{FIG[0] + 1}"
 
 
+# nf(k) and nt(k) give the number of the k-th next figure or table (several figures can follow one paragraph).
+def nf(k=1):
+    return f"{CH[0]}.{FIG[0] + k}"
+
+
+def nt(k=1):
+    return f"{CH[0]}.{TAB[0] + k}"
+
+
 def code(text, size=9, indent=0.4):
     lines = text.rstrip("\n").split("\n")
     for i, line in enumerate(lines):
@@ -365,7 +374,7 @@ def footer_setup():
 
 
 # TL_PARTS / TL_CH_START / TL_TITLE build a single chapter as its own document (design_04: front_design, ch4, back_design)
-PARTS = os.environ.get("TL_PARTS", "front.py,ch1.py,ch2.py,ch3.py,ch4.py,ch5.py,back.py").split(",")
+PARTS = os.environ.get("TL_PARTS", "front.py,ch1.py,ch2.py,ch3.py,ch4d.py,ch5d.py,ch6.py,back.py").split(",")
 CH[0] = int(os.environ.get("TL_CH_START", "0"))
 for part in PARTS:
     path = os.path.join(HERE, part)

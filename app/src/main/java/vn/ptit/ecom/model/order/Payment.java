@@ -18,7 +18,7 @@ public abstract class Payment {
         this.paymentDate = paymentDate;
     }
 
-    /** "CARD" or "CASH", the payment.method column. */
+    /** "CARD" or "CASH", the column Payment.Method. */
     public abstract String method();
 
     /** Money that was taken is returned when a paid order is cancelled. */

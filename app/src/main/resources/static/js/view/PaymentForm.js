@@ -19,7 +19,7 @@ export class PaymentForm {
     mount(this.app.view, html`
       <p class="crumbs"><a href="#/orders">My orders</a> / <a href="#/orders/${o.id}" class="code">${o.code}</a> / Payment</p>
       <div class="two-col">
-        <form class="panel" id="pay" novalidate data-trace="PaymentForm.submitPayment → POST /api/orders/${o.id}/payments · PaymentController.pay · PaymentService.pay · CardProvider.charge · Order.recordCardPayment (BR07) · payment, pay_credit">
+        <form class="panel" id="pay" novalidate data-trace="PaymentForm.submitPayment → POST /api/orders/${o.id}/payments · PaymentController.pay · PaymentService.pay · CardProvider.charge · Order.recordCardPayment (BR07) · Payment, PayCredit">
           <p class="eyebrow">Card payment</p>
           <h2 style="margin-bottom:18px">Pay ${vnd(o.total)} for <span class="code">${o.code}</span></h2>
           ${declined ? html`<div class="notice danger"><b>The last attempt was declined.</b>Your order and its reserved stock are kept. Try another card or cancel the order.</div>` : ""}

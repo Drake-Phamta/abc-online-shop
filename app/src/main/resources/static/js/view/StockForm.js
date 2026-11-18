@@ -17,7 +17,7 @@ export class StockForm {
     const low = rows.filter((r) => r.stockState !== "IN").length;
     mount(this.app.view, html`
       <div class="page-head"><div><p class="eyebrow">Warehouse staff · UC15</p><h1 class="two-tone">Inventory. <span class="muted">${low} product${low === 1 ? "" : "s"} low or out of stock.</span></h1></div></div>
-      <table class="orders-table" data-trace="StockForm.showStock ← GET /api/staff/stock · ProductController.stock · CatalogService.stockList · ProductDAO.listForStock · product">
+      <table class="orders-table" data-trace="StockForm.showStock ← GET /api/staff/stock · ProductController.stock · CatalogService.stockList · ProductDAO.listForStock · Product">
         <thead><tr><th></th><th>Product</th><th>Category</th><th>State</th><th style="text-align:right">Stock</th><th></th></tr></thead>
         <tbody>${rows.map((r) => html`<tr class="${r.stockState === "OUT" ? "out" : r.stockState === "LOW" ? "low" : ""}">
           <td style="width:56px">${r.image ? html`<img src="${r.image}" alt="" style="width:44px;height:44px;object-fit:contain;mix-blend-mode:multiply">` : ""}</td>

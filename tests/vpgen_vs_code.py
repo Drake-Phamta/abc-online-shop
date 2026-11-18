@@ -3,7 +3,7 @@
 implemented code.
 
 Input
-  docs/evidence/vp_codegen/**/*.java   the skeleton VP wrote from the design model of section 4.4 (bodies throw
+  docs/evidence/vp_codegen_v5/**/*.java   the skeleton VP wrote from the design model (vp/3_Design.vpp, Chapter 5) (bodies throw
                                        UnsupportedOperationException); VP prefixes the packages with "__Design"
                                        because the model folder is named "4 Design"
   app/target/classes                   compiled classes (run "mvn -q compile" first), read with javap
@@ -22,7 +22,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from design_vs_code import ROOT, javap_package, js_views, same_type, split_params  # noqa: E402
 
-GEN = ROOT / "docs" / "evidence" / "vp_codegen"
+GEN = ROOT / "docs" / "evidence" / "vp_codegen_v5"
+ATTRIBUTE_PREFIX = "_"   # Instant Generator option "Attribute prefix" (default)
 MOD = r"(?:public |protected |private |static |final |abstract )*"
 
 
@@ -61,7 +62,12 @@ def parse(f):
             continue
         mf = re.match(MOD + r"([\w<>\[\], .?]+?) (\w+)(?: = .*)?;$", s)
         if mf and "(" not in s:
-            fields[mf.group(2)] = norm(mf.group(1))
+            field = mf.group(2)
+            # the Instant Generator writes every attribute with its "Attribute prefix" option ("_"); the code uses
+            # the plain name of the model
+            if field.startswith(ATTRIBUTE_PREFIX):
+                field = field[len(ATTRIBUTE_PREFIX):]
+            fields[field] = norm(mf.group(1))
     return pkg, kind, name, fields, methods
 
 

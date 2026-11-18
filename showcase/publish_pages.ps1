@@ -1,8 +1,10 @@
 # Publishes the project to its public GitHub repository (GitHub Pages serves it) as ONE snapshot commit on top of the
 # previously published one: the local git history is not published, and the author is the GitHub noreply address.
 # Published: every file tracked by git, plus the essay PDF of Bai_nop. Not published: De_bai, Luu_tru, the docx, the
-# project log docs/CONTROL*.md, the sources docs/DEFENSE*.md (their readable pages are published password-protected) and
-# everything else that .gitignore leaves out.
+# project log docs/CONTROL*.md, the sources docs/DEFENSE*.md and docs/VP_DEMO*.md (their readable pages are published
+# password-protected) and everything else that .gitignore leaves out.
+# The local comparison page showcase/compare/ (not in git) is published only password-protected: the page itself and
+# the other essay it shows (tools/protect_file.mjs), never in plain form.
 # Usage, in the project folder after committing:  powershell -NoProfile -File showcase\publish_pages.ps1
 # Needs the GitHub CLI logged in (gh auth status). Keep this file ASCII only (Windows PowerShell 5.1).
 param([string]$Repo = "Drake-Phamta/abc-online-shop")
@@ -12,7 +14,7 @@ Set-Location -LiteralPath $root
 function Fail($why) { Write-Output "NOT published: $why"; exit 1 }
 
 if (git status --porcelain) { Fail "commit the changes first (git status is not clean)" }
-$pdf = "Bai_nop/tieuluan_V4_04_10_phamtuananh_018.pdf"
+$pdf = "Bai_nop/tieuluan_V5_04_10_phamtuananh_018.pdf"
 if (-not (Test-Path -LiteralPath $pdf)) { Fail "$pdf is missing" }
 $id = gh api user --jq .id
 $login = gh api user --jq .login
@@ -28,22 +30,34 @@ $blob = git hash-object -w -- $pdf
 git update-index --add --cacheinfo "100644,$blob,$pdf"
 # personal notes: the project log is never published; the defence notes only as password-protected readable pages
 # (tools/protect_page.mjs, password in %LOCALAPPDATA%\abc_shop\page_password.txt, outside the repository)
-$private = git ls-files | Where-Object { $_ -match '^(showcase/pages/)?docs/(CONTROL|DEFENSE)(\.vi)?\.md(\.html)?$' }
+$private = git ls-files | Where-Object { $_ -match '^(showcase/pages/)?docs/(CONTROL|DEFENSE|VP_DEMO)(\.vi)?\.md(\.html)?$' -or $_ -like 'showcase/compare/*' -or $_ -like 'showcase/pages/showcase/compare/*' }
 if ($private) { git update-index --force-remove -- @($private) }
 $pwFile = Join-Path $env:LOCALAPPDATA "abc_shop\page_password.txt"
 if (Test-Path $pwFile) {
     $env:ABC_PAGE_PASSWORD = (Get-Content -Raw $pwFile).Trim()
-    foreach ($page in "showcase/pages/docs/DEFENSE.md.html", "showcase/pages/docs/DEFENSE.vi.md.html") {
-        if (-not (Test-Path -LiteralPath $page)) { continue }
-        $tmp = Join-Path $env:TEMP ("abc_protected_" + (Split-Path $page -Leaf))
-        node tools/protect_page.mjs $page $tmp | Out-Null
-        if ($LASTEXITCODE -ne 0) { Remove-Item Env:ABC_PAGE_PASSWORD; Fail "could not protect $page" }
+    # the comparison page is built again from the current PDFs (local script, page numbers read from the bookmarks)
+    if (Test-Path -LiteralPath "showcase/compare/build_compare.py") {
+        python -P showcase/compare/build_compare.py | Out-Null
+        if ($LASTEXITCODE -ne 0) { Remove-Item Env:ABC_PAGE_PASSWORD; Fail "could not build showcase/compare/index.html" }
+    }
+    $protect = @(
+        @("page", "showcase/pages/docs/DEFENSE.md.html", "showcase/pages/docs/DEFENSE.md.html"),
+        @("page", "showcase/pages/docs/DEFENSE.vi.md.html", "showcase/pages/docs/DEFENSE.vi.md.html"),
+        @("page", "showcase/pages/docs/VP_DEMO.vi.md.html", "showcase/pages/docs/VP_DEMO.vi.md.html"),
+        @("page", "showcase/compare/index.html", "showcase/compare/index.html"),
+        @("file", "tieuluan_V5_03_01_NhiCT.075.pdf", "showcase/compare/nhi.pdf.enc"))
+    foreach ($p in $protect) {
+        $kind, $src, $dest = $p
+        if (-not (Test-Path -LiteralPath $src)) { continue }
+        $tmp = Join-Path $env:TEMP ("abc_protected_" + (Split-Path $dest -Leaf))
+        node "tools/protect_$kind.mjs" $src $tmp | Out-Null
+        if ($LASTEXITCODE -ne 0) { Remove-Item Env:ABC_PAGE_PASSWORD; Fail "could not protect $src" }
         $pblob = git hash-object -w -- $tmp
-        git update-index --add --cacheinfo "100644,$pblob,$page"
+        git update-index --add --cacheinfo "100644,$pblob,$dest"
         Remove-Item -LiteralPath $tmp
     }
     Remove-Item Env:ABC_PAGE_PASSWORD
-} else { Write-Output "No page password ($pwFile): the defence notes are left out." }
+} else { Write-Output "No page password ($pwFile): the defence notes and the comparison page are left out." }
 $tree = git write-tree
 Remove-Item Env:GIT_INDEX_FILE
 if ($LASTEXITCODE -ne 0 -or -not $tree) { Fail "could not build the tree" }

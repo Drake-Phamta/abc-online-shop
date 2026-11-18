@@ -3,21 +3,22 @@
 
 unnumbered("CONCLUSION")
 p("This essay followed ABC Online Shop from a list of business complaints to running code. Requirement "
-  "determination modelled the business in BPMN and ArchiMate, reduced seven problems to three root causes and "
-  "produced 14 stakeholder needs, 28 functional and 10 non-functional requirements with priorities, acceptance "
-  "criteria and traceability. Analysis turned them into 21 use cases with a detailed diagram for each functional "
-  "area, activity diagrams with swimlanes, a level 1 data flow diagram, sequence diagrams with boundary, control and "
-  "entity objects and a data model in three levels. The AI chapter treated the AI search as a component of the "
-  "information system like any other: it has stakeholders, use cases, a context and a data flow diagram, rules, "
-  "risks and a measured quality (hit@1 of 0.97 against 0.23 for the keyword search on 30 labelled queries, and 93% "
-  "of 84 test photos found first). Design carried the revised analysis model into a database of 20 tables that "
-  "Visual Paradigm generated from the physical model, and into 80 classes in three layers (72 in Java, 8 in the "
-  "browser) whose skeleton Visual Paradigm also generated; the code implements nine use cases of the purchase chain "
-  "and the AI search on that database and passes 24 unit and integration tests, 36 API checks and 30 end-to-end "
-  "checks in a browser. All 42 diagrams live in one Visual Paradigm project.")
+  "determination reduced seven problems to three root causes and produced 14 stakeholder needs, 28 functional and "
+  "10 non-functional requirements with priorities, acceptance criteria and traceability, and 21 use cases with the "
+  "specifications of the six central ones. The Analysis file holds the class diagram of twenty business classes, "
+  "with the four kinds of product as subclasses of Product, the activity diagrams of the central use cases and the "
+  "context diagram. The AI chapter treated the AI search as a component of the information system like any other: "
+  "it has stakeholders, use cases, a data flow, rules, risks and a measured quality (hit@1 of 0.97 against 0.23 for "
+  "the keyword search on 30 labelled queries, and 93% of 84 test photos found first). The Data Model file added "
+  "types, identifiers, multiplicities, role names, «ORM Persistable» and Table per subclass to the same classes, and "
+  "Visual Paradigm generated from them the data model of 20 tables with Synchronize to Entity Relationship Diagram "
+  "and the database with Generate Database. The Design file carried the classes into 80 classes in three layers (72 "
+  "in Java, 8 in the browser), revised the database with the rules a data model cannot hold, and generated the code "
+  "skeleton with the Instant Generator; the code implements nine use cases of the purchase chain and the AI search on "
+  "that database and passes 24 unit and integration tests, 36 API checks and 30 end-to-end checks in a browser.")
 p("Three lessons stand out for me. The first is that most problems are cheapest to fix where they are created: a "
   "requirement with a trigger and a fit criterion (FR09, FR16) travelled through every later phase without trouble, "
-  "while the vague first drafts of Section 1.14 would have produced vague classes and untestable code. The second "
+  "while the vague first drafts of Section 1.15 would have produced vague classes and untestable code. The second "
   "is that the models check each other, and that the check can be automated. The class model found the product "
   "problem that the use cases hid; a script that compares the design classes with the compiled code found an "
   "operation the code never called and a business rule repeated in a screen; the code that Visual Paradigm generated "
@@ -55,8 +56,6 @@ refs = [
     "ACM, vol. 7, no. 3, pp. 171-176, 1964.",
     "M. J. Swain and D. H. Ballard, \"Color indexing,\" International Journal of Computer Vision, vol. 7, no. 1, "
     "pp. 11-32, 1991.",
-    "Object Management Group, Business Process Model and Notation (BPMN), Version 2.0.2, 2014.",
-    "The Open Group, ArchiMate 3.1 Specification. Reading: The Open Group, 2019.",
     "VMware, Spring Boot Reference Documentation, version 3.2, 2024.",
 ]
 for i, ref in enumerate(refs, 1):

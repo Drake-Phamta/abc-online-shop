@@ -9,6 +9,7 @@ import http.cookiejar
 import json
 import sqlite3
 import sys
+import time
 import urllib.error
 import urllib.request
 
@@ -38,7 +39,7 @@ def check(name, ok, detail=""):
 
 def stock(product_id):
     with sqlite3.connect(DB) as c:
-        return c.execute("SELECT stock_quantity FROM product WHERE product_id = ?", (product_id,)).fetchone()[0]
+        return c.execute("SELECT StockQuantity FROM Product WHERE ProductId = ?", (product_id,)).fetchone()[0]
 
 
 anon, an, lan, sales, wh = Client(), Client(), Client(), Client(), Client()
@@ -61,7 +62,7 @@ check("UC04 parent category includes sub-categories", len(electronics) > len(lap
 s, found = anon.call("GET", "/api/products?q=" + urllib.request.quote(laptops[0]["name"].split()[0]))
 check("UC04 keyword search", s == 200 and any(p["id"] == laptops[0]["id"] for p in found))
 s, page = anon.call("GET", f"/api/products/{laptops[0]['id']}")
-check("UC05 product page with laptop_detail specs", s == 200 and any(x["label"] == "Processor" for x in page["specs"]),
+check("UC05 product page with LaptopDetail specs", s == 200 and any(x["label"] == "Processor" for x in page["specs"]),
       ", ".join(f"{x['label']}={x['value']}" for x in page["specs"][:3]))
 
 pid = laptops[0]["id"]
@@ -97,8 +98,8 @@ check("UC08 A1 declined card keeps the order waiting", s == 200 and not res["app
 s, res = an.call("POST", f"/api/orders/{oid}/payments", {"cardHolder": "NGUYEN VAN AN", "cardNumber": "4242 4242 4242 4242", "expiry": "08/28", "cvv": "123"})
 check("UC08 approved card makes the order PAID (BR07)", res["approved"] and res["status"] == "PAID")
 with sqlite3.connect(DB) as c:
-    stored = c.execute("SELECT card_last4, provider_token FROM pay_credit pc JOIN payment p ON p.payment_id = pc.payment_id "
-                       "WHERE p.order_id = ? ORDER BY p.payment_id", (oid,)).fetchall()
+    stored = c.execute("SELECT CardLast4, ProviderToken FROM PayCredit pc JOIN Payment p ON p.PaymentId = pc.PaymentId "
+                       "WHERE p.OrderId = ? ORDER BY p.PaymentId", (oid,)).fetchall()
 check("BR07 only last four digits and token stored", [r[0] for r in stored] == ["0002", "4242"] and stored[1][1].startswith("tok_"), str(stored))
 
 s, err = an.call("GET", "/api/staff/orders")
@@ -107,8 +108,10 @@ s, err = sales.call("POST", f"/api/staff/orders/{oid}/ship", {"carrier": "GHN", 
 check("BR09 cannot ship before processing", s == 409 and err["rule"] == "BR09", err["message"])
 s, o = sales.call("POST", f"/api/staff/orders/{oid}/process")
 check("UC14 process", o["status"] == "PROCESSING")
-s, o = sales.call("POST", f"/api/staff/orders/{oid}/ship", {"carrier": "GHN", "trackingNumber": "GHN-SMOKE-001"})
-check("UC14 ship creates the shipment (BR10)", o["status"] == "SHIPPED" and o["shipping"]["trackingNumber"] == "GHN-SMOKE-001")
+# a new tracking number per run: tracking numbers are unique (BR10), so a fixed one fails on a second run
+track = f"GHN-SMOKE-{oid}-{int(time.time())}"
+s, o = sales.call("POST", f"/api/staff/orders/{oid}/ship", {"carrier": "GHN", "trackingNumber": track})
+check("UC14 ship creates the shipment (BR10)", o["status"] == "SHIPPED" and o["shipping"]["trackingNumber"] == track)
 s, o = sales.call("POST", f"/api/staff/orders/{oid}/deliver")
 check("UC14 deliver", o["status"] == "DELIVERED" and o["shipping"]["status"] == "DELIVERED")
 s, o = an.call("GET", f"/api/orders/{oid}")

@@ -39,7 +39,7 @@ export class CartForm {
     mount(this.app.view, html`
       <div class="page-head"><div><p class="eyebrow">Shopping cart</p><h1>${cart.count} item${cart.count === 1 ? "" : "s"} in your cart</h1></div></div>
       <div class="two-col">
-        <section class="lines" data-trace="CartForm.showCart ← GET /api/cart · CartController.viewCart · CartService.cart · CartDAO.findOrCreate · cart, cart_item ⋈ product">
+        <section class="lines" data-trace="CartForm.showCart ← GET /api/cart · CartController.viewCart · CartService.cart · CartDAO.findOrCreate · Cart, CartItem ⋈ Product">
           ${cart.lines.map((l) => html`
             <div class="line">
               <a class="thumb" href="#/p/${l.productId}">${l.image ? html`<img src="${l.image}" alt="">` : ""}</a>

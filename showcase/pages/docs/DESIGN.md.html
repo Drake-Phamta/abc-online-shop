@@ -20,111 +20,120 @@
 </header>
 <main class="doc">
 <h1 id="design-data-model-and-class-design-of-the-implemented-slice">DESIGN: data model and class design of the implemented slice</h1>
-<p>Input: SPEC.md, the analysis class diagram (essay Figure 4.1, nineteen classes of Test 01) and the lecturer's
-feedback on Product. Output: <code>db/schema.sql</code> and the packages under <code>app/src/main/java/vn/ptit/ecom</code>.</p>
-<h2 id="1-conceptual-model-entities-and-relationships">1. Conceptual model (entities and relationships)</h2>
+<p>Input: SPEC.md, the analysis class diagram (A10 in <code>vp/1_Analysis.vpp</code>, essay Figure 2.1) and the lecturer's
+feedback on Product. Output: the data model of <code>vp/2_DataModel.vpp</code>, <code>db/schema.sql</code> and the packages under
+<code>app/src/main/java/vn/ptit/ecom</code>, modelled in <code>vp/3_Design.vpp</code>.</p>
+<h2 id="1-classes-and-relationships-analysis-model-a10">1. Classes and relationships (analysis model A10)</h2>
 <p>Category (tree) 1 — 0..* Product; BookDetail, LaptopDetail, PhoneDetail, ApparelDetail are subclasses of Product (the
 category's detail kind says which one); Customer 1 — 0..* Address; Customer 1 — 0..1 Cart; Cart 1 — 0..* CartItem; CartItem 0..* — 1
 Product; Customer 1 — 0..* Order; Order 1 — 1..* OrderItem; OrderItem 0..* — 1 Product; Order 1 — 0..* Payment
 (Cash or Credit); Order 1 — 0..1 Shipping; Shipping 0..* — 1 Address; Order 1 — 1..* OrderEvent; Customer is VIP 0..1,
 New 0..1; Staff (Sales or Warehouse).</p>
-<h2 id="2-from-the-analysis-model-to-the-revised-physical-model">2. From the analysis model to the revised physical model</h2>
+<h2 id="2-from-the-analysis-model-to-the-database">2. From the analysis model to the database</h2>
+<p>The data model is not drawn by hand. In <code>vp/2_DataModel.vpp</code> the classes of A10 become the class diagram D1: every
+attribute gets a type and a multiplicity (1 = NOT NULL, 0..1 = NULL), every class an identifier and the stereotype
+«ORM Persistable», every association end a role name and a multiplicity, and the three generalizations the
+inheritance strategy Table per subclass. VP's Synchronize to Entity Relationship Diagram then generates the ERD D2
+(20 tables, 122 columns, 22 foreign keys); the only hand edits are the names of the foreign key columns
+(<code>CategoryCategoryId</code> becomes <code>CategoryId</code>, the parent of a category <code>ParentId</code>), the table <code>Order</code> renamed <code>Orders</code>
+(ORDER is an SQL keyword) and the layout. Tools &gt; DB &gt; Generate Database (SQLite) writes <code>db/vp/vp_ddl.sql</code>.
+<code>db/make_schema.py</code> copies every CREATE TABLE of that DDL into <code>db/schema.sql</code> and adds the rules a data model cannot
+hold (34 CHECK, 9 UNIQUE, 5 ON DELETE CASCADE, each marked <code>-- rule</code>); <code>db/compare_schema.py</code> checks that the two
+still have the same tables, columns, types, NOT NULL, keys and foreign keys.</p>
 <div class="tablewrap"><table>
 <thead>
 <tr>
-<th>Analysis element (Fig. 4.1)</th>
-<th>Revised design</th>
+<th>Analysis class (A10)</th>
+<th>Generated table(s) (D2)</th>
+<th>Rules added in schema.sql</th>
 <th>Reason</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Book, Electronics, Laptop, Mobile, Clothes, Shoes, each with productId, price, stockQuantity</td>
-<td><code>product</code> holds identity and common attributes (sku, name, brand, price, stock, status); <code>category</code> classifies; one detail table per attribute set: <code>book_detail</code>, <code>laptop_detail</code>, <code>phone_detail</code>, <code>apparel_detail</code></td>
-<td>lecturer's feedback; common data once; a new category with an existing attribute set needs no new table</td>
+<td>Category (tree)</td>
+<td><code>Category</code>, <code>ParentId</code> to itself</td>
+<td>UNIQUE <code>Slug</code>; CHECK <code>DetailKind</code> in BOOK, LAPTOP, PHONE, APPAREL</td>
+<td>the detail kind says which subclass the products of a category have</td>
 </tr>
 <tr>
-<td>Electronics generalisation (warrantyMonths)</td>
-<td>parent category &quot;Electronics&quot;; warranty kept in laptop and phone details</td>
-<td>grouping is data, not structure</td>
+<td>Product and its subclasses BookDetail, LaptopDetail, PhoneDetail, ApparelDetail</td>
+<td><code>Product</code> plus one table per subclass; its <code>ProductId</code> is both primary key and foreign key to <code>Product</code></td>
+<td>UNIQUE <code>Sku</code>; CHECK <code>Price &gt; 0</code>, <code>StockQuantity &gt;= 0</code>, <code>Status</code> in ACTIVE, HIDDEN; ON DELETE CASCADE on the four detail tables</td>
+<td>lecturer's feedback; Table per subclass keeps one key <code>ProductId</code> for CartItem and OrderItem</td>
 </tr>
 <tr>
-<td>Clothes and Shoes</td>
-<td>one <code>apparel_detail</code> (size label, colour, material)</td>
-<td>identical attribute sets</td>
+<td>Customer and its subclasses CustomerVIP, CustomerNew</td>
+<td><code>Customer</code>, <code>CustomerVIP</code>, <code>CustomerNew</code>, PK = FK</td>
+<td>UNIQUE <code>Email</code>; CHECK <code>DiscountRate</code> above 0 and at most 0.5</td>
+<td>Table per subclass</td>
 </tr>
 <tr>
-<td>{xor} from CartItem/OrderItem to four classes</td>
-<td>ordinary FK to <code>product</code></td>
-<td>every line refers to exactly one product</td>
-</tr>
-<tr>
-<td>Customer ◆ FullName</td>
-<td>name columns of <code>customer</code></td>
-<td>1 to 1 part without identity</td>
-</tr>
-<tr>
-<td>Customer ◇ Address</td>
-<td><code>address</code> table, plus recipient and phone</td>
+<td>Address</td>
+<td><code>Address</code> with recipient and phone</td>
+<td>CHECK <code>IsDefault</code> in 0, 1</td>
 <td>delivery needs a receiver</td>
 </tr>
 <tr>
-<td>CustomerVIP, CustomerNew</td>
-<td><code>customer_vip</code>, <code>customer_new</code>, PK = FK</td>
-<td>table per subclass</td>
+<td>Cart, CartItem</td>
+<td><code>Cart</code>, <code>CartItem</code></td>
+<td>UNIQUE <code>Cart.CustomerId</code>; UNIQUE (<code>CartId</code>, <code>ProductId</code>); CHECK <code>Quantity &gt; 0</code>; ON DELETE CASCADE from <code>Cart</code></td>
+<td>BR02</td>
 </tr>
 <tr>
-<td>Order (analysis)</td>
-<td><code>customer_order</code> with status, payment method, subtotal, discount, shipping fee, total (CHECK total = subtotal − discount + fee)</td>
-<td>BR04 stored as a checked fact</td>
+<td>Order</td>
+<td><code>Orders</code> with status, payment method, subtotal, discount, shipping fee, total</td>
+<td>CHECK <code>TotalAmount = Subtotal - Discount + ShippingFee</code>; CHECK on the seven states</td>
+<td>BR04 stored as a checked fact, BR09</td>
 </tr>
 <tr>
-<td>OrderItem.unitPrice</td>
-<td><code>order_item.unit_price</code> + <code>product_name</code> snapshot</td>
-<td>historical facts (3NF exception explained)</td>
+<td>OrderItem</td>
+<td><code>OrderItem</code> with <code>UnitPrice</code> and the <code>ProductName</code> snapshot</td>
+<td>UNIQUE (<code>OrderId</code>, <code>ProductId</code>); CHECK <code>Quantity &gt; 0</code>, <code>UnitPrice &gt; 0</code></td>
+<td>BR03, 3NF exception explained in the essay</td>
 </tr>
 <tr>
-<td>Payment, PayCash, PayCredit (cardNumber)</td>
-<td><code>payment</code> + <code>pay_cash</code> / <code>pay_credit</code> (last 4, expiry, provider token)</td>
-<td>BR07</td>
+<td>OrderEvent</td>
+<td><code>OrderEvent</code></td>
+<td></td>
+<td>the history that UC09 shows</td>
+</tr>
+<tr>
+<td>Payment and its subclasses PayCash, PayCredit</td>
+<td><code>Payment</code>, <code>PayCash</code>, <code>PayCredit</code> (last 4, expiry, provider token)</td>
+<td>CHECK <code>Method</code>, <code>Amount &gt; 0</code>, <code>Status</code></td>
+<td>BR07: no column for the card number</td>
 </tr>
 <tr>
 <td>Shipping</td>
-<td><code>shipping</code> with UNIQUE(order_id), UNIQUE(tracking_number)</td>
+<td><code>Shipping</code></td>
+<td>UNIQUE <code>OrderId</code>, UNIQUE <code>TrackingNumber</code></td>
 <td>BR10</td>
 </tr>
 <tr>
-<td>(not in analysis) Staff</td>
-<td><code>staff</code> with role SALES or WAREHOUSE</td>
-<td>actors of UC14, UC15 need accounts (UC02)</td>
-</tr>
-<tr>
-<td>(not in analysis) status history</td>
-<td><code>order_event</code></td>
-<td>UC09 shows the history</td>
-</tr>
-<tr>
-<td>varchar codes (C001, O001)</td>
-<td>integer keys; codes are formatted for display (ORD-000123)</td>
-<td>simpler keys, generated by the DB</td>
+<td>Staff</td>
+<td><code>Staff</code> with role</td>
+<td>UNIQUE <code>Email</code>; CHECK <code>Role</code> in SALES, WAREHOUSE</td>
+<td>actors of UC14, UC15 need accounts (UC02), BR13</td>
 </tr>
 </tbody>
 </table></div>
 <p>Normalisation: 1NF (atomic columns, repeating groups in own tables), 2NF (single-column keys; the composite UNIQUE
-keys are not primary keys), 3NF except two intended historical values (<code>order_item.unit_price</code>,
-<code>order_item.product_name</code>) and the stored totals of an order, which equal the computed values at checkout and are
+keys are not primary keys), 3NF except two intended historical values (<code>OrderItem.UnitPrice</code>,
+<code>OrderItem.ProductName</code>) and the stored totals of an order, which equal the computed values at checkout and are
 guarded by a CHECK.</p>
 <h2 id="3-packages-and-classes-three-layers">3. Packages and classes (three layers)</h2>
-<p>The design classes in VP (diagrams G1 to G4b and G8, folder &quot;4 Design&quot;) and the code have the same packages, classes,
-attributes and operations; <code>tests/design_vs_code.py</code> checks this against the compiled classes and the JS views
-(80 classes: 72 Java classes with 169 attributes and 134 operations, 8 view classes with 25 operations, and 48 calls of
-the design sequences G5, G6, G7 and G9), and that no file of the <code>ai</code> package imports another part of the application.
-<code>tests/vpgen_vs_code.py</code> starts from the other side: the 81 files that VP's Instant Generator wrote from the same model
-(<code>docs/evidence/vp_codegen</code>) must all exist in the code with the same fields and methods (190 fields, 157 methods).</p>
+<p>The design classes in VP (diagrams G1 to G4b and G8, folder &quot;5 Design&quot; of <code>vp/3_Design.vpp</code>) and the code have the
+same packages, classes, attributes and operations; <code>tests/design_vs_code.py</code> checks this against the compiled classes
+and the JS views (80 classes: 72 Java classes with 169 attributes and 134 operations, 8 view classes with 25
+operations, and 48 calls of the design sequences G5, G6, G7 and G9), and that no file of the <code>ai</code> package imports
+another part of the application. <code>tests/vpgen_vs_code.py</code> starts from the other side: the 80 files that VP's Instant
+Generator wrote from the same model (<code>docs/evidence/vp_codegen_v5</code>) must all exist in the code with the same fields
+and methods (72 classes, 173 fields, 157 methods, and the 25 operations of the 8 view classes).</p>
 <div class="tablewrap"><table>
 <thead>
 <tr>
-<th>Layer (G0)</th>
+<th>Layer (G1)</th>
 <th>Package</th>
 <th>Classes</th>
 <th>Responsibility</th>
@@ -185,7 +194,7 @@ themselves; the move is the answer to &quot;where does the business logic live?&
 <li>The controller takes the customer id from the session (BR08) and calls <code>OrderService.placeOrder(customerId, addressId, method, expectedTotal)</code>.</li>
 <li>The service runs one transaction, <code>Database.inTransaction(work)</code>; in it: <code>CustomerDAO.findById</code>, <code>CustomerDAO.address</code> (BR06), <code>CartDAO.findOrCreate</code>, <code>Order.place(customer, cart, address, method, now)</code>, which validates the cart (UC21, BR03) and computes the totals (BR04).</li>
 <li>A changed total against <code>expectedTotal</code> → <code>RuleViolation BR03</code>, the transaction rolls back and the customer confirms again.</li>
-<li><code>ProductDAO.reserveStock(productId, quantity)</code> per line: <code>UPDATE product SET stock_quantity = stock_quantity − ? WHERE product_id = ? AND status = 'ACTIVE' AND stock_quantity &gt;= ?</code>; 0 rows → <code>RuleViolation BR05</code> and rollback (tested by <code>CheckoutFlowTest.aFailedOrderWriteRollsBackTheStockReservation</code>).</li>
+<li><code>ProductDAO.reserveStock(productId, quantity)</code> per line: <code>UPDATE Product SET StockQuantity = StockQuantity - ? WHERE ProductId = ? AND Status = 'ACTIVE' AND StockQuantity &gt;= ?</code>; 0 rows → <code>RuleViolation BR05</code> and rollback (tested by <code>CheckoutFlowTest.aFailedOrderWriteRollsBackTheStockReservation</code>).</li>
 <li><code>OrderDAO.insert(order)</code> (items and the first event), <code>CartDAO.clear(cart)</code>, commit. The order is <code>PENDING_PAYMENT</code> (card) or <code>PLACED</code> (cash on delivery).</li>
 <li>Card (G7): <code>PaymentForm.submitPayment(order, card)</code> → <code>POST /api/orders/{id}/payments</code> → <code>PaymentController.pay</code> builds <code>CardData</code> (format, Luhn and expiry checked) → <code>PaymentService.pay(orderId, customerId, card)</code>: transaction 1 loads the order (BR08) and checks it waits for a card payment; <code>CardProvider.charge(order code, total, card)</code> runs outside any transaction, so no database lock is held while the provider answers; transaction 2 reloads the order, <code>Order.recordCardPayment(payment, now)</code> (PAID only when approved, BR07, BR09), <code>PaymentDAO.saveAll</code>, <code>OrderDAO.saveProgress</code>.</li>
 </ol>

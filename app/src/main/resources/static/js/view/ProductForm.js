@@ -4,7 +4,7 @@ import { html, mount, vnd, stockBadge, loading, failure } from "../ui.js";
 
 const SORTS = [["RELEVANCE", "Featured"], ["PRICE_ASC", "Price, low to high"], ["PRICE_DESC", "Price, high to low"], ["NEWEST", "Newest"]];
 const KIND_TITLE = { BOOK: "About the book", LAPTOP: "Laptop specifications", PHONE: "Phone specifications", APPAREL: "Size and material" };
-const KIND_TABLE = { BOOK: "book_detail", LAPTOP: "laptop_detail", PHONE: "phone_detail", APPAREL: "apparel_detail" };
+const KIND_TABLE = { BOOK: "BookDetail", LAPTOP: "LaptopDetail", PHONE: "PhoneDetail", APPAREL: "ApparelDetail" };
 
 export class ProductForm {
   constructor(app) {
@@ -46,7 +46,7 @@ export class ProductForm {
             <div class="promise"><span class="n">3</span><div><b>Track every order</b><span class="small">From packing to your door, with the carrier's tracking number.</span></div></div>
           </div>
         </section>
-        <section class="departments" data-trace="ProductForm.showHome → GET /api/products?category=… · ProductController.search · CatalogService.search · ProductDAO.search · product ⋈ category">
+        <section class="departments" data-trace="ProductForm.showHome → GET /api/products?category=… · ProductController.search · CatalogService.search · ProductDAO.search · Product ⋈ Category">
           ${dept("books", "Books", "Fiction, business and computing", books)}
           ${dept("electronics", "Electronics", "Laptops and smartphones", electronics)}
           ${dept("fashion", "Fashion", "Clothing and shoes", fashion)}
@@ -74,7 +74,7 @@ export class ProductForm {
       const base = q ? `search?q=${encodeURIComponent(q)}&` : `c/${category}?`;
       mount(this.app.view, html`
         <div class="catalogue">
-          <aside class="tree" data-trace="GET /api/categories · ProductController.categories · CatalogService.categories · ProductDAO.categories · category (tree)">
+          <aside class="tree" data-trace="GET /api/categories · ProductController.categories · CatalogService.categories · ProductDAO.categories · Category (tree)">
             <a href="#/c/all" class="${!current && !q ? "on" : ""}">All products</a>
             ${tree.map((r) => html`<h4>${r.name}</h4>
               <a href="#/c/${r.slug}" class="parent ${current?.slug === r.slug ? "on" : ""}">All ${r.name.toLowerCase()}</a>
@@ -87,7 +87,7 @@ export class ProductForm {
             </div>
             ${products.length === 0
               ? html`<div class="empty"><h3>No products found</h3><p>${q ? html`Nothing matches “${q}”. Try another word or ` : "This category is empty. "}<a href="#/c/all">see all products</a>.</p></div>`
-              : html`<div class="grid" data-trace="ProductForm.showCatalogue → GET /api/products · ProductController.search · CatalogService.search · ProductDAO.search · product ⋈ category + *_detail (chips)">${products.map((p) => this.card(p))}</div>`}
+              : html`<div class="grid" data-trace="ProductForm.showCatalogue → GET /api/products · ProductController.search · CatalogService.search · ProductDAO.search · Product ⋈ Category + *Detail (chips)">${products.map((p) => this.card(p))}</div>`}
           </section>
         </div>`);
       this.app.view.querySelectorAll("[data-sort]").forEach((b) => b.addEventListener("click", () => this.app.go(`${base}sort=${b.dataset.sort}`)));
@@ -112,18 +112,18 @@ export class ProductForm {
       <p class="crumbs"><a href="#/">Shop</a> / ${page.parentSlug ? html`<a href="#/c/${page.parentSlug}">${page.parentCategory}</a> / ` : ""}<a href="#/c/${p.categorySlug}">${p.category}</a></p>
       <section class="product">
         <div class="pic">${p.image ? html`<img src="${p.image}" alt="${p.name}">` : ""}</div>
-        <div data-trace="ProductForm.showProduct → GET /api/products/${p.id} · ProductController.product · CatalogService.product · ProductDAO.findById · product ⋈ category + ${KIND_TABLE[p.detailKind] || "-"}">
+        <div data-trace="ProductForm.showProduct → GET /api/products/${p.id} · ProductController.product · CatalogService.product · ProductDAO.findById · Product ⋈ Category + ${KIND_TABLE[p.detailKind] || "-"}">
           <span class="eyebrow">${p.byline || p.category}</span>
           <h1>${p.name}</h1>
           ${stockBadge(p.stockState, p.stock)}
           <div class="price-big">${vnd(p.price)}</div>
           <p class="lead">${page.description}</p>
-          <div class="buy" data-trace="CartForm.submitAddItem → POST /api/cart/items · CartController.addItem · CartService.addItem · Cart.addItem (BR01, BR02) · CartDAO.save · cart_item">
+          <div class="buy" data-trace="CartForm.submitAddItem → POST /api/cart/items · CartController.addItem · CartService.addItem · Cart.addItem (BR01, BR02) · CartDAO.save · CartItem">
             <div class="stepper"><button type="button" data-step="-1" aria-label="Fewer">−</button><input id="qty" type="number" min="1" max="${p.stock}" value="1" aria-label="Quantity"><button type="button" data-step="1" aria-label="More">+</button></div>
             <button class="btn accent" id="add" ${canBuy ? "" : "disabled"}>${canBuy ? "Add to cart" : "Out of stock"}</button>
           </div>
           <h3>${KIND_TITLE[p.detailKind] || "Details"}</h3>
-          <table class="specs" data-trace="ProductDetail.specs() · ${KIND_TABLE[p.detailKind] || "-"} (chosen by category.detail_kind)">
+          <table class="specs" data-trace="ProductDetail.specs() · ${KIND_TABLE[p.detailKind] || "-"} (chosen by Category.DetailKind)">
             ${page.specs.map((s) => html`<tr><th>${s.label}</th><td>${s.value}</td></tr>`)}
             <tr><th>Category</th><td>${page.parentCategory ? `${page.parentCategory} › ` : ""}${p.category}</td></tr>
             <tr><th>SKU</th><td class="code">${p.sku}</td></tr>

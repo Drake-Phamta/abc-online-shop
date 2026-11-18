@@ -27,15 +27,15 @@ number (BR07).
 | Id | Rule | Enforced in |
 |---|---|---|
 | BR01 | Only products with status ACTIVE can be added to a cart or ordered. | model + controller |
-| BR02 | A cart holds at most one line per product; adding the product again increases the quantity. A line quantity is between 1 and the current stock. | model + DB UNIQUE(cart_id, product_id), CHECK |
-| BR03 | A cart line keeps the price shown when it was added (cart price). At checkout every line is validated against the current price, status and stock (UC21). If a price changed, the line takes the current price and the customer must confirm again. | Cart validation |
+| BR02 | A cart holds at most one line per product; adding the product again increases the quantity. A line quantity is between 1 and the current stock. | model + DB UNIQUE(CartId, ProductId), CHECK |
+| BR03 | A cart line keeps the price shown when it was added (cart price). At checkout every line is validated against the current price, status and stock (UC21). If a price changed, the line takes the current price and the customer must confirm again. The order line then keeps the name and the unit price of the purchase, so a later change in the catalogue does not alter a past order. | Cart validation |
 | BR04 | Order total = subtotal − VIP discount + shipping fee. Subtotal = Σ quantity × unit price. VIP discount = round(subtotal × discount rate). Shipping fee = 30 000 VND, free when the subtotal after discount is at least 500 000 VND. Amounts are integer VND. | Order |
 | BR05 | Stock is reserved when the order is created and never becomes negative; it is released when the order is cancelled. | DAO conditional update + DB CHECK |
 | BR06 | An order needs a delivery address that belongs to the customer. | controller + FK |
 | BR07 | An order is marked PAID only after an approved provider result. The shop stores the card holder, the last four digits, the expiry and the provider token, never the full card number. | Payment |
 | BR08 | A customer sees and changes only their own cart and orders. | controllers (session customer id) |
 | BR09 | Order status changes only along the transitions of section 3, by the actor named there. | OrderStatus transition table |
-| BR10 | One shipment per order, created when the order is shipped (carrier, tracking number, fee). | DB UNIQUE(order_id) |
+| BR10 | One shipment per order, created when the order is shipped (carrier, tracking number, fee). | DB UNIQUE(Shipping.OrderId) |
 | BR11 | A cash-on-delivery order gets its cash payment record when it is delivered. | Order lifecycle |
 | BR12 | Warehouse staff may set any stock quantity ≥ 0 for an existing product. | controller + DB CHECK |
 | BR13 | Staff functions require a staff account with the matching role (SALES for orders, WAREHOUSE for stock). | controllers |
@@ -46,14 +46,14 @@ number (BR07).
 |---|---|---|---|
 | (new) | PENDING_PAYMENT | Customer confirms checkout with card | order + items created, stock reserved, cart emptied |
 | (new) | PLACED | Customer confirms checkout with cash on delivery | same |
-| PENDING_PAYMENT | PAID | Provider approves the card payment (UC08) | payment APPROVED + pay_credit row |
+| PENDING_PAYMENT | PAID | Provider approves the card payment (UC08) | payment APPROVED + PayCredit row |
 | PENDING_PAYMENT | PENDING_PAYMENT | Provider declines (UC08 A4) | payment DECLINED row; customer may retry |
 | PENDING_PAYMENT | CANCELLED | Customer gives up | stock released |
 | PLACED | CANCELLED | Customer or Sales Staff | stock released |
 | PLACED, PAID | PROCESSING | Sales Staff | |
 | PAID, PROCESSING | CANCELLED | Sales Staff | stock released; an approved payment becomes REFUNDED |
 | PROCESSING | SHIPPED | Sales Staff enters carrier and tracking number | shipping row created |
-| SHIPPED | DELIVERED | Sales Staff (carrier confirmation) | shipping DELIVERED; COD: payment COMPLETED + pay_cash row |
+| SHIPPED | DELIVERED | Sales Staff (carrier confirmation) | shipping DELIVERED; COD: payment COMPLETED + PayCash row |
 
 Change from the essay's UC07 text: the order is now created **before** the payment (state PENDING_PAYMENT) because
 FR14 records the provider result "against the correct order", which needs an existing order reference, and stock
@@ -156,7 +156,7 @@ data requirements, then the component, its interactions, failures, risks and eva
 | AI function | Ranking: for a query q and every product p, a relevance score s(q, p); the result is the top k products. Text: a vector space model whose term weights (TF-IDF) are learned from the catalogue text, with query expansion. Photo: a feature vector of colour and shape per image, cosine similarity. |
 | Input | text up to 200 characters, or one JPEG or PNG image up to 5 MB |
 | Output | up to 12 products, each with a score and its reasons; the understood query (terms, expansions, corrections, price limits); a flag when the fallback was used |
-| Data source | product (name, brand, description, price, status), category (name and parent), book_detail, laptop_detail, phone_detail, apparel_detail (all values), product images in the shop's image folder; nothing new is stored |
+| Data source | Product (name, brand, description, price, status), Category (name and parent), BookDetail, LaptopDetail, PhoneDetail, ApparelDetail (all values), product images in the shop's image folder; nothing new is stored |
 | Location | AI component in the business logic layer (package `ai`), called by the SearchService; no external service |
 | Interaction | SearchForm (view) → SearchController → SearchService → QueryInterpreter, ProductIndex, ImageIndex; SearchService reads the catalogue through ProductDAO |
 | Performance | text search under 300 ms, photo search under 1 s on the demo machine; hit@1 and MRR better than the keyword search on the labelled queries (section 6.2) |

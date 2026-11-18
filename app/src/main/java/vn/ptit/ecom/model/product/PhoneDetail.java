@@ -2,7 +2,7 @@ package vn.ptit.ecom.model.product;
 
 import java.util.List;
 
-/** A phone: a product with the attributes of the phone_detail table. */
+/** A phone: a product with the attributes of the PhoneDetail table. */
 public class PhoneDetail extends Product {
     private final String os;
     private final int storageGb;

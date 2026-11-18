@@ -20,38 +20,38 @@ class CartDAOImpl implements CartDAO {
     @Override
     public Cart findOrCreate(int customerId) throws SQLException {
         Integer cartId = null;
-        try (PreparedStatement ps = Jdbc.prepare(connection, "SELECT cart_id FROM cart WHERE customer_id = ?", customerId);
+        try (PreparedStatement ps = Jdbc.prepare(connection, "SELECT CartId FROM Cart WHERE CustomerId = ?", customerId);
              ResultSet rs = ps.executeQuery()) {
             if (rs.next()) cartId = rs.getInt(1);
         }
         if (cartId == null) {
             String now = Jdbc.ts(LocalDateTime.now());
-            cartId = Jdbc.insert(connection, "INSERT INTO cart (customer_id, created_at, updated_at) VALUES (?, ?, ?)",
+            cartId = Jdbc.insert(connection, "INSERT INTO Cart (CustomerId, CreatedAt, UpdatedAt) VALUES (?, ?, ?)",
                     customerId, now, now);
         }
         List<CartItem> items = new ArrayList<>();
-        String sql = "SELECT ci.quantity, ci.cart_price, p.*, c.parent_id, c.name AS category_name, c.slug, c.detail_kind "
-                + "FROM cart_item ci JOIN product p ON p.product_id = ci.product_id "
-                + "JOIN category c ON c.category_id = p.category_id WHERE ci.cart_id = ? ORDER BY ci.cart_item_id";
+        String sql = "SELECT ci.Quantity, ci.CartPrice, p.*, c.ParentId, c.Name AS category_name, c.Slug, c.DetailKind "
+                + "FROM CartItem ci JOIN Product p ON p.ProductId = ci.ProductId "
+                + "JOIN Category c ON c.CategoryId = p.CategoryId WHERE ci.CartId = ? ORDER BY ci.CartItemId";
         try (PreparedStatement ps = Jdbc.prepare(connection, sql, cartId); ResultSet rs = ps.executeQuery()) {
             while (rs.next())
-                items.add(new CartItem(ProductDAOImpl.map(rs), rs.getInt("quantity"), rs.getLong("cart_price")));
+                items.add(new CartItem(ProductDAOImpl.map(rs), rs.getInt("Quantity"), rs.getLong("CartPrice")));
         }
         return new Cart(cartId, customerId, items);
     }
 
     @Override
     public void save(Cart cart) throws SQLException {
-        Jdbc.update(connection, "DELETE FROM cart_item WHERE cart_id = ?", cart.getId());
+        Jdbc.update(connection, "DELETE FROM CartItem WHERE CartId = ?", cart.getId());
         for (CartItem i : cart.getItems())
-            Jdbc.update(connection, "INSERT INTO cart_item (cart_id, product_id, quantity, cart_price) VALUES (?, ?, ?, ?)",
+            Jdbc.update(connection, "INSERT INTO CartItem (CartId, ProductId, Quantity, CartPrice) VALUES (?, ?, ?, ?)",
                     cart.getId(), i.getProduct().getId(), i.getQuantity(), i.getCartPrice());
-        Jdbc.update(connection, "UPDATE cart SET updated_at = ? WHERE cart_id = ?", Jdbc.ts(LocalDateTime.now()), cart.getId());
+        Jdbc.update(connection, "UPDATE Cart SET UpdatedAt = ? WHERE CartId = ?", Jdbc.ts(LocalDateTime.now()), cart.getId());
     }
 
     @Override
     public void clear(Cart cart) throws SQLException {
-        Jdbc.update(connection, "DELETE FROM cart_item WHERE cart_id = ?", cart.getId());
-        Jdbc.update(connection, "UPDATE cart SET updated_at = ? WHERE cart_id = ?", Jdbc.ts(LocalDateTime.now()), cart.getId());
+        Jdbc.update(connection, "DELETE FROM CartItem WHERE CartId = ?", cart.getId());
+        Jdbc.update(connection, "UPDATE Cart SET UpdatedAt = ? WHERE CartId = ?", Jdbc.ts(LocalDateTime.now()), cart.getId());
     }
 }

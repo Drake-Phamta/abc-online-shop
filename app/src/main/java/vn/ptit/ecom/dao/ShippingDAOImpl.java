@@ -14,12 +14,12 @@ class ShippingDAOImpl implements ShippingDAO {
     @Override
     public void save(int orderId, Shipping s) throws SQLException {
         if (s.getId() == null) {
-            s.assignId(Jdbc.insert(connection, "INSERT INTO shipping (order_id, address_id, carrier, tracking_number, shipping_fee, "
-                            + "status, shipped_date, delivered_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            s.assignId(Jdbc.insert(connection, "INSERT INTO Shipping (OrderId, AddressId, Carrier, TrackingNumber, ShippingFee, "
+                            + "Status, ShippedDate, DeliveredDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                     orderId, s.getAddressId(), s.getCarrier(), s.getTrackingNumber(), s.getShippingFee(), s.getStatus().name(),
                     Jdbc.ts(s.getShippedDate()), Jdbc.ts(s.getDeliveredDate())));
         } else {
-            Jdbc.update(connection, "UPDATE shipping SET status = ?, delivered_date = ? WHERE shipping_id = ?",
+            Jdbc.update(connection, "UPDATE Shipping SET Status = ?, DeliveredDate = ? WHERE ShippingId = ?",
                     s.getStatus().name(), Jdbc.ts(s.getDeliveredDate()), s.getId());
         }
     }

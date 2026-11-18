@@ -2,7 +2,7 @@ package vn.ptit.ecom.model.product;
 
 import java.util.List;
 
-/** A book: a product with the attributes of the book_detail table. */
+/** A book: a product with the attributes of the BookDetail table. */
 public class BookDetail extends Product {
     private final String author;
     private final String publisher;

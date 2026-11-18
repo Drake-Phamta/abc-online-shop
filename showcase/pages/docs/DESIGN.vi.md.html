@@ -20,111 +20,119 @@
 </header>
 <main class="doc">
 <h1 id="design-data-model-and-class-design-of-the-implemented-slice">DESIGN: mô hình dữ liệu và thiết kế lớp của phần đã cài đặt</h1>
-<p>Đầu vào: SPEC.md, biểu đồ lớp phân tích (Hình 4.1 của tiểu luận, mười chín lớp của Test 01) và góp ý của giảng viên
-về Product. Đầu ra: <code>db/schema.sql</code> và các package dưới <code>app/src/main/java/vn/ptit/ecom</code>.</p>
-<h2 id="1-conceptual-model-entities-and-relationships">1. Mô hình khái niệm (thực thể và quan hệ)</h2>
+<p>Đầu vào: SPEC.md, biểu đồ lớp phân tích (A10 trong <code>vp/1_Analysis.vpp</code>, Hình 2.1 của tiểu luận) và góp ý của giảng
+viên về Product. Đầu ra: mô hình dữ liệu của <code>vp/2_DataModel.vpp</code>, <code>db/schema.sql</code> và các package dưới
+<code>app/src/main/java/vn/ptit/ecom</code>, được mô hình hoá trong <code>vp/3_Design.vpp</code>.</p>
+<h2 id="1-classes-and-relationships-analysis-model-a10">1. Lớp và quan hệ (mô hình phân tích A10)</h2>
 <p>Category (cây) 1 - 0..* Product; BookDetail, LaptopDetail, PhoneDetail, ApparelDetail là lớp con của Product (loại chi
 tiết của danh mục cho biết là lớp nào); Customer 1 - 0..* Address; Customer 1 - 0..1 Cart; Cart 1 - 0..* CartItem; CartItem 0..* - 1
 Product; Customer 1 - 0..* Order; Order 1 - 1..* OrderItem; OrderItem 0..* - 1 Product; Order 1 - 0..* Payment
 (Cash hoặc Credit); Order 1 - 0..1 Shipping; Shipping 0..* - 1 Address; Order 1 - 1..* OrderEvent; Customer có thể là VIP 0..1,
 New 0..1; Staff (Sales hoặc Warehouse).</p>
-<h2 id="2-from-the-analysis-model-to-the-revised-physical-model">2. Từ mô hình phân tích đến mô hình vật lý đã chỉnh sửa</h2>
+<h2 id="2-from-the-analysis-model-to-the-database">2. Từ mô hình phân tích đến cơ sở dữ liệu</h2>
+<p>Mô hình dữ liệu không vẽ tay. Trong <code>vp/2_DataModel.vpp</code>, các lớp của A10 trở thành sơ đồ lớp D1: mỗi thuộc tính có
+kiểu và multiplicity (1 = NOT NULL, 0..1 = NULL), mỗi lớp có thuộc tính định danh và stereotype «ORM Persistable», mỗi
+đầu liên kết có role name và multiplicity, ba quan hệ khái quát hoá dùng chiến lược kế thừa Table per subclass. Lệnh
+Synchronize to Entity Relationship Diagram của VP sinh ra ERD D2 (20 bảng, 122 cột, 22 khoá ngoại); chỉnh tay chỉ có
+tên cột khoá ngoại (<code>CategoryCategoryId</code> thành <code>CategoryId</code>, khoá cha của danh mục thành <code>ParentId</code>), đổi bảng <code>Order</code>
+thành <code>Orders</code> (ORDER là từ khoá SQL) và bố cục. Tools &gt; DB &gt; Generate Database (SQLite) ghi ra <code>db/vp/vp_ddl.sql</code>.
+<code>db/make_schema.py</code> chép mọi câu CREATE TABLE của DDL đó vào <code>db/schema.sql</code> và thêm các luật mà mô hình dữ liệu không
+chứa được (34 CHECK, 9 UNIQUE, 5 ON DELETE CASCADE, mỗi luật đánh dấu <code>-- rule</code>); <code>db/compare_schema.py</code> kiểm tra hai bên
+vẫn cùng bảng, cột, kiểu, NOT NULL, khoá và khoá ngoại.</p>
 <div class="tablewrap"><table>
 <thead>
 <tr>
-<th>Thành phần của mô hình phân tích (Hình 4.1)</th>
-<th>Thiết kế sau chỉnh sửa</th>
+<th>Lớp phân tích (A10)</th>
+<th>Bảng sinh ra (D2)</th>
+<th>Luật thêm trong schema.sql</th>
 <th>Lý do</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Book, Electronics, Laptop, Mobile, Clothes, Shoes, mỗi lớp có productId, price, stockQuantity</td>
-<td><code>product</code> giữ định danh và các thuộc tính chung (sku, name, brand, price, stock, status); <code>category</code> phân loại; mỗi bộ thuộc tính có một bảng chi tiết riêng: <code>book_detail</code>, <code>laptop_detail</code>, <code>phone_detail</code>, <code>apparel_detail</code></td>
-<td>góp ý của giảng viên; dữ liệu chung chỉ lưu một lần; danh mục mới dùng bộ thuộc tính đã có thì không cần bảng mới</td>
+<td>Category (cây)</td>
+<td><code>Category</code>, <code>ParentId</code> trỏ về chính nó</td>
+<td>UNIQUE <code>Slug</code>; CHECK <code>DetailKind</code> thuộc BOOK, LAPTOP, PHONE, APPAREL</td>
+<td>loại chi tiết cho biết sản phẩm của danh mục thuộc lớp con nào</td>
 </tr>
 <tr>
-<td>Khái quát hóa Electronics (warrantyMonths)</td>
-<td>danh mục cha &quot;Electronics&quot;; thời hạn bảo hành nằm trong các bảng chi tiết của laptop và phone</td>
-<td>việc nhóm là dữ liệu, không phải cấu trúc</td>
+<td>Product và các lớp con BookDetail, LaptopDetail, PhoneDetail, ApparelDetail</td>
+<td><code>Product</code> và mỗi lớp con một bảng; <code>ProductId</code> vừa là khoá chính vừa là khoá ngoại tới <code>Product</code></td>
+<td>UNIQUE <code>Sku</code>; CHECK <code>Price &gt; 0</code>, <code>StockQuantity &gt;= 0</code>, <code>Status</code> thuộc ACTIVE, HIDDEN; ON DELETE CASCADE ở bốn bảng chi tiết</td>
+<td>góp ý của giảng viên; Table per subclass giữ một khoá <code>ProductId</code> cho CartItem và OrderItem</td>
 </tr>
 <tr>
-<td>Clothes và Shoes</td>
-<td>một bảng <code>apparel_detail</code> (nhãn kích cỡ, màu sắc, chất liệu)</td>
-<td>bộ thuộc tính giống nhau</td>
+<td>Customer và các lớp con CustomerVIP, CustomerNew</td>
+<td><code>Customer</code>, <code>CustomerVIP</code>, <code>CustomerNew</code>, PK = FK</td>
+<td>UNIQUE <code>Email</code>; CHECK <code>DiscountRate</code> lớn hơn 0 và không quá 0.5</td>
+<td>Table per subclass</td>
 </tr>
 <tr>
-<td>{xor} từ CartItem/OrderItem tới bốn lớp</td>
-<td>FK thông thường tới <code>product</code></td>
-<td>mỗi dòng tham chiếu đúng một sản phẩm</td>
-</tr>
-<tr>
-<td>Customer ◆ FullName</td>
-<td>các cột tên của <code>customer</code></td>
-<td>thành phần quan hệ 1 đến 1, không có định danh</td>
-</tr>
-<tr>
-<td>Customer ◇ Address</td>
-<td>bảng <code>address</code>, thêm người nhận và số điện thoại</td>
+<td>Address</td>
+<td><code>Address</code> có người nhận và số điện thoại</td>
+<td>CHECK <code>IsDefault</code> thuộc 0, 1</td>
 <td>giao hàng cần có người nhận</td>
 </tr>
 <tr>
-<td>CustomerVIP, CustomerNew</td>
-<td><code>customer_vip</code>, <code>customer_new</code>, PK = FK</td>
-<td>mỗi lớp con một bảng</td>
+<td>Cart, CartItem</td>
+<td><code>Cart</code>, <code>CartItem</code></td>
+<td>UNIQUE <code>Cart.CustomerId</code>; UNIQUE (<code>CartId</code>, <code>ProductId</code>); CHECK <code>Quantity &gt; 0</code>; ON DELETE CASCADE từ <code>Cart</code></td>
+<td>BR02</td>
 </tr>
 <tr>
-<td>Order (phân tích)</td>
-<td><code>customer_order</code> với trạng thái, phương thức thanh toán, tạm tính, giảm giá, phí vận chuyển, tổng (CHECK total = subtotal − discount + fee)</td>
-<td>BR04 được lưu thành một dữ kiện có ràng buộc kiểm tra</td>
+<td>Order</td>
+<td><code>Orders</code> với trạng thái, phương thức thanh toán, tạm tính, giảm giá, phí vận chuyển, tổng</td>
+<td>CHECK <code>TotalAmount = Subtotal - Discount + ShippingFee</code>; CHECK bảy trạng thái</td>
+<td>BR04 được lưu thành dữ kiện có kiểm tra, BR09</td>
 </tr>
 <tr>
-<td>OrderItem.unitPrice</td>
-<td><code>order_item.unit_price</code> + bản chụp <code>product_name</code></td>
-<td>dữ kiện lịch sử (ngoại lệ của 3NF đã được giải thích)</td>
+<td>OrderItem</td>
+<td><code>OrderItem</code> với <code>UnitPrice</code> và bản chụp <code>ProductName</code></td>
+<td>UNIQUE (<code>OrderId</code>, <code>ProductId</code>); CHECK <code>Quantity &gt; 0</code>, <code>UnitPrice &gt; 0</code></td>
+<td>BR03, ngoại lệ 3NF được giải thích trong tiểu luận</td>
 </tr>
 <tr>
-<td>Payment, PayCash, PayCredit (cardNumber)</td>
-<td><code>payment</code> + <code>pay_cash</code> / <code>pay_credit</code> (bốn số cuối, ngày hết hạn, token của nhà cung cấp)</td>
-<td>BR07</td>
+<td>OrderEvent</td>
+<td><code>OrderEvent</code></td>
+<td></td>
+<td>lịch sử mà UC09 hiển thị</td>
+</tr>
+<tr>
+<td>Payment và các lớp con PayCash, PayCredit</td>
+<td><code>Payment</code>, <code>PayCash</code>, <code>PayCredit</code> (bốn số cuối, ngày hết hạn, token của nhà cung cấp)</td>
+<td>CHECK <code>Method</code>, <code>Amount &gt; 0</code>, <code>Status</code></td>
+<td>BR07: không có cột cho số thẻ</td>
 </tr>
 <tr>
 <td>Shipping</td>
-<td><code>shipping</code> với UNIQUE(order_id), UNIQUE(tracking_number)</td>
+<td><code>Shipping</code></td>
+<td>UNIQUE <code>OrderId</code>, UNIQUE <code>TrackingNumber</code></td>
 <td>BR10</td>
 </tr>
 <tr>
-<td>(không có trong phân tích) Staff</td>
-<td><code>staff</code> với vai trò SALES hoặc WAREHOUSE</td>
-<td>các tác nhân của UC14, UC15 cần có tài khoản (UC02)</td>
-</tr>
-<tr>
-<td>(không có trong phân tích) lịch sử trạng thái</td>
-<td><code>order_event</code></td>
-<td>UC09 hiển thị lịch sử</td>
-</tr>
-<tr>
-<td>mã varchar (C001, O001)</td>
-<td>khóa số nguyên; mã được định dạng khi hiển thị (ORD-000123)</td>
-<td>khóa đơn giản hơn, do cơ sở dữ liệu sinh ra</td>
+<td>Staff</td>
+<td><code>Staff</code> có vai trò</td>
+<td>UNIQUE <code>Email</code>; CHECK <code>Role</code> thuộc SALES, WAREHOUSE</td>
+<td>tác nhân của UC14, UC15 cần tài khoản (UC02), BR13</td>
 </tr>
 </tbody>
 </table></div>
 <p>Chuẩn hóa: 1NF (các cột nguyên tử, nhóm lặp tách thành bảng riêng), 2NF (khóa một cột; các khóa UNIQUE gồm nhiều cột
-không phải khóa chính), 3NF trừ hai giá trị lịch sử có chủ ý (<code>order_item.unit_price</code>,
-<code>order_item.product_name</code>) và các tổng tiền được lưu của đơn hàng, vốn bằng giá trị tính toán lúc đặt hàng và được
+không phải khóa chính), 3NF trừ hai giá trị lịch sử có chủ ý (<code>OrderItem.UnitPrice</code>,
+<code>OrderItem.ProductName</code>) và các tổng tiền được lưu của đơn hàng, vốn bằng giá trị tính toán lúc đặt hàng và được
 bảo vệ bởi một ràng buộc CHECK.</p>
 <h2 id="3-packages-and-classes-three-layers">3. Package và lớp (ba tầng)</h2>
-<p>Các lớp thiết kế trong VP (biểu đồ G1 đến G4b và G8, thư mục &quot;4 Design&quot;) và mã nguồn có cùng package, lớp,
-thuộc tính và thao tác; <code>tests/design_vs_code.py</code> kiểm tra điều này với các lớp đã biên dịch và các view JS
+<p>Các lớp thiết kế trong VP (biểu đồ G1 đến G4b và G8, thư mục &quot;5 Design&quot; của <code>vp/3_Design.vpp</code>) và mã nguồn có cùng
+package, lớp, thuộc tính và thao tác; <code>tests/design_vs_code.py</code> kiểm tra điều này với các lớp đã biên dịch và các view JS
 (80 lớp: 72 lớp Java với 169 thuộc tính và 134 thao tác, 8 lớp view với 25 thao tác, và 48 lời gọi trong
 các biểu đồ tuần tự thiết kế G5, G6, G7 và G9), đồng thời kiểm tra rằng không file nào của package <code>ai</code> import phần khác của ứng dụng.
-<code>tests/vpgen_vs_code.py</code> đi từ phía ngược lại: 81 file mà Instant Generator của VP ghi ra từ cùng mô hình
-(<code>docs/evidence/vp_codegen</code>) đều phải có trong mã nguồn với cùng các field và phương thức (190 field, 157 phương thức).</p>
+<code>tests/vpgen_vs_code.py</code> đi từ phía ngược lại: 80 file mà Instant Generator của VP ghi ra từ cùng mô hình
+(<code>docs/evidence/vp_codegen_v5</code>) đều phải có trong mã nguồn với cùng các field và phương thức (72 lớp, 173 field,
+157 phương thức, và 25 thao tác của 8 lớp view).</p>
 <div class="tablewrap"><table>
 <thead>
 <tr>
-<th>Tầng (G0)</th>
+<th>Tầng (G1)</th>
 <th>Package</th>
 <th>Các lớp</th>
 <th>Trách nhiệm</th>
@@ -185,7 +193,7 @@ việc chuyển đó là câu trả lời cho câu hỏi &quot;logic nghiệp v�
 <li>Controller lấy id khách hàng từ session (BR08) và gọi <code>OrderService.placeOrder(customerId, addressId, method, expectedTotal)</code>.</li>
 <li>Service chạy một giao dịch, <code>Database.inTransaction(work)</code>; trong đó: <code>CustomerDAO.findById</code>, <code>CustomerDAO.address</code> (BR06), <code>CartDAO.findOrCreate</code>, <code>Order.place(customer, cart, address, method, now)</code>, hàm này kiểm tra giỏ hàng (UC21, BR03) và tính các tổng tiền (BR04).</li>
 <li>Tổng tiền thay đổi so với <code>expectedTotal</code> → <code>RuleViolation BR03</code>, giao dịch được rollback và khách hàng xác nhận lại.</li>
-<li><code>ProductDAO.reserveStock(productId, quantity)</code> cho mỗi dòng: <code>UPDATE product SET stock_quantity = stock_quantity − ? WHERE product_id = ? AND status = 'ACTIVE' AND stock_quantity &gt;= ?</code>; 0 dòng bị ảnh hưởng → <code>RuleViolation BR05</code> và rollback (được kiểm thử bởi <code>CheckoutFlowTest.aFailedOrderWriteRollsBackTheStockReservation</code>).</li>
+<li><code>ProductDAO.reserveStock(productId, quantity)</code> cho mỗi dòng: <code>UPDATE Product SET StockQuantity = StockQuantity - ? WHERE ProductId = ? AND Status = 'ACTIVE' AND StockQuantity &gt;= ?</code>; 0 dòng bị ảnh hưởng → <code>RuleViolation BR05</code> và rollback (được kiểm thử bởi <code>CheckoutFlowTest.aFailedOrderWriteRollsBackTheStockReservation</code>).</li>
 <li><code>OrderDAO.insert(order)</code> (các dòng hàng và sự kiện đầu tiên), <code>CartDAO.clear(cart)</code>, commit. Đơn hàng là <code>PENDING_PAYMENT</code> (thẻ) hoặc <code>PLACED</code> (thanh toán khi nhận hàng).</li>
 <li>Thẻ (G7): <code>PaymentForm.submitPayment(order, card)</code> → <code>POST /api/orders/{id}/payments</code> → <code>PaymentController.pay</code> dựng <code>CardData</code> (kiểm tra định dạng, Luhn và ngày hết hạn) → <code>PaymentService.pay(orderId, customerId, card)</code>: giao dịch 1 nạp đơn hàng (BR08) và kiểm tra nó đang chờ thanh toán bằng thẻ; <code>CardProvider.charge(order code, total, card)</code> chạy ngoài mọi giao dịch, nên không có khóa cơ sở dữ liệu nào bị giữ trong lúc nhà cung cấp trả lời; giao dịch 2 nạp lại đơn hàng, <code>Order.recordCardPayment(payment, now)</code> (chỉ PAID khi được chấp nhận, BR07, BR09), <code>PaymentDAO.saveAll</code>, <code>OrderDAO.saveProgress</code>.</li>
 </ol>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>build.xml · ABC Online Shop</title>
+<link rel="stylesheet" href="../../../../../app/src/main/resources/static/fonts/fonts.css">
+<link rel="stylesheet" href="../../../../../showcase/assets/showcase.css">
+<link rel="stylesheet" href="../../../../assets/code.css">
+<script src="../../../../../showcase/pages/manifest.js" defer></script>
+<script src="../../../../../showcase/assets/showcase.js" defer></script>
+</head>
+<body class="viewer" data-file="docs/evidence/vp_codegen_v5/build.xml">
+<header class="vbar">
+  <a class="vback" href="../../../../../showcase/index.html" data-i18n="back">← Showcase</a>
+  <span class="vpath">docs/evidence/vp_codegen_v5/<b>build.xml</b></span>
+  <span class="vactions">
+    <button type="button" class="vbtn local-only" data-reveal="docs/evidence/vp_codegen_v5/build.xml" data-i18n="reveal">Show in File Explorer</button>
+    <a class="vbtn" data-github="docs/evidence/vp_codegen_v5/build.xml" hidden data-i18n="github">View on GitHub</a>
+  </span>
+</header>
+<div class="codewrap"><p class="codeinfo"><span data-num="17" data-i18n="lines">17 lines</span> · 447 bytes · XML</p><div class="code">
+<div class="ln" id="L1"><a href="#L1">1</a><span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span></div>
+<div class="ln" id="L2"><a href="#L2">2</a><span><span class="nt">&lt;project</span><span class="w"> </span><span class="na">basedir=</span><span class="s">&quot;.&quot;</span><span class="w"> </span><span class="na">default=</span><span class="s">&quot;build&quot;</span><span class="nt">&gt;</span></span></div>
+<div class="ln" id="L3"><a href="#L3">3</a><span><span class="w">	</span><span class="nt">&lt;path</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;build.classpath&quot;</span><span class="nt">&gt;</span></span></div>
+<div class="ln" id="L4"><a href="#L4">4</a><span><span class="w">		</span><span class="nt">&lt;pathelement</span><span class="w"> </span><span class="na">location=</span><span class="s">&quot;classes&quot;</span><span class="nt">/&gt;</span></span></div>
+<div class="ln" id="L5"><a href="#L5">5</a><span><span class="w">	</span><span class="nt">&lt;/path&gt;</span></span></div>
+<div class="ln" id="L6"><a href="#L6">6</a><span><span class="w">	</span><span class="nt">&lt;target</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;init&quot;</span><span class="nt">&gt;</span></span></div>
+<div class="ln" id="L7"><a href="#L7">7</a><span><span class="w">		</span><span class="nt">&lt;mkdir</span><span class="w"> </span><span class="na">dir=</span><span class="s">&quot;classes&quot;</span><span class="nt">/&gt;</span></span></div>
+<div class="ln" id="L8"><a href="#L8">8</a><span><span class="w">	</span><span class="nt">&lt;/target&gt;</span></span></div>
+<div class="ln" id="L9"><a href="#L9">9</a><span><span class="w">	</span><span class="nt">&lt;target</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;clean&quot;</span><span class="nt">&gt;</span></span></div>
+<div class="ln" id="L10"><a href="#L10">10</a><span><span class="w">		</span><span class="nt">&lt;delete</span><span class="w"> </span><span class="na">dir=</span><span class="s">&quot;classes&quot;</span><span class="nt">/&gt;</span></span></div>
+<div class="ln" id="L11"><a href="#L11">11</a><span><span class="w">	</span><span class="nt">&lt;/target&gt;</span></span></div>
+<div class="ln" id="L12"><a href="#L12">12</a><span><span class="w">	</span><span class="nt">&lt;target</span><span class="w"> </span><span class="na">depends=</span><span class="s">&quot;init&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;build&quot;</span><span class="nt">&gt;</span></span></div>
+<div class="ln" id="L13"><a href="#L13">13</a><span><span class="w">		</span><span class="nt">&lt;javac</span><span class="w"> </span><span class="na">srcdir=</span><span class="s">&quot;.&quot;</span><span class="w"> </span><span class="na">destdir=</span><span class="s">&quot;classes&quot;</span><span class="w"> </span><span class="na">source=</span><span class="s">&quot;1.4&quot;</span><span class="nt">&gt;</span></span></div>
+<div class="ln" id="L14"><a href="#L14">14</a><span><span class="w">			</span><span class="nt">&lt;classpath</span><span class="w"> </span><span class="na">refid=</span><span class="s">&quot;build.classpath&quot;</span><span class="nt">/&gt;</span></span></div>
+<div class="ln" id="L15"><a href="#L15">15</a><span><span class="w">		</span><span class="nt">&lt;/javac&gt;</span></span></div>
+<div class="ln" id="L16"><a href="#L16">16</a><span><span class="w">	</span><span class="nt">&lt;/target&gt;</span></span></div>
+<div class="ln" id="L17"><a href="#L17">17</a><span><span class="nt">&lt;/project&gt;</span></span></div>
+</div></div>
+</body>
+</html>

@@ -28,7 +28,7 @@ p("The course distinguishes three levels that are easy to mix up. A **business n
 p("A second distinction is between functional and non-functional requirements [3]. Functional requirements say what "
   "the system does: register a customer, validate a cart, record a shipment status. Non-functional requirements "
   "say how well it must do it: response time, availability, security, maintainability. Both kinds must be "
-  "testable. A requirement that cannot be checked by a test or an inspection is only a wish, and Section 1.14 shows "
+  "testable. A requirement that cannot be checked by a test or an inspection is only a wish, and Section 1.15 shows "
   "three wishes from my first draft and how I rewrote them.")
 
 h2("1.2. Investigation Approach")
@@ -77,29 +77,20 @@ table("Major business activities of ABC Online Shop", [
     ["Review management", "Collect and manage customer feedback after a purchase"],
     ["Reporting", "Consolidate sales, order and stock information for management"],
 ], [5.2, 10.8], size=10.5)
-p("These activities are not independent. Figure 1.1 is the high-level business process. In Assignment 01 I drew it "
-  "as a chain of eight boxes; for this version I modelled it in Visual Paradigm as a BPMN collaboration [12], because a "
-  "chain of boxes cannot show who does each step or where the shop waits for a partner. Each participant is a pool: "
-  "the customer, the shop with one lane per role, and the payment and shipping providers, drawn as black boxes "
-  "because only their messages matter to the shop. Sequence flows (solid) stay inside a pool, message flows (dashed, "
-  "with a small circle at the sender) cross between pools: the customer's order starts the shop's process, the "
-  "payment provider answers the payment request, and the shipping provider reports the delivery status, which the "
-  "shop passes on to the customer. The dotted data associations are the reporting path of Assignment 01: updating "
-  "the stock writes the order and stock records, and the manager's reporting reads them. Reporting is a process of "
-  "its own with its own start event, so a report shows the stock after every order, not only at the end of the day.")
-landscape()
-figure("vp/png/B1.png", "High-level business process of ABC Online Shop as a BPMN collaboration: pools, lanes, sequence flows and message flows (diagram B1)", width_cm=25.5, max_h_cm=15.5)
-portrait()
+p("These activities are not independent; they form one chain from the customer's order to the report. The "
+  "customer's order starts the shop's work: the shop checks the cart, asks the payment provider for a payment when "
+  "the customer pays by card, reserves the stock, and hands the parcel to the shipping provider, which reports the "
+  "delivery status back; the shop passes that status on to the customer. Every step writes an order or stock "
+  "record, and the manager's reporting reads those records. Reporting is therefore not the last step of the day "
+  "but a reading of the same records at any time, so a report shows the stock after every order.")
 p("Order processing is the activity with the most connections: it reads product, price, promotion and stock data, "
   "writes order and payment records, and hands work to the warehouse and to the shipping provider. When I later "
-  "chose which use cases to specify in detail (Chapter 2), I started from this activity for exactly that reason.")
+  "chose which use cases to specify in detail (Section 1.21), I started from this activity for exactly that reason.")
 
 h2("1.4. Stakeholder Analysis")
 p("A stakeholder is anyone who uses the system, provides information to it or is affected by its results. I "
   "classified the stakeholders as internal (people inside the shop) or external (customers and partner "
-  "organizations). Table 1.3 lists them with their role and their main interest; Figure 1.2 is the stakeholder map, "
-  "drawn with the motivation elements of ArchiMate [13]: a stakeholder is associated with the concern (driver) it has, "
-  "and an influence arrow shows that one concern depends on another.", keep=True)
+  "organizations). Table 1.3 lists them with their role and their main interest.", keep=True)
 table("Stakeholders, roles and interests", [
     ["Stakeholder", "Type", "Role", "Main interest"],
     ["Customer", "External", "Browses, buys, pays, tracks orders, writes reviews", "Correct product and stock data, reliable payment, clear delivery status"],
@@ -111,12 +102,11 @@ table("Stakeholders, roles and interests", [
     ["Payment Provider", "External", "Processes electronic payments", "Correct requests, unambiguous result exchange"],
     ["Shipping Provider", "External", "Delivers and returns shipment status", "Correct recipient data and status exchange"],
 ], [3.0, 1.9, 5.3, 5.8], size=10.5)
-figure("vp/png/B2.png", "Stakeholder map in ArchiMate notation: internal and external stakeholders and the concerns they share (diagram B2)", width_cm=16, max_h_cm=10)
-p("The map in Assignment 01 only placed the stakeholders around the shop. Drawing their concerns showed what the "
-  "table alone hides: eight stakeholders share only two kinds of operational information, accurate product, price "
-  "and stock data, and the current status of orders, payments and deliveries. The manager's concern, timely sales "
-  "and stock information, is not a third source at all; the influence arrows show that it is built from the other "
-  "two. The stakeholders therefore depend on each other through shared information. Warehouse staff can only pick an "
+p("Reading the last column of Table 1.3 from top to bottom shows what the list of names hides: eight stakeholders "
+  "share only two kinds of operational information, accurate product, price and stock data, and the current status "
+  "of orders, payments and deliveries. The manager's interest, timely sales and stock information, is not a third "
+  "source at all; it is built from the other two. The stakeholders therefore depend on each other through shared "
+  "information. Warehouse staff can only pick an "
   "order if the order record is correct; sales staff can only "
   "answer a customer if the payment and shipping status are current; the manager's report is only as good as all "
   "of these records together. A weakness in one source of information therefore hurts several stakeholders at once, "
@@ -125,7 +115,7 @@ p("I also decided early which stakeholders are actors of the future system. Cust
   "staff, warehouse staff and managers interact with it directly. The payment and shipping providers interact with "
   "it as external systems. The supplier was the uncertain case: in a small shop supply information often arrives by "
   "e-mail and is typed in by staff. I kept the supplier as an actor that provides supply information (UC19 in "
-  "Chapter 2) because the case lists supply coordination as a business activity, but I marked the related "
+  "Section 1.20) because the case lists supply coordination as a business activity, but I marked the related "
   "requirement FR28 as Should Have rather than Must Have.")
 
 h2("1.5. Information Analysis")
@@ -159,10 +149,8 @@ table("Information catalogue", [
 h2("1.6. Current Problems")
 p("The case describes seven problems. When I first read them they looked like a list of unrelated complaints. "
   "Writing the likely cause next to each one (Table 1.5) showed that they share three root causes: information is kept in separate places, many updates are made by "
-  "hand, and data is maintained inconsistently. Figure 1.3 is the problem tree that summarizes this "
-  "reasoning: three root causes at the bottom, one central problem in the middle and three groups of consequences "
-  "at the top. Each box is an ArchiMate assessment, the result of analysing a state of affairs, and each arrow is an "
-  "influence that reads \"contributes to\".", keep=True)
+  "hand, and data is maintained inconsistently. Together they lead to one central problem, that nobody can trust "
+  "the shop's information at the moment a decision is made, and the seven problems are its consequences.", keep=True)
 table("Current problems, likely causes and consequences", [
     ["Problem", "Likely cause", "Business consequence"],
     ["Inconsistent product information", "Details kept by different staff or in different files", "Conflicting information, time spent on corrections, lower trust"],
@@ -173,11 +161,10 @@ table("Current problems, likely causes and consequences", [
     ["Fragmented customer information", "Customer records stored in several places", "Duplicates and outdated contact data"],
     ["Limited real-time management information", "Separated data, manual consolidation", "Managers see problems late and decide late"],
 ], [4.0, 5.6, 6.4], size=10.5)
-figure("vp/png/B3.png", "Problem tree in ArchiMate notation: root causes, central problem and consequences (diagram B3)", width_cm=16, max_h_cm=10)
-p("The tree changed how I wrote the requirements. Instead of answering each symptom separately (a better report "
+p("This changed how I wrote the requirements. Instead of answering each symptom separately (a better report "
   "here, a status screen there), the requirements aim at the root causes: one shared source of data and automated "
-  "updates triggered by business events. Most of the functional requirements in Section 1.10 can be read as "
-  "\"when event X happens, the system updates record Y\", and that is a direct consequence of the problem tree.")
+  "updates triggered by business events. Most of the functional requirements in Section 1.11 can be read as "
+  "\"when event X happens, the system updates record Y\", and that is a direct consequence of the three causes.")
 
 h2("1.7. Scope, Boundary and Context")
 p("With the problems understood, the next decision is how much of the business the system should cover. I "
@@ -188,19 +175,11 @@ p("With the problems understood, the next decision is how much of the business t
   "payment provider executes the transaction and the shipping provider moves the parcel.")
 p("Outside the boundary are the payment provider's transaction processing, the shipping provider's logistics, the "
   "supplier's own systems and any activity that does not serve the listed information needs. People are outside "
-  "the software boundary too, even when they use the system every day. Figure 1.4 shows the context diagram: the "
-  "system is one process, surrounded by eight external entities, the four staff roles and the customer on one side "
-  "and the three partner organizations on the other, with one named data flow in each direction. My Assignment 01 "
-  "version had six entities with one combined Administrator / Staff. Drawing it again as a level 0 data flow "
-  "diagram, the starting point of the level 1 DFD in Section 2.7, showed that the administrator, the sales staff and "
-  "the warehouse staff exchange different data with the system (catalogue updates, order status changes, stock "
-  "updates), so the combined entity became three.")
-landscape()
-figure("vp/png/R1.png", "Context diagram (level 0 data flow diagram) with the external entities and their data flows", width_cm=26.5, max_h_cm=14)
-portrait()
+  "the software boundary too, even when they use the system every day. The context diagram of Section 2.3 draws "
+  "this boundary with the eight external entities and the data that crosses it.")
 p("The boundary looked like a formality at the time, but it saved work later. Because card processing is outside "
-  "the boundary, the payment use case in Chapter 2 only sends a request and records a status, the Payment class in "
-  "Chapter 4 has no card-handling logic, and the security requirement NFR03 is about access to order data, not about "
+  "the boundary, the payment use case in Section 1.21 only sends a request and records a status, the Payment class "
+  "in Chapter 5 has no card-handling logic, and the security requirement NFR03 is about access to order data, not about "
   "card encryption. A wider boundary would have pulled a whole payment-security analysis into a course project.")
 
 h2("1.8. System Objectives")
@@ -237,9 +216,78 @@ table("Stakeholder needs (Assignment 02)", [
     ["SN14", "Supplier", "Provide product and replenishment information for recording", "Supply coordination"],
 ], [1.4, 2.9, 7.0, 4.7], size=10, center_cols=(0,))
 
-h2("1.10. Functional Requirements")
+h2("1.10. Business Rules")
+p("The needs say what the stakeholders want; the business rules say what the shop must never get wrong while it "
+  "does it. Thirteen rules (BR01 to BR13) govern what may be sold, how a cart and an order are priced, when stock "
+  "is taken, when an order counts as paid, and who may change what. The use case specifications, the analysis "
+  "model, the database and the code refer to them by their ID. Table 1.7 lists them.", keep=True)
+table("Business rules", [
+    ["ID", "Business rule"],
+    ["BR01", "Only a product with status ACTIVE can be added to a cart or ordered."],
+    ["BR02", "A cart holds at most one line per product; adding the same product again increases the quantity. The "
+             "quantity of a line is between 1 and the current stock."],
+    ["BR03", "A cart line keeps the price shown when it was added. At checkout every line is validated against the "
+             "current price, status and stock; if a price changed, the line takes the current price and the customer "
+             "must confirm again. The order line then keeps the name and the unit price of the purchase, so a later "
+             "change in the catalogue does not alter a past order."],
+    ["BR04", "Order total = subtotal - VIP discount + shipping fee. The subtotal is the sum of quantity × unit price, "
+             "the VIP discount is subtotal × discount rate, rounded, and the shipping fee is 30,000 VND, free "
+             "when the subtotal after the discount is at least 500,000 VND. Amounts are whole VND."],
+    ["BR05", "Stock is reserved when the order is created and never becomes negative; it is released when the order "
+             "is cancelled."],
+    ["BR06", "An order needs a delivery address that belongs to the customer."],
+    ["BR07", "An order becomes PAID only after the payment provider approves the payment. The shop keeps the card "
+             "holder, the last four digits, the expiry and the provider token, never the full card number."],
+    ["BR08", "A customer sees and changes only their own cart and their own orders."],
+    ["BR09", "The status of an order changes only along the allowed transitions of Table 1.9, by the actor named "
+             "there."],
+    ["BR10", "An order has at most one shipment. It is created when the order is shipped, with the carrier, the "
+             "tracking number and the fee."],
+    ["BR11", "A cash-on-delivery order gets its cash payment record when it is delivered."],
+    ["BR12", "Warehouse staff may set the stock of an existing product to any quantity of 0 or more; stock is never "
+             "negative."],
+    ["BR13", "Staff functions need a staff account with the matching role: SALES for orders, WAREHOUSE for stock."],
+], [1.6, 14.4], size=10, center_cols=(0,))
+
+h3("1.10.1. Transaction States")
+p("Four records change their status during a sale. Table 1.8 defines the states of each, and Table 1.9 gives the "
+  "allowed changes of an order, the transitions that BR09 refers to. Chapter 2 draws them in the activity diagram "
+  "of Process Orders, and Chapter 5 turns Table 1.9 into the class OrderStatus.", keep=True)
+table("Transaction state definitions", [
+    ["Record", "States", "Meaning"],
+    ["Product", "ACTIVE, HIDDEN", "Only an ACTIVE product is shown and can be bought (BR01). A hidden product stays in "
+                                  "the carts and orders that already have it."],
+    ["Order", "PENDING_PAYMENT, PLACED, PAID, PROCESSING, SHIPPED, DELIVERED, CANCELLED",
+     "PENDING_PAYMENT is a card order waiting for the provider, with its stock already reserved; PLACED is a "
+     "cash-on-delivery order. PAID means the card payment was approved (BR07). PROCESSING, SHIPPED and DELIVERED "
+     "follow the parcel. CANCELLED releases the stock (BR05)."],
+    ["Payment", "APPROVED, DECLINED, REFUNDED, COMPLETED",
+     "APPROVED and DECLINED are the provider's answer to a card payment; an order may have several declined "
+     "attempts. An approved payment of a cancelled order becomes REFUNDED. COMPLETED is the cash collected on "
+     "delivery (BR11)."],
+    ["Shipping", "IN_TRANSIT, DELIVERED", "Created when the order is shipped (BR10); DELIVERED when the carrier "
+                                           "confirms the delivery."],
+], [2.2, 4.6, 9.2], size=10)
+table("Allowed status changes of an order", [
+    ["From", "To", "Who", "What else happens"],
+    ["(new)", "PENDING_PAYMENT", "Customer, card", "Order and lines created, stock reserved, cart emptied"],
+    ["(new)", "PLACED", "Customer, cash on delivery", "Order and lines created, stock reserved, cart emptied"],
+    ["PENDING_PAYMENT", "PAID", "Payment provider", "Payment APPROVED recorded with the card details"],
+    ["PENDING_PAYMENT", "CANCELLED", "Customer", "Stock released"],
+    ["PLACED", "PROCESSING", "Sales Staff", ""],
+    ["PLACED", "CANCELLED", "Customer or Sales Staff", "Stock released"],
+    ["PAID", "PROCESSING", "Sales Staff", ""],
+    ["PAID, PROCESSING", "CANCELLED", "Sales Staff", "Stock released; an approved payment becomes REFUNDED"],
+    ["PROCESSING", "SHIPPED", "Sales Staff", "Shipping created with carrier and tracking number"],
+    ["SHIPPED", "DELIVERED", "Sales Staff", "Shipping DELIVERED; cash on delivery: payment COMPLETED"],
+], [3.6, 3.4, 3.8, 5.2], size=10)
+p("A declined card payment does not change the status: the order stays PENDING_PAYMENT, the attempt is written to "
+  "its history and the customer may try again. Every change of status is written to the history of the order "
+  "(OrderEvent) with the time and the person who made it.")
+
+h2("1.11. Functional Requirements")
 p("Each functional requirement is one \"The system shall ...\" sentence with one actor and one observable result, so "
-  "that it can be tested on its own. I grouped them by business area and gave each a MoSCoW priority. Table 1.7 "
+  "that it can be tested on its own. I grouped them by business area and gave each a MoSCoW priority. Table 1.10 "
   "lists all twenty-eight; the wording is shortened slightly to fit the table, the full sentences are in Assignment "
   "02.", keep=True)
 table("Functional requirements FR01 to FR28", [
@@ -279,10 +327,10 @@ p("Two requirements took more thought than the others. FR09 (validate the cart a
   "sends a request and records a status, and it says \"against the correct order\" because a payment result that "
   "cannot be matched to its order is worse than no result at all.")
 
-h2("1.11. Non-functional Requirements")
+h2("1.12. Non-functional Requirements")
 p("Non-functional requirements were the hardest part to write well, because the natural first version of each one "
   "is an adjective (fast, secure, reliable). I forced every NFR to contain a measurable condition or a checkable "
-  "rule. Table 1.8 lists the ten NFRs.", keep=True)
+  "rule. Table 1.11 lists the ten NFRs.", keep=True)
 table("Non-functional requirements NFR01 to NFR10", [
     ["ID", "Category", "Requirement", "Priority"],
     ["NFR01", "Performance", "95% of normal product searches return results within 3 s with up to 200 concurrent users", "Must"],
@@ -297,14 +345,14 @@ table("Non-functional requirements NFR01 to NFR10", [
     ["NFR10", "Data integrity", "Order confirmation is blocked when product, quantity, price, stock, delivery or payment linkage data is missing or invalid", "Must"],
 ], [1.5, 2.7, 10.0, 1.8], size=10, center_cols=(0, 3))
 p("NFR09 deserves a comment because it looked weak at first: \"separable\" is hard to measure. I kept it because it "
-  "can be checked by inspection, and in Chapter 5 it became automated checks. The shop application is checked against "
+  "can be checked by inspection, and in Chapter 6 it became automated checks. The shop application is checked against "
   "its three-layer design class by class, and the same check fails if a class of the AI package imports any other "
   "part of the application, which are concrete, repeatable checks of exactly this requirement.")
 
-h2("1.12. Requirement Cards and Acceptance Criteria")
+h2("1.13. Requirement Cards and Acceptance Criteria")
 p("A one-line requirement is good for a table but too short for the people who must build and test it. For the "
   "requirements on the order path I kept a fuller record, a requirement card, with the attributes that the course "
-  "recommends: source, rationale, fit criterion, dependencies and status. Table 1.9 is the card for FR09, the "
+  "recommends: source, rationale, fit criterion, dependencies and status. Table 1.12 is the card for FR09, the "
   "requirement that caused the most discussion.", keep=True)
 table("Requirement card for FR09 Validate cart at checkout", [
     ["Attribute", "Value"],
@@ -315,11 +363,11 @@ table("Requirement card for FR09 Validate cart at checkout", [
     ["Priority", "Must have"],
     ["Dependencies", "FR06 (current price and availability), FR15 (stock check), NFR10 (data integrity)"],
     ["Use case", "UC21 Validate Cart, included by UC07 Place Order / Checkout"],
-    ["Status", "Agreed in Assignment 02; implemented as Cart.validate(), which asks each product whether it is available and takes over changed prices (Chapters 4 and 5); tested by validationTakesOverChangedPrices and placingNeedsAnOwnAddressAndEnoughStock (Chapter 5)"],
+    ["Status", "Agreed in Assignment 02; implemented as Cart.validate(), which asks each product whether it is available and takes over changed prices (Chapters 5 and 6); tested by validationTakesOverChangedPrices and placingNeedsAnOwnAddressAndEnoughStock (Chapter 6)"],
 ], [3.3, 12.7], size=10.5)
 p("The fit criterion is the most useful line on the card. It turns the requirement into something a tester can try "
   "and a programmer can aim at. I wrote acceptance criteria in the Given, When, Then form for the other Must Have "
-  "requirements of the order path; Table 1.10 shows six of them. Each one has at least one negative case, because "
+  "requirements of the order path; Table 1.13 shows six of them. Each one has at least one negative case, because "
   "most defects in order processing hide in the paths where something is missing or invalid.", keep=True)
 table("Acceptance criteria for key requirements", [
     ["Req.", "Given", "When", "Then"],
@@ -335,11 +383,11 @@ p("Writing these criteria had a side effect on the analysis. The criterion for F
   "not reveal that the order exists, and the same rule reappeared a few weeks later in the order search of "
   "Assignment 06, where a customer can only find his or her own orders.")
 
-h2("1.13. Prioritization")
+h2("1.14. Prioritization")
 p("Not every requirement can be built first. I used the MoSCoW scheme, and the deciding question for each "
   "requirement was simple: can the shop take and fulfil an order without it? Everything on the path from browsing "
   "to a confirmed, paid and shipped order is Must Have; things that make the shop better but not functional are "
-  "Should or Could Have. Table 1.11 shows the result.", keep=True)
+  "Should or Could Have. Table 1.14 shows the result.", keep=True)
 table("MoSCoW prioritization of the requirements", [
     ["Priority", "Requirements and scope decisions"],
     ["Must have", "FR01, FR02, FR04 to FR18, FR23, FR26; NFR01, NFR03, NFR04, NFR07, NFR10"],
@@ -352,14 +400,14 @@ p("Promotions ended up as Could Have, which surprised me at first because promot
   "feature, not a fix for the information problems that justify the project. FR23 (sales reports) is Must Have even "
   "though customers never see it, because the manager's lack of timely information is one of the root complaints.")
 
-h2("1.14. Validating the Requirements")
+h2("1.15. Validating the Requirements")
 p("I checked each requirement against five criteria: it has one clear actor and action, it lies inside the scope, "
   "it is feasible, it does not contradict another requirement, and it can be verified. Five requirements passed "
   "easily and serve as examples of the style. FR05 has a clear actor and action and is directly testable. FR09 "
   "defines when the check happens and what is checked. FR14 defines the exchange and the order linkage while "
   "respecting the boundary. NFR01 has a percentile, a time limit and a load condition, and NFR10 lists the invalid "
   "data that blocks confirmation, so both positive and negative tests can be written.")
-p("Three candidate requirements from my first draft failed. Table 1.12 shows them with the problem and the "
+p("Three candidate requirements from my first draft failed. Table 1.15 shows them with the problem and the "
   "revision. All three had the same defect: they named a quality without saying how anyone would know whether the "
   "system has it.", keep=True)
 table("Problematic candidate requirements and their revisions", [
@@ -369,17 +417,17 @@ table("Problematic candidate requirements and their revisions", [
     ["The system shall manage payments securely.", "Mixes vague security with unclear behavior; implies processing cards ourselves", "FR14 for the request and status exchange; NFR03 and NFR04 for access control; card processing stays outside the boundary"],
 ], [4.3, 4.6, 7.1], size=10.5)
 
-h2("1.15. Managing Requirement Change")
+h2("1.16. Managing Requirement Change")
 p("Requirements were not frozen after Assignment 02. Over the semester several of them changed, and I learned "
   "more from those changes than from writing the first version. Every change was handled the same way: state the "
   "trigger, decide which requirement or model changes, check the traceability table for side effects, and record the "
-  "decision. Table 1.13 is the change log of the requirements and the use case model.", keep=True)
+  "decision. Table 1.16 is the change log of the requirements and the use case model.", keep=True)
 table("Change log of the requirements baseline", [
     ["When", "Change", "Trigger", "Effect on other artifacts"],
     ["Assignment 02", "UC17 Manage Customer Records added", "FR27 had no use case in the traceability check", "One more use case for Sales Staff; no class change"],
     ["Assignment 02", "Promotion requirements moved from Should to Could", "No problem in the investigation is about promotions", "Apply Promotion modeled as an optional extension of checkout"],
     ["Test 01", "Cart price and order price separated", "A cart price may change with promotions; an order price must not", "CartItem.cartPrice and OrderItem.unitPrice in Chapter 2"],
-    ["Assignment 06", "Search requirements AI-R3 to AI-R7 added", "New course brief on multimodal search", "New use cases and a three-layer search component (Chapter 4)"],
+    ["Assignment 06", "Search requirements AI-R3 to AI-R7 added", "New course brief on multimodal search", "New use cases and a three-layer search component (Chapter 5)"],
     ["Assignment 06", "View Order changed from include to extend", "Viewing details is a separate goal of the customer", "Use case diagram redrawn; no code change"],
     ["Assignment 06", "Order search limited to the customer's own orders", "Privacy rule already implied by FR12", "Customer id passed into every order query"],
 ], [2.6, 4.3, 4.6, 4.5], size=10)
@@ -388,10 +436,10 @@ p("None of these changes was large, but each one would have been a small inconsi
   "class diagram, but it is really a requirement about which price the customer pays, so I recorded it here and "
   "traced it forward to the data model and the code.")
 
-h2("1.16. Traceability")
+h2("1.17. Traceability")
 p("Traceability links each problem to the needs, requirements and use cases that address it. It answers two "
   "questions that come up again and again in later phases: why does this requirement exist, and what breaks if we "
-  "drop it? Table 1.14 is the forward traceability from the problems of Section 1.6 to the use cases of Chapter 2.",
+  "drop it? Table 1.17 is the forward traceability from the problems of Section 1.6 to the use cases of Section 1.20.",
   keep=True)
 table("Traceability from problems to needs, requirements and use cases", [
     ["Problem or basis", "Need", "Requirements", "Use cases"],
@@ -413,7 +461,7 @@ p("Reading the table backwards is just as useful. Every requirement in the table
   "records) had no use case until I added UC17 Manage Customer Records, even though fragmented customer data is one "
   "of the seven problems.")
 
-h2("1.17. Requirements for the AI Extension")
+h2("1.18. Requirements for the AI Extension")
 p("The AI part was added later in the semester, and I treated it with the same discipline as the core requirements. "
   "It is deliberately kept outside the core baseline: the shop must sell without it, so none of its requirements is "
   "a Must Have of the core system. Two prototypes came first, a recommender in Assignment 02 and a multimodal search "
@@ -432,10 +480,13 @@ table("Functional requirements of the AI search (Chapter 3)", [
     ["FR-S7", "Keep the search index in step with the catalogue", "Must (if FR-S2 is built)"],
 ], [1.6, 11.4, 3.0], size=10.5, center_cols=(0, 2))
 
-h2("1.18. Chapter Summary")
+exec(compile(open(os.path.join(HERE, "uc_model.py"), encoding="utf-8").read(), "uc_model.py", "exec"))
+
+h2("1.22. Chapter Summary")
 p("The requirement phase produced a baseline that the rest of the essay builds on: eight stakeholders, eleven "
   "business activities, seven problems reduced to three root causes, a scope with a clear boundary around payment "
-  "and shipping, fourteen needs, twenty-eight functional and ten non-functional requirements, a MoSCoW plan and a "
-  "traceability table. The lesson I take from this phase is that the quality of a requirement is mostly decided by "
+  "and shipping, fourteen needs, thirteen business rules with the states of an order, twenty-eight functional and "
+  "ten non-functional requirements, a MoSCoW plan, a "
+  "traceability table, and the twenty-one use cases with the specification of the six central ones. The lesson I take from this phase is that the quality of a requirement is mostly decided by "
   "two small things: whether it names a trigger or a measurable condition, and whether it can be traced to a "
   "problem. Both are cheap to check while writing and very expensive to repair after the design is built on top.")

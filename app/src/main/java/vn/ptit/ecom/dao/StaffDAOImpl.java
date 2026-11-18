@@ -17,11 +17,11 @@ class StaffDAOImpl implements StaffDAO {
 
     @Override
     public Optional<Account> findAccount(String email) throws SQLException {
-        try (PreparedStatement ps = Jdbc.prepare(connection, "SELECT * FROM staff WHERE lower(email) = lower(?)", email);
+        try (PreparedStatement ps = Jdbc.prepare(connection, "SELECT * FROM Staff WHERE lower(Email) = lower(?)", email);
              ResultSet rs = ps.executeQuery()) {
             if (!rs.next()) return Optional.empty();
-            return Optional.of(new Account(Role.valueOf(rs.getString("role")), rs.getInt("staff_id"),
-                    rs.getString("full_name"), rs.getString("password_hash")));
+            return Optional.of(new Account(Role.valueOf(rs.getString("Role")), rs.getInt("StaffId"),
+                    rs.getString("FullName"), rs.getString("PasswordHash")));
         }
     }
 }

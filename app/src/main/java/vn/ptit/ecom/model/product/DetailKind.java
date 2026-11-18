@@ -1,11 +1,11 @@
 package vn.ptit.ecom.model.product;
 
-/** Which detail table a leaf category's products use (category.detail_kind). */
+/** Which detail table a leaf category's products use (Category.DetailKind). */
 public enum DetailKind {
-    BOOK("book_detail"),
-    LAPTOP("laptop_detail"),
-    PHONE("phone_detail"),
-    APPAREL("apparel_detail");
+    BOOK("BookDetail"),
+    LAPTOP("LaptopDetail"),
+    PHONE("PhoneDetail"),
+    APPAREL("ApparelDetail");
 
     private final String table;
 

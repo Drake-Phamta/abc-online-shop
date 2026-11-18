@@ -25,7 +25,7 @@ export class StaffOrderForm {
     if (!this.app.current(nav)) return;   // a newer navigation owns the page
     mount(this.app.view, html`
       <div class="page-head"><div><p class="eyebrow">Sales staff · UC14</p><h1 class="two-tone">Order board. <span class="muted">Move each order along its lifecycle.</span></h1></div></div>
-      <div class="board" data-trace="StaffOrderForm.showBoard ← GET /api/staff/orders · OrderController.board · OrderService.allOrders · OrderDAO.findAll · customer_order ⋈ customer">
+      <div class="board" data-trace="StaffOrderForm.showBoard ← GET /api/staff/orders · OrderController.board · OrderService.allOrders · OrderDAO.findAll · Orders ⋈ Customer">
         ${COLUMNS.map(([title, statuses]) => {
           const list = orders.filter((o) => statuses.includes(o.status));
           return html`<div class="column"><h4>${title}<span>${list.length}</span></h4>
@@ -95,7 +95,7 @@ export class StaffOrderForm {
     return new Promise((resolve) => {
       const dlg = document.createElement("dialog");
       const tracking = "VN" + Math.floor(100000000 + Math.random() * 899999999);
-      dlg.innerHTML = html`<form method="dialog" data-trace="ShippingController.ship · ShippingService.ship · Order.ship (BR10) · ShippingDAO.save · shipping">
+      dlg.innerHTML = html`<form method="dialog" data-trace="ShippingController.ship · ShippingService.ship · Order.ship (BR10) · ShippingDAO.save · Shipping">
         <h3 style="margin-bottom:6px">Ship <span class="code">${code}</span></h3>
         <p class="small" style="margin-bottom:16px">The carrier and tracking number are shown to the customer (UC09).</p>
         <div class="field"><label>Carrier</label><select name="carrier">${CARRIERS.map((c) => html`<option>${c}</option>`)}</select></div>

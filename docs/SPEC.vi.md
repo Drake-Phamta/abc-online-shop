@@ -27,7 +27,7 @@ số thẻ (BR07).
 | Mã | Quy tắc | Thực thi tại |
 |---|---|---|
 | BR01 | Chỉ sản phẩm có trạng thái ACTIVE mới được thêm vào giỏ hàng hoặc đặt hàng. | model + controller |
-| BR02 | Một giỏ hàng chỉ có tối đa một dòng cho mỗi sản phẩm; thêm lại sản phẩm đó thì tăng số lượng. Số lượng của một dòng nằm giữa 1 và tồn kho hiện tại. | model + DB UNIQUE(cart_id, product_id), CHECK |
+| BR02 | Một giỏ hàng chỉ có tối đa một dòng cho mỗi sản phẩm; thêm lại sản phẩm đó thì tăng số lượng. Số lượng của một dòng nằm giữa 1 và tồn kho hiện tại. | model + DB UNIQUE(CartId, ProductId), CHECK |
 | BR03 | Một dòng giỏ hàng giữ giá hiển thị lúc nó được thêm vào (giá trong giỏ). Khi đặt hàng, từng dòng được kiểm tra lại theo giá, trạng thái và tồn kho hiện tại (UC21). Nếu giá đã đổi, dòng đó lấy giá hiện tại và khách hàng phải xác nhận lại. | Cart validation |
 | BR04 | Tổng đơn hàng = tạm tính − giảm giá VIP + phí vận chuyển. Tạm tính = Σ số lượng × đơn giá. Giảm giá VIP = round(tạm tính × tỷ lệ giảm giá). Phí vận chuyển = 30 000 VND, miễn phí khi tạm tính sau giảm giá từ 500 000 VND trở lên. Số tiền là số nguyên VND. | Order |
 | BR05 | Tồn kho được giữ khi đơn hàng được tạo và không bao giờ âm; được trả lại khi đơn hàng bị hủy. | cập nhật có điều kiện trong DAO + DB CHECK |
@@ -35,7 +35,7 @@ số thẻ (BR07).
 | BR07 | Một đơn hàng chỉ được đánh dấu PAID sau khi nhà cung cấp trả kết quả chấp nhận. Cửa hàng lưu tên chủ thẻ, bốn số cuối, ngày hết hạn và token của nhà cung cấp, không bao giờ lưu đầy đủ số thẻ. | Payment |
 | BR08 | Khách hàng chỉ xem và thay đổi giỏ hàng và đơn hàng của chính mình. | controller (id khách hàng trong session) |
 | BR09 | Trạng thái đơn hàng chỉ thay đổi theo các chuyển trạng thái ở mục 3, do tác nhân được nêu ở đó thực hiện. | bảng chuyển trạng thái của OrderStatus |
-| BR10 | Mỗi đơn hàng có một lô vận chuyển, được tạo khi đơn hàng được giao đi (đơn vị vận chuyển, mã vận đơn, phí). | DB UNIQUE(order_id) |
+| BR10 | Mỗi đơn hàng có một lô vận chuyển, được tạo khi đơn hàng được giao đi (đơn vị vận chuyển, mã vận đơn, phí). | DB UNIQUE(Shipping.OrderId) |
 | BR11 | Đơn hàng thanh toán khi nhận hàng (COD) có bản ghi thanh toán tiền mặt khi đơn được giao đến nơi. | vòng đời của Order |
 | BR12 | Nhân viên kho có thể đặt tồn kho là bất kỳ số lượng ≥ 0 cho một sản phẩm đã có. | controller + DB CHECK |
 | BR13 | Các chức năng của nhân viên đòi hỏi tài khoản nhân viên có đúng vai trò (SALES cho đơn hàng, WAREHOUSE cho tồn kho). | controller |
@@ -46,14 +46,14 @@ số thẻ (BR07).
 |---|---|---|---|
 | (mới) | PENDING_PAYMENT | Khách hàng xác nhận đặt hàng bằng thẻ | tạo đơn hàng + các dòng, giữ tồn kho, làm rỗng giỏ hàng |
 | (mới) | PLACED | Khách hàng xác nhận đặt hàng thanh toán khi nhận hàng | như trên |
-| PENDING_PAYMENT | PAID | Nhà cung cấp chấp nhận thanh toán bằng thẻ (UC08) | thanh toán APPROVED + một dòng pay_credit |
+| PENDING_PAYMENT | PAID | Nhà cung cấp chấp nhận thanh toán bằng thẻ (UC08) | thanh toán APPROVED + một dòng PayCredit |
 | PENDING_PAYMENT | PENDING_PAYMENT | Nhà cung cấp từ chối (UC08 A4) | một dòng thanh toán DECLINED; khách hàng có thể thử lại |
 | PENDING_PAYMENT | CANCELLED | Khách hàng bỏ dở | trả lại tồn kho |
 | PLACED | CANCELLED | Khách hàng hoặc nhân viên bán hàng | trả lại tồn kho |
 | PLACED, PAID | PROCESSING | Nhân viên bán hàng | |
 | PAID, PROCESSING | CANCELLED | Nhân viên bán hàng | trả lại tồn kho; khoản thanh toán đã chấp nhận chuyển thành REFUNDED |
 | PROCESSING | SHIPPED | Nhân viên bán hàng nhập đơn vị vận chuyển và mã vận đơn | tạo một dòng vận chuyển |
-| SHIPPED | DELIVERED | Nhân viên bán hàng (đơn vị vận chuyển xác nhận) | vận chuyển DELIVERED; COD: thanh toán COMPLETED + một dòng pay_cash |
+| SHIPPED | DELIVERED | Nhân viên bán hàng (đơn vị vận chuyển xác nhận) | vận chuyển DELIVERED; COD: thanh toán COMPLETED + một dòng PayCash |
 
 Thay đổi so với nội dung UC07 trong tiểu luận: đơn hàng nay được tạo **trước** khi thanh toán (trạng thái PENDING_PAYMENT) vì
 FR14 ghi kết quả của nhà cung cấp "vào đúng đơn hàng", điều này cần có sẵn một tham chiếu đến đơn hàng, và tồn kho
@@ -156,7 +156,7 @@ dữ liệu, rồi đến thành phần, các tương tác, lỗi, rủi ro và 
 | Chức năng AI | Xếp hạng: với truy vấn q và mỗi sản phẩm p, một điểm liên quan s(q, p); kết quả là k sản phẩm đứng đầu. Văn bản: mô hình không gian vector với trọng số từ (TF-IDF) học từ văn bản của danh mục sản phẩm, kèm mở rộng truy vấn. Ảnh: một vector đặc trưng về màu sắc và hình dạng cho mỗi ảnh, độ tương đồng cosine. |
 | Đầu vào | văn bản tối đa 200 ký tự, hoặc một ảnh JPEG hoặc PNG tối đa 5 MB |
 | Đầu ra | tối đa 12 sản phẩm, mỗi sản phẩm kèm điểm và lý do; truy vấn đã được hiểu (từ khóa, phần mở rộng, phần sửa lỗi, giới hạn giá); một cờ khi đã dùng phương án dự phòng |
-| Nguồn dữ liệu | product (tên, thương hiệu, mô tả, giá, trạng thái), category (tên và danh mục cha), book_detail, laptop_detail, phone_detail, apparel_detail (mọi giá trị), ảnh sản phẩm trong thư mục ảnh của cửa hàng; không lưu thêm gì mới |
+| Nguồn dữ liệu | Product (tên, thương hiệu, mô tả, giá, trạng thái), Category (tên và danh mục cha), BookDetail, LaptopDetail, PhoneDetail, ApparelDetail (mọi giá trị), ảnh sản phẩm trong thư mục ảnh của cửa hàng; không lưu thêm gì mới |
 | Vị trí | Thành phần AI nằm ở tầng logic nghiệp vụ (package `ai`), được SearchService gọi; không dùng dịch vụ bên ngoài |
 | Tương tác | SearchForm (view) → SearchController → SearchService → QueryInterpreter, ProductIndex, ImageIndex; SearchService đọc danh mục sản phẩm qua ProductDAO |
 | Hiệu năng | tìm bằng văn bản dưới 300 ms, tìm bằng ảnh dưới 1 s trên máy demo; hit@1 và MRR tốt hơn tìm theo từ khóa trên các truy vấn đã gán nhãn (mục 6.2) |
