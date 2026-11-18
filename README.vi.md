@@ -10,7 +10,7 @@ dùng khi bảo vệ.
 
 | Sản phẩm | Vị trí |
 |---|---|
-| Tiểu luận (báo cáo chính thức) | [Bai_nop/tieuluan_V5_04_10_phamtuananh_018.pdf](Bai_nop/tieuluan_V5_04_10_phamtuananh_018.pdf) và `.docx`; mã nguồn ở [Nguon](Nguon) (`Nguon/make.ps1` dựng lại cả hai vào `Bai_nop`); tiểu luận lấy hình từ `vp/png` và `docs/evidence` |
+| Tiểu luận (báo cáo chính thức) | [Bai_nop/minorthesis_04_10_phamtuananh.pdf](Bai_nop/minorthesis_04_10_phamtuananh.pdf) và `.docx`; mã nguồn ở [Nguon](Nguon) (`Nguon/make.ps1` dựng lại cả hai vào `Bai_nop`); tiểu luận lấy hình từ `vp/png` và `docs/evidence` |
 | Đề bài của giảng viên và tài liệu môn học | [De_bai](De_bai) (ảnh bảng, slide, tiểu luận mẫu, 50 câu hỏi vấn đáp); chỉ có trong bản trên máy, không có trong kho công khai |
 | Đặc tả yêu cầu | chương 1 và 2 của tiểu luận; các quy tắc, máy trạng thái và kiểm thử chấp nhận trong [docs/SPEC.md](docs/SPEC.md) |
 | Biểu đồ theo từng giai đoạn | ba file Visual Paradigm, file sau thêm vào file trước: [vp/1_Analysis.vpp](vp/1_Analysis.vpp) (context R1, use case R2 đến R8, activity A1 đến A5, sơ đồ lớp phân tích A10, AI1, AI4), [vp/2_DataModel.vpp](vp/2_DataModel.vpp) (thêm D1 và ERD sinh ra D2), [vp/3_Design.vpp](vp/3_Design.vpp) (thêm các sơ đồ thiết kế G1 đến G9, 29 biểu đồ; A10 chỉ có ở file 1 vì đã trở thành D1), tổng cộng 30 biểu đồ khác nhau; hình ảnh trong [vp/png](vp/png) (R = yêu cầu, A = phân tích, AI = tìm kiếm AI, D = mô hình dữ liệu, G = thiết kế) |

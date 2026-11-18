@@ -10,7 +10,7 @@ used at the defence.
 
 | Deliverable | Location |
 |---|---|
-| Essay (official report) | [Bai_nop/tieuluan_V5_04_10_phamtuananh_018.pdf](Bai_nop/tieuluan_V5_04_10_phamtuananh_018.pdf) and `.docx`; sources in [Nguon](Nguon) (`Nguon/make.ps1` rebuilds both into `Bai_nop`); the essay reads its figures from `vp/png` and `docs/evidence` |
+| Essay (official report) | [Bai_nop/minorthesis_04_10_phamtuananh.pdf](Bai_nop/minorthesis_04_10_phamtuananh.pdf) and `.docx`; sources in [Nguon](Nguon) (`Nguon/make.ps1` rebuilds both into `Bai_nop`); the essay reads its figures from `vp/png` and `docs/evidence` |
 | Lecturer's brief and course material | [De_bai](De_bai) (board photos, slides, reference essay, the 50 examination questions); in the local copy only, not in the public repository |
 | Requirement specification | essay chapters 1 and 2; rules, state machine and acceptance tests in [docs/SPEC.md](docs/SPEC.md) |
 | Diagrams per phase | three Visual Paradigm files, each adding to the one before: [vp/1_Analysis.vpp](vp/1_Analysis.vpp) (context diagram R1, use cases R2 to R8, activities A1 to A5, analysis class diagram A10, AI1, AI4), [vp/2_DataModel.vpp](vp/2_DataModel.vpp) (adds D1 and the generated ERD D2), [vp/3_Design.vpp](vp/3_Design.vpp) (adds the design diagrams G1 to G9, 29 diagrams; A10 is only in file 1 because it became D1), 30 different diagrams in all; images in [vp/png](vp/png) (R = requirements, A = analysis, AI = AI search, D = data model, G = design) |

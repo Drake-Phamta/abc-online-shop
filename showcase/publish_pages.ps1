@@ -14,7 +14,7 @@ Set-Location -LiteralPath $root
 function Fail($why) { Write-Output "NOT published: $why"; exit 1 }
 
 if (git status --porcelain) { Fail "commit the changes first (git status is not clean)" }
-$pdf = "Bai_nop/tieuluan_V5_04_10_phamtuananh_018.pdf"
+$pdf = "Bai_nop/minorthesis_04_10_phamtuananh.pdf"
 if (-not (Test-Path -LiteralPath $pdf)) { Fail "$pdf is missing" }
 $id = gh api user --jq .id
 $login = gh api user --jq .login

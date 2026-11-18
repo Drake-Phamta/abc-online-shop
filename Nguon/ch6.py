@@ -33,7 +33,7 @@ table("Environment of the ABC Online Shop application", [
 ], [2.8, 6.7, 6.5], size=10)
 p("One environment problem cost me an evening: Maven failed with \"Input length = 1\" inside the course folder, whose "
   "path contains Vietnamese characters. Maven wrote its list of source files in the Windows code page, which has no "
-  "letter such as \"ế\"; the file app/.mvn/jvm.config starts Maven with UTF-8 and the build works. The project "
+  "letters with Vietnamese tone marks; the file app/.mvn/jvm.config starts Maven with UTF-8 and the build works. The project "
   "therefore sits in the essay folder next to this report, as one git repository that is the source of every number "
   "in this chapter.")
 
