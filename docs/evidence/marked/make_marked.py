@@ -11,7 +11,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[3]
 OUT = Path(__file__).resolve().parent
-RED = (196, 30, 36)
+RED = (31, 95, 168)   # the blue of the change bars of the essay
 NUM = ImageFont.truetype("C:/Windows/Fonts/arialbd.ttf", 34)
 
 

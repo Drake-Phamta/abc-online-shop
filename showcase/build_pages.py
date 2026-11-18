@@ -29,7 +29,7 @@ TEXT = {".md", ".java", ".js", ".mjs", ".py", ".sql", ".ddl", ".txt", ".css", ".
 SKIP_DIRS = {"node_modules", "target", "__pycache__", ".git"}
 # not project sources (lecturer's material, archive, built essay, run-time data): links to them stay plain links
 # showcase/compare is local only and published password-protected by publish_pages.ps1: never a readable source page
-SKIP_TREES = ("De_bai", "Luu_tru", "Bai_nop", "app/data", "showcase/pages", "showcase/compare")
+SKIP_TREES = ("De_bai", "Luu_tru", "Bai_nop", "app/data", "showcase/pages", "showcase/compare", "showcase/report.vi.html")
 MAX_TEXT = 1_000_000
 
 md = MarkdownIt("commonmark", {"html": True}).enable("table").enable("strikethrough")

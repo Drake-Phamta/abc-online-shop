@@ -100,8 +100,22 @@ p("Three conventions are used throughout. First, requirement and use case identi
   "in Assignment 02, so a reader can follow FR14 from the requirements table in Chapter 1 to the payment use case in "
   "Section 1.21 and the payment classes in Chapter 5. Second, the essay is written in the first person, because many "
   "sections explain choices I made and alternatives I rejected; a design rationale written in the passive voice "
-  "tends to hide exactly the part that is worth reading. Third, text in red is new or changed since version V4, which "
-  "I presented on 12 November 2026; a figure or table that only received a new number is not marked.")
+  "tends to hide exactly the part that is worth reading. Third, a blue bar in the left margin marks every paragraph, "
+  "heading and caption that is new or changed since version V4, which I presented on 12 November 2026; a figure or "
+  "table that only received a new number is not marked. Table 2 lists the changes and the reason for each.", keep=True)
+table("Changes since version V4 (12 November 2026)", [
+    ["Change", "Where", "Reason"],
+    ["The models are kept in three Visual Paradigm files, Analysis, Data Model and Design, each adding to the one before", "Introduction; Chapters 2, 4 and 5", "the order of the lecturer's board"],
+    ["The four kinds of product are subclasses of Product (inheritance), like the kinds of customer and of payment", "Section 2.1 (Figure 2.1); Sections 4.1 and 4.2.2; Figure 6.2", "the lecturer's feedback of 12 November"],
+    ["The data model is generated from the class diagram by Synchronize, not drawn, and the tables keep the names that VP gives them", "Sections 4.1 and 4.2.1 (Figures 4.2 to 4.4)", "evaluation item 2: Data Model → DB"],
+    ["Data Model → DB: the table of what Generate Database writes; the rules added by hand", "Sections 4.3 and 5.3", "evaluation item 2"],
+    ["Class design as the analysis classes plus their methods; layers; code generated from the layered model", "Sections 5.1, 5.2 and 5.5", "evaluation items 3 and 4"],
+    ["Business rules BR01 to BR13 and the states of an order", "Section 1.10", "the rules were cited before they were defined"],
+    ["One general use case diagram, then the detailed ones", "Section 1.20", "two overview diagrams were hard to tell apart"],
+    ["Why each attribute is stored, and which data is not stored", "Sections 4.2.3 and 4.2.4", "every column needs a reason"],
+    ["The code next to the screen it produces, with numbered marks", "Section 6.8 (Figures 6.2 to 6.7)", "evaluation item 5: Code + Demo"],
+    ["Removed: the business process and ArchiMate views, the data flow diagram, the analysis sequences and the separate conceptual, logical and physical ERDs", "former Chapters 1, 2 and 4", "not on the board; the generated data model replaces the three ERD levels"],
+], [7.4, 4.6, 4.0], size=10)
 p("The AI chapter sits in the middle on purpose. AI features such as recommendation and image search are often "
   "presented as separate products. In this essay they are treated as one more set of requirements: they have "
   "stakeholders, use cases, components and tests like every other part of the shop.")

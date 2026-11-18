@@ -30,7 +30,7 @@ $blob = git hash-object -w -- $pdf
 git update-index --add --cacheinfo "100644,$blob,$pdf"
 # personal notes: the project log is never published; the defence notes only as password-protected readable pages
 # (tools/protect_page.mjs, password in %LOCALAPPDATA%\abc_shop\page_password.txt, outside the repository)
-$private = git ls-files | Where-Object { $_ -match '^(showcase/pages/)?docs/(CONTROL|DEFENSE|VP_DEMO)(\.vi)?\.md(\.html)?$' -or $_ -like 'showcase/compare/*' -or $_ -like 'showcase/pages/showcase/compare/*' }
+$private = git ls-files | Where-Object { $_ -match '^(showcase/pages/)?docs/(CONTROL|DEFENSE|VP_DEMO)(\.vi)?\.md(\.html)?$' -or $_ -like 'showcase/compare/*' -or $_ -like 'showcase/pages/showcase/compare/*' -or $_ -eq 'showcase/report.vi.html' -or $_ -like 'showcase/pages/showcase/report*' }
 if ($private) { git update-index --force-remove -- @($private) }
 $pwFile = Join-Path $env:LOCALAPPDATA "abc_shop\page_password.txt"
 if (Test-Path $pwFile) {
@@ -45,6 +45,7 @@ if (Test-Path $pwFile) {
         @("page", "showcase/pages/docs/DEFENSE.vi.md.html", "showcase/pages/docs/DEFENSE.vi.md.html"),
         @("page", "showcase/pages/docs/VP_DEMO.vi.md.html", "showcase/pages/docs/VP_DEMO.vi.md.html"),
         @("page", "showcase/compare/index.html", "showcase/compare/index.html"),
+        @("page", "showcase/report.vi.html", "showcase/report.vi.html"),
         @("file", "tieuluan_V5_03_01_NhiCT.075.pdf", "showcase/compare/nhi.pdf.enc"))
     foreach ($p in $protect) {
         $kind, $src, $dest = $p
